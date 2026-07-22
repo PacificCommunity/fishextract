@@ -1,5 +1,5 @@
 # TO DO
-# is year needed? does the nations within the agreements change each year?
+# this should just reference the table FISH_MASTER.ref.wcpfc_party
 get_flags <- function(
   group = c("WCPFC", "PNA", "FSMA", "WPEA")
   # year = NULL

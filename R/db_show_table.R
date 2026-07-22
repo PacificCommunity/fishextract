@@ -1,12 +1,39 @@
+#' Preview rows from a database table
+#'
+#' Builds and executes a `SELECT TOP` query against a schema-qualified
+#' table, returning a quick preview of its contents.
+#'
+#' @param schema Character. Name of the database schema.
+#' @param table Character. Name of the table to preview.
+#' @param nrow Integer. Number of rows to return. Set to `NULL` to return
+#'   all rows (omits the `TOP` clause). Defaults to `10`.
+#'
+#' @return A data frame (or tibble, depending on `.db_query()`) containing
+#'   the queried rows.
+#'
+#' @examples
+#' \dontrun{
+#' quick_view(schema = "dbo", table = "samples")
+#' quick_view(schema = "dbo", table = "samples", nrow = NULL)
+#' }
+#'
 #' @export
 db_show_table <- function(schema, table) {
   if (!table %in% db_list_tables(schema = schema)) {
     stop(glue::glue("table ('{table}') not in schema ('{schema}')"))
   }
 
+  nrow_clause <- if (!is.null(nrow)) {
+    glue::glue("TOP {nrow}")
+  } else {
+    ""
+  }
+
   glue::glue(
-    "SELECT TOP 10 * 
-  FROM {schema}.{table}"
+    "
+  SELECT {nrow_clause} *
+  FROM {schema}.{table}
+  "
   ) |>
     .db_query()
 }

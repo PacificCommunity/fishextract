@@ -1,25 +1,68 @@
+#' Retrieve WCPFC logbook catch data
+#'
+#' Queries logbook catch-and-effort tables for one or more gear types and
+#' returns total catch (metric tonnes) summarised by flag, year, species
+#' and gear.
+#'
+#' @param in_wcpfc Optional filter passed to `.sql_filter()` restricting
+#'   records to those inside (or outside) the WCPFC Convention Area.
+#' @param flag Optional character vector of flag codes to filter by.
+#' @param gear Character vector of gear codes to query. One or more of
+#'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
+#'   `"T"` (troll). Defaults to all four.
+#' @param species Optional character vector of species codes to filter by.
+#' @param year Optional numeric vector of years to filter by.
+#'
+#' @return A tibble with one row per flag/year/species/gear combination,
+#'   containing:
+#'   \describe{
+#'     \item{FLAG_CODE}{Flag code.}
+#'     \item{YY}{Year.}
+#'     \item{SP_CODE}{Species code.}
+#'     \item{sp_mt}{Catch, in metric tonnes.}
+#'     \item{GEAR_CODE}{Gear code (`"P"`, `"S"`, `"L"`, or `"T"`).}
+#'   }
+#'
+#' @details
+#' For each requested gear, catch is pulled by joining
+#' `log.trips_*` -> `log.sets_*` -> `log.catch_*` (table suffix set by
+#' `gear_suffix`), restricted to vessel instances active over the trip
+#' period (via `ref.vessel_instances`). Longline (`"L"`) catch is queried
+#' and summed in kilograms (`sp_kg`, including discards) since it is
+#' recorded at that resolution; all other gears are summed directly in
+#' tonnes (`sp_mt`). After all gears are queried and row-bound, any
+#' `sp_kg` totals are converted to tonnes and coalesced into `sp_mt`,
+#' and the now-redundant `sp_kg` column is dropped.
+#'
+#' @note `convert_catch_to_mt()` is defined inside the function but is
+#'   not currently called anywhere in the body — the kg-to-tonnes
+#'   conversion for longline catch is instead handled directly in the
+#'   final `dplyr::mutate()` step. Left in place here as-is; flag for
+#'   removal or wiring in if that was the intent.
+#'
+#' @examples
+#' \dontrun{
+#' # All gears, all flags/species/years
+#' logbook_catch()
+#'
+#' # Purse seine and longline catch for one flag, 2020-2023
+#' logbook_catch(flag = "FJ", gear = c("P", "L"), year = 2020:2023)
+#' }
+#'
+#' @keywords internal
 logbook_catch <- function(
-  in_wcpfc = NULL,
+  in_wcpfc = TRUE,
   flag = NULL,
   gear = c("P", "S", "L", "T"),
   species = NULL,
   year = NULL
 ) {
   gear_suffix <- c(
-    "P" = "ps",
-    "S" = "pl",
+    "P" = "pl",
+    "S" = "ps",
     "L" = "ll",
     "T" = "tr"
   )
-
-  # if (!is.character(gear) || length(gear) != 1L) {
-  #   cli::cli_abort(
-  #     "{.arg gear} must be a single string, options: {.val {names(gear_suffix)}}"
-  #   )
-  # }
-  # if (!gear %in% names(gear_suffix)) {
-  #   cli::cli_abort("{.arg gear} must be one of {.val {names(gear_suffix)}}.")
-  # }
 
   convert_catch_to_mt <- function(df) {
     if ("sp_kg" %in% names(df)) {
@@ -30,6 +73,8 @@ logbook_catch <- function(
   }
 
   get_logbook_catch <- function(.gear) {
+    # Longline catch (incl. discards) is only available in kg; all other
+    # gears report catch directly in tonnes.
     catch_column <-
       if (.gear == "L") {
         "coalesce(catch.sp_kg, 0) + coalesce(spdiscard_kg, 0) AS sp_kg"
@@ -74,8 +119,15 @@ logbook_catch <- function(
       dplyr::mutate(GEAR_CODE = .gear)
   }
 
+  # run for each gear that is specified and combine
   purrr::map(gear, get_logbook_catch) |>
     dplyr::bind_rows() |>
+    (\(df) {
+      if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
+    })() |>
+    (\(df) {
+      if ("sp_mt" %in% names(df)) df else dplyr::mutate(df, sp_mt = NA_real_)
+    })() |>
     dplyr::mutate(sp_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
     dplyr::select(-any_of("sp_kg"))
 }

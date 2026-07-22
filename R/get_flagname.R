@@ -25,6 +25,3 @@ get_flagname <- function(
       )
     )
 }
-
-# get_flags("WPEA") |>
-#   get_flagname()
