@@ -1,0 +1,10 @@
+# Package index
+
+## All functions
+
+- [`db_connection()`](https://freddieh.github.io/fishextract/reference/db_connection.md)
+  : Connect to the database
+- [`plot_ace()`](https://freddieh.github.io/fishextract/reference/plot_ace.md)
+  : Plot ACE catch trends by year
+- [`sum_ace()`](https://freddieh.github.io/fishextract/reference/sum_ace.md)
+  : Summarise ACE catch by ocean, flag, gear, species and year

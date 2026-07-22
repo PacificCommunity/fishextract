@@ -1,8 +1,9 @@
 Package: fishextract
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
+URL: https://freddieh.github.io/fishextract/
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    person("Freddie", "Heather", , "freddieh@spc.int", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
