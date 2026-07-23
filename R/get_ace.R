@@ -45,7 +45,7 @@
 #' @importFrom glue glue
 #'
 #' @export
-sum_ace <- function(
+get_ace <- function(
   ocean = NULL,
   flag = NULL,
   gear = NULL,

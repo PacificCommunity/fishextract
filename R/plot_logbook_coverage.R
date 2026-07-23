@@ -1,19 +1,19 @@
 #' Plot logbook coverage by flag and year
 #'
 #' Visualises logbook reporting coverage (as calculated by
-#' `logbook_coverage()`) as a flag x year heatmap, with each tile shaded by
+#' `get_logbook_coverage()`) as a flag x year heatmap, with each tile shaded by
 #' coverage and labelled with the coverage percentage. Facets by gear
 #' automatically if more than one gear is present in the data.
 #'
-#' @param coverage_data A tibble as returned by `logbook_coverage()`,
+#' @param coverage_data A tibble as returned by `get_logbook_coverage()`,
 #'   containing at least `FLAG_CODE`, `YY`, and `coverage` columns (and
-#'   optionally `GEAR_CODE`). If `NULL` (the default), `logbook_coverage()`
+#'   optionally `GEAR_CODE`). If `NULL` (the default), `get_logbook_coverage()`
 #'   is called using `...`.
 #' @param flag_order Optional character vector giving the order flags
 #'   should appear on the y-axis, top to bottom (as per
 #'   `ggplot2::scale_y_discrete(limits = ...)`). Defaults to descending
 #'   mean coverage across the data.
-#' @param ... Additional arguments passed to `logbook_coverage()` when
+#' @param ... Additional arguments passed to `get_logbook_coverage()` when
 #'   `coverage_data` is `NULL` (e.g. `in_wcpfc`, `flag`, `gear`,
 #'   `species`, `year`, `group_species`).
 #'
@@ -32,15 +32,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "L", year = 2004:2025) |>
-#'   plot_coverage()
+#' get_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "L", year = 2004:2025) |>
+#'   plot_logbook_coverage()
 #'
-#' # or call logbook_coverage() implicitly
-#' plot_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "S", year = 2004:2025)
+#' # or call get_logbook_coverage() implicitly
+#' plot_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "S", year = 2004:2025)
 #' }
 #'
 #' @export
-plot_coverage <- function(
+plot_logbook_coverage <- function(
   coverage_data = NULL,
   ...
 ) {

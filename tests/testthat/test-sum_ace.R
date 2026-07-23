@@ -1,7 +1,7 @@
 test_ocean <- "WX"
 test_year <- 2024
 
-test_that("sum_ace hits the real database and returns a well-formed tibble", {
+test_that("get_ace hits the real database and returns a well-formed tibble", {
   out <- sum_ace(ocean = test_ocean, year = test_year)
 
   expect_s3_class(out, "tbl_df")

@@ -43,14 +43,14 @@
 #' @examples
 #' \dontrun{
 #' # All gears, all flags/species/years
-#' logbook_catch()
+#' get_logbook_catch()
 #'
 #' # Purse seine and longline catch for one flag, 2020-2023
-#' logbook_catch(flag = "FJ", gear = c("P", "L"), year = 2020:2023)
+#' get_logbook_catch(flag = "FJ", gear = c("P", "L"), year = 2020:2023)
 #' }
 #'
 #' @keywords internal
-logbook_catch <- function(
+get_logbook_catch <- function(
   in_wcpfc = TRUE,
   flag = NULL,
   gear = c("P", "S", "L", "T"),
@@ -72,7 +72,7 @@ logbook_catch <- function(
     df
   }
 
-  get_logbook_catch <- function(.gear) {
+  logbook_catch_extract <- function(.gear) {
     # Longline catch (incl. discards) is only available in kg; all other
     # gears report catch directly in tonnes.
     catch_column <-
@@ -120,7 +120,7 @@ logbook_catch <- function(
   }
 
   # run for each gear that is specified and combine
-  purrr::map(gear, get_logbook_catch) |>
+  purrr::map(gear, logbook_catch_extract) |>
     dplyr::bind_rows() |>
     (\(df) {
       if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
