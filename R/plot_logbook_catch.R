@@ -58,18 +58,8 @@ plot_logbook_catch <- function(
   plot_data <-
     data |>
     dplyr::summarise(
-      ace_catch = sum(ace_catch),
-      logbook_catch = sum(logbook_catch),
+      sum_catch_mt = sum(sp_mt),
       .by = dplyr::all_of(group_vars)
-    ) |>
-    dplyr::mutate(
-      coverage = dplyr::case_when(
-        ace_catch > 0 & logbook_catch > 0 ~ (logbook_catch / ace_catch),
-        ace_catch == 0 & logbook_catch > 0 ~ NA,
-        ace_catch > 0 & logbook_catch == 0 ~ 0,
-        .default = NA
-      ),
-      coverage = dplyr::if_else(coverage > 1, 1, coverage)
     )
 
   p <-
@@ -77,15 +67,18 @@ plot_logbook_catch <- function(
       plot_data,
       ggplot2::aes(
         x = YY,
-        y = coverage,
+        y = sum_catch_mt,
         colour = !!colour_by,
         group = !!colour_by
       )
     ) +
     ggplot2::geom_line(linewidth = 0.8) +
-    ggplot2::scale_y_continuous(labels = scales::percent) +
-    ggplot2::labs(x = NULL, y = "Logbook coverage", colour = NULL) +
-    ggplot2::theme_minimal()
+    ggplot2::geom_point() +
+    ggplot2::labs(x = NULL, y = "Catch (mt)", colour = NULL) +
+    ggplot2::scale_y_continuous(
+      labels = scales::label_number(scale_cut = scales::cut_short_scale())
+    ) +
+    theme_fishextract()
 
   if (hline) {
     p <- p +
