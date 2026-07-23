@@ -45,7 +45,7 @@ plot_logbook_coverage <- function(
   ...
 ) {
   if (is.null(coverage_data)) {
-    coverage_data <- calc_coverage(...)
+    coverage_data <- get_logbook_coverage(...)
   }
 
   p <-
