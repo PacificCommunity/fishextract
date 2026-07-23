@@ -11,15 +11,18 @@ The goal of fishextract is to ...
 You can install the development version of fishextract like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# install.packages("remotes")
+remotes::install.packages("FreddieJH/fishextract")
+library(fishextract)
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(fishextract)
-## basic example code
+plot_map("wcpfc_epo")
 ```
+
+
 
