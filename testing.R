@@ -182,3 +182,49 @@ sum_ace(
   gear = c("S", "P")
 ) |>
   plot_ace(colour_by = SP_CODE, facet_by = GEAR_CODE, facet_scales = "free_y")
+
+
+library(DBI)
+library(tidyverse)
+library(odbc)
+channel <- dbConnect(
+  odbc::odbc(),
+  .connection_string = "driver=SQL Server;server=OFP_DBS;database=fish_master"
+)
+countries.query <- "SELECT country_code, country_name FROM Ref.countries"
+countries <- dbGetQuery(channel, countries.query, as.is = TRUE)
+countries <-
+  countries |>
+  mutate(
+    CC = substr(country_name, 1, 3),
+    CC = ifelse(country_code == 'TW', 'TAI', CC)
+  )
+countries <- rbind(
+  countries,
+  data.frame(
+    country_code = 'EP',
+    country_name = 'EASTERN PACIFIC NEI',
+    CC = 'ZEP'
+  )
+)
+countries <-
+  countries |>
+  mutate(
+    country_name = ifelse(
+      country_code == 'KR',
+      'REPUBLIC OF KOREA',
+      ifelse(
+        country_code == 'HN',
+        'REPUBLIC OF HONDURAS',
+        ifelse(
+          country_code == 'PT',
+          'EU-PORTUGAL',
+          ifelse(
+            country_code == 'ES',
+            'EU-SPAIN',
+            ifelse(country_code == 'TO', 'KINGDOM OF TONGA', country_name)
+          )
+        )
+      )
+    )
+  )

@@ -45,3 +45,14 @@ ocean_colours <- function() {
     "WCPO" = set2_pallette[7]
   )
 }
+
+#' colours for geographical maps
+#' @keywords internal
+mapping_colours <- function(type) {
+  switch(
+    type,
+    "land" = "#F5EFE0",
+    "water" = "#DCEBF2",
+    "land_outline" = "grey40",
+  )
+}
