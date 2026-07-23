@@ -30,7 +30,7 @@
 #' @examples
 #' \dontrun{
 #' # Filter on everything
-#' sum_ace(
+#' get_ace(
 #'   ocean   = "WX",
 #'   flag    = c("ID", "VN"),
 #'   gear    = "L",
@@ -39,13 +39,13 @@
 #' )
 #'
 #' # No filters at all — all oceans, flags, gears, species and years
-#' sum_ace()
+#' get_ace()
 #' }
 #'
 #' @importFrom glue glue
 #'
 #' @export
-sum_ace <- function(
+get_ace <- function(
   ocean = NULL,
   flag = NULL,
   gear = NULL,

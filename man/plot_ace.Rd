@@ -7,7 +7,7 @@
 plot_ace(data, colour_by = NULL, facet_by = NULL, facet_scales = "fixed")
 }
 \arguments{
-\item{data}{A tibble as returned by \code{\link[=sum_ace]{sum_ace()}}, containing at least
+\item{data}{A tibble as returned by \code{\link[=get_ace]{get_ace()}}, containing at least
 \code{YY} and \code{sum_catch_mt}.}
 
 \item{colour_by}{Optional. Bare column name to colour lines by (e.g.
@@ -23,7 +23,7 @@ argument when \code{facet_by} is supplied. Defaults to \code{"fixed"}.}
 A \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
-Takes the output of \code{\link[=sum_ace]{sum_ace()}} and plots total catch (t) as a line
+Takes the output of \code{\link[=get_ace]{get_ace()}} and plots total catch (t) as a line
 against year, optionally coloured and/or faceted by another grouping
 column still present in the data (e.g. \code{OCEAN_CODE}, \code{FLAG_CODE},
 \code{GEAR_CODE}, \code{SP_CODE}). Data are re-aggregated internally over \code{YY},
@@ -32,7 +32,7 @@ which other grouping columns remain in \code{data}.
 }
 \examples{
 \dontrun{
-ace_output <- sum_ace(ocean = "WX", species = c("YFT", "SKJ"))
+ace_output <- get_ace(ocean = "WX", species = c("YFT", "SKJ"))
 
 # Single line, total catch by year
 plot_ace(ace_output)

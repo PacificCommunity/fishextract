@@ -22,8 +22,8 @@
 #'   (unless `group_species = TRUE`), and gear.
 #'
 #' @details
-#' `ace_catch` is obtained via `sum_ace()` and `logbook_catch` via
-#' `logbook_catch()`, using the same flag/gear/species/year filters.
+#' `ace_catch` is obtained via `get_ace()` and `logbook_catch` via
+#' `get_logbook_catch()`, using the same flag/gear/species/year filters.
 #' The two are `full_join()`ed so that strata present in only one source
 #' are retained, with missing catch values filled to zero via
 #' `tidyr::replace_na()`. If `group_species = TRUE`, `logbook_catch` is
@@ -39,7 +39,7 @@
 #' }
 #'
 #' @export
-logbook_coverage <-
+get_logbook_coverage <-
   function(
     in_wcpfc = TRUE,
     flag = NULL,
@@ -49,7 +49,7 @@ logbook_coverage <-
     group_species = TRUE
   ) {
     ace_catch <-
-      sum_ace(
+      get_ace(
         ocean = if (is.null(in_wcpfc)) NULL else "WX",
         flag = flag,
         gear = gear,
@@ -61,7 +61,7 @@ logbook_coverage <-
       dplyr::select(-any_of("OCEAN_CODE"))
 
     logbook_catch <-
-      logbook_catch(
+      get_logbook_catch(
         in_wcpfc = in_wcpfc,
         flag = flag,
         gear = gear,
