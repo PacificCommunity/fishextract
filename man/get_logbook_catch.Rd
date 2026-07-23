@@ -70,4 +70,3 @@ get_logbook_catch(flag = "FJ", gear = c("P", "L"), year = 2020:2023)
 }
 
 }
-\keyword{internal}

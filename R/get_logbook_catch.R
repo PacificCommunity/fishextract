@@ -49,7 +49,7 @@
 #' get_logbook_catch(flag = "FJ", gear = c("P", "L"), year = 2020:2023)
 #' }
 #'
-#' @keywords internal
+#' @export
 get_logbook_catch <- function(
   in_wcpfc = TRUE,
   flag = NULL,
