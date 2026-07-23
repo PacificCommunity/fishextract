@@ -13,7 +13,7 @@ plot_logbook_catch(
 )
 }
 \arguments{
-\item{data}{A tibble as returned by \code{\link[=logbook_coverage]{logbook_coverage()}}, containing
+\item{data}{A tibble as returned by \code{\link[=get_logbook_coverage]{get_logbook_coverage()}}, containing
 at least \code{YY}, \code{ace_catch} and \code{logbook_catch}.}
 
 \item{colour_by}{Optional. Bare column name to colour lines by (e.g.
@@ -32,7 +32,7 @@ line at \code{coverage = 1} (full reporting).}
 A \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
-Takes the output of \code{\link[=logbook_coverage]{logbook_coverage()}} and plots \code{coverage} as a
+Takes the output of \code{\link[=get_logbook_coverage]{get_logbook_coverage()}} and plots \code{coverage} as a
 line against year, optionally coloured and/or faceted by another
 grouping column still present in the data (e.g. \code{FLAG_CODE},
 \code{GEAR_CODE}, \code{SP_CODE}). \code{ace_catch} and \code{logbook_catch} are
@@ -43,7 +43,7 @@ columns remain in \code{data}.
 }
 \examples{
 \dontrun{
-coverage_output <- logbook_coverage(in_wcpfc = TRUE, group_species = TRUE)
+coverage_output <- get_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE)
 
 # Single line, overall coverage by year
 plot_logbook_catch(coverage_output)

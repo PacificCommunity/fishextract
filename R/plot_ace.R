@@ -1,13 +1,13 @@
 #' Plot ACE catch trends by year
 #'
-#' Takes the output of [sum_ace()] and plots total catch (t) as a line
+#' Takes the output of [get_ace()] and plots total catch (t) as a line
 #' against year, optionally coloured and/or faceted by another grouping
 #' column still present in the data (e.g. `OCEAN_CODE`, `FLAG_CODE`,
 #' `GEAR_CODE`, `SP_CODE`). Data are re-aggregated internally over `YY`,
 #' `colour_by` and `facet_by` so lines are always clean, regardless of
 #' which other grouping columns remain in `data`.
 #'
-#' @param data A tibble as returned by [sum_ace()], containing at least
+#' @param data A tibble as returned by [get_ace()], containing at least
 #'   `YY` and `sum_catch_mt`.
 #' @param colour_by Optional. Bare column name to colour lines by (e.g.
 #'   `SP_CODE`). Defaults to `NULL` (single line, no colour grouping).
@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' ace_output <- sum_ace(ocean = "WX", species = c("YFT", "SKJ"))
+#' ace_output <- get_ace(ocean = "WX", species = c("YFT", "SKJ"))
 #'
 #' # Single line, total catch by year
 #' plot_ace(ace_output)

@@ -1,6 +1,6 @@
 #' Plot logbook reporting catch trends by year
 #'
-#' Takes the output of [logbook_coverage()] and plots `coverage` as a
+#' Takes the output of [get_logbook_coverage()] and plots `coverage` as a
 #' line against year, optionally coloured and/or faceted by another
 #' grouping column still present in the data (e.g. `FLAG_CODE`,
 #' `GEAR_CODE`, `SP_CODE`). `ace_catch` and `logbook_catch` are
@@ -9,7 +9,7 @@
 #' so lines are always correct regardless of which other grouping
 #' columns remain in `data`.
 #'
-#' @param data A tibble as returned by [logbook_coverage()], containing
+#' @param data A tibble as returned by [get_logbook_coverage()], containing
 #'   at least `YY`, `ace_catch` and `logbook_catch`.
 #' @param colour_by Optional. Bare column name to colour lines by (e.g.
 #'   `FLAG_CODE`). Defaults to `NULL` (single line, no colour grouping).
@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' coverage_output <- logbook_coverage(in_wcpfc = TRUE, group_species = TRUE)
+#' coverage_output <- get_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE)
 #'
 #' # Single line, overall coverage by year
 #' plot_logbook_catch(coverage_output)

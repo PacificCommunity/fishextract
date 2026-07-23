@@ -53,7 +53,7 @@ Assumes \code{FLAG_CODE} is a column on \code{ace.A_ACE}. If it instead lives on
 \examples{
 \dontrun{
 # Filter on everything
-sum_ace(
+get_ace(
   ocean   = "WX",
   flag    = c("ID", "VN"),
   gear    = "L",
@@ -62,7 +62,7 @@ sum_ace(
 )
 
 # No filters at all — all oceans, flags, gears, species and years
-sum_ace()
+get_ace()
 }
 
 }
