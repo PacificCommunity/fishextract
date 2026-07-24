@@ -63,7 +63,8 @@ get_n_vessels <- function(
   ORDER BY OCEAN_CODE, FLAG_CODE, GEAR_CODE, YY
   "
     ) |>
-    .db_query()
+    .db_query() |>
+    dplyr::mutate(data_source = "ace_n_vessels")
 
   drop_cols <- c(
     if (group_species) "SP_CODE",

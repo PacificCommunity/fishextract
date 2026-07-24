@@ -13,9 +13,10 @@
 #' @importFrom glue glue
 #'
 #' @noRd
-.sql_filter <- function(column, x) {
+.sql_filter <- function(column, x, exclude = FALSE) {
   if (is.null(x)) {
-    return("1=1")
+    return("1 = 1")
   }
-  glue::glue("{column} in {.Rstr_to_SQLstring(x)}")
+  option <- if (exclude) "NOT IN" else "IN"
+  glue::glue("{column} {option} {.Rstr_to_SQLstring(x)}")
 }

@@ -52,10 +52,12 @@
 #' @export
 get_logbook_catch <- function(
   in_wcpfc = TRUE,
+  year = NULL,
   flag = NULL,
   gear = c("P", "S", "L", "T"),
   species = NULL,
-  year = NULL
+  exclude_flag = NULL,
+  exclude_species = NULL
 ) {
   gear_suffix <- c(
     "P" = "pl",
@@ -102,8 +104,10 @@ get_logbook_catch <- function(
   INNER JOIN ref.vessel_instances vesssels on vesssels.vessel_id = trips.vessel_id
     AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
   WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
-  AND {.sql_filter('flag_id', flag)}
-  AND {.sql_filter('sp_code', species)}
+    AND {.sql_filter('flag_id', flag)}
+    AND {.sql_filter('sp_code', species)}
+    AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
+    AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
   )
 
   SELECT 
@@ -120,7 +124,8 @@ get_logbook_catch <- function(
   }
 
   # run for each gear that is specified and combine
-  purrr::map(gear, logbook_catch_extract) |>
+  combined_output <-
+    purrr::map(gear, logbook_catch_extract) |>
     dplyr::bind_rows() |>
     (\(df) {
       if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
@@ -130,4 +135,25 @@ get_logbook_catch <- function(
     })() |>
     dplyr::mutate(sum_catch_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
     dplyr::select(-any_of(c("sp_kg", "sp_mt")))
+
+  nrow_removed <-
+    combined_output |>
+    dplyr::filter(is.na(sum_catch_mt)) |>
+    nrow()
+
+  if (nrow_removed > 0) {
+    warning(
+      glue::glue(
+        "{nrow_removed} rows removed from output due to missing catch weight values. These records may have catch reported only as numbers rather than weight."
+      ),
+      call. = FALSE
+    )
+  }
+
+  final_output <-
+    combined_output |>
+    dplyr::filter(!is.na(sum_catch_mt)) |>
+    dplyr::mutate(data_source = "logbook")
+
+  return(final_output)
 }

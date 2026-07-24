@@ -98,3 +98,19 @@ get_species("scidata")
 get_flags("WPEA")
 ```
 
+
+### Comparing logbook data and ACE data
+
+```r
+
+catch_data <- bind_rows(
+  get_ace(year = 2000:2025, gear = "S"),
+  get_logbook_catch(year = 2000:2025, gear = "S")
+) |>
+dplyr::filter(!FLAG_CODE %in% c("FJ", "EP", "PA"))
+
+catch_data |>
+  plot_timeseries(colour_by = data_source, facet_by = FLAG_CODE, facet_scales = "free_y")
+
+```
+

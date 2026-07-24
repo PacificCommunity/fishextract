@@ -47,13 +47,16 @@
 #' @export
 get_ace <- function(
   ocean = "WX",
+  year = NULL,
   flag = NULL,
   gear = NULL,
   species = NULL,
-  year = NULL,
-  group_species = FALSE,
+  exclude_flag = NULL,
+  exclude_gear = NULL,
+  exclude_species = NULL,
   group_flags = FALSE,
-  group_gears = FALSE
+  group_gears = FALSE,
+  group_species = FALSE
 ) {
   ace_extract <-
     glue::glue(
@@ -70,10 +73,13 @@ get_ace <- function(
       ON a.ACE_ID = c.ACE_ID
   WHERE 1 = 1
     AND {.sql_filter('OCEAN_CODE', ocean)}
-    AND {.sql_filter('FLAG_CODE', flag)}
-    AND {.sql_filter('SP_CODE', species)}
     AND {.sql_filter('YY', year)}
+    AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('GEAR_CODE', gear)}
+    AND {.sql_filter('SP_CODE', species)}
+    AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
+    AND {.sql_filter('FLAG_CODE', exclude_gear, exclude = TRUE)}
+    AND {.sql_filter('FLAG_CODE', exclude_species, exclude = TRUE)}
   GROUP BY 
     OCEAN_CODE, 
     FLAG_CODE, 
@@ -82,7 +88,8 @@ get_ace <- function(
     YY
   "
     ) |>
-    .db_query()
+    .db_query() |>
+    dplyr::mutate(data_source = "ace")
 
   drop_cols <- c(
     if (group_species) "SP_CODE",

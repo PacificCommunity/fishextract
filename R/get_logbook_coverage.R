@@ -42,10 +42,13 @@
 get_logbook_coverage <-
   function(
     in_wcpfc = TRUE,
+    year = NULL,
     flag = NULL,
     gear = c("P", "S", "L", "T"),
     species = NULL,
-    year = NULL,
+    exclude_flag = NULL,
+    exclude_gear = NULL,
+    exclude_species = NULL,
     group_species = TRUE
   ) {
     ace_catch <-
@@ -68,7 +71,7 @@ get_logbook_coverage <-
         species = species,
         year = year
       ) |>
-      dplyr::rename(logbook_catch = sp_mt)
+      dplyr::rename(logbook_catch = sum_catch_mt)
 
     joined_catch <-
       ace_catch |>
@@ -99,7 +102,24 @@ get_logbook_coverage <-
           ace_catch > 0 & logbook_catch == 0 ~ 0,
           .default = NA
         )
-      ) |>
+      )
+
+    nrow_low_ace <-
+      coverage_output |>
+      dplyr::filter(coverage > 1) |>
+      nrow()
+
+    if (nrow_low_ace > 0) {
+      warning(
+        glue::glue(
+          "{nrow_low_ace} rows recorded logbook catches greater than ACE catches. In these cases they have been treated at 100% logbook coverage."
+        ),
+        call. = FALSE
+      )
+    }
+
+    final_coverage <-
+      coverage_output |>
       dplyr::mutate(coverage = dplyr::if_else(coverage > 1, 1, coverage))
 
     return(coverage_output)

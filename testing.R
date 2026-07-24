@@ -239,3 +239,15 @@ get_ace(
   year = 2004:2025,
   gear = c("L", "S")
 )
+
+library(tidyverse)
+get_ace(year = 2000:2025, gear = "S") |>
+  mutate(type = "ACE") |>
+  bind_rows(
+    get_logbook_catch(year = 2000:2025, gear = "S") |>
+      mutate(type = "logbook")
+  ) |>
+  plot_timeseries(colour_by = type)
+
+
+get_logbook_catch(year = 2015:2025, gear = "S")
