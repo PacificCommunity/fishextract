@@ -34,7 +34,7 @@ pkg_label_lookup <- function(var_name, abbreviate_flags = FALSE) {
     SP_CODE = pkg_species_lookup(),
     OCEAN_CODE = pkg_ocean_lookup(),
     FLAG_CODE = {
-      flag_names <- get_flagname(simplify = TRUE)
+      flag_names <- get_flagname()
       if (abbreviate_flags) abbreviate_flagname(flag_names) else flag_names
     },
     NULL

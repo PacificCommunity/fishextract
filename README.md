@@ -73,7 +73,7 @@ nvessels <- get_n_vessels(year = 2000:2025)
 nvessels |> plot_timeseries()
 nvessels |> plot_timeseries(colour_by = GEAR_CODE)
 nvessels |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
-nvessels |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE, facet_scales = "free_y")
+get_n_vessels(year = 2000:2025, flags = get_flags("WPEA")) |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE, facet_scales = "free_y")
 ```
 
 ### Useful maps
@@ -94,5 +94,7 @@ plot_map("npo_spo")
 get_species("tunas")
 get_species("purse_seine")
 get_species("scidata")
+
+get_flags("WPEA")
 ```
 

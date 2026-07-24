@@ -15,10 +15,6 @@
 #'   the cache, e.g. if `ref.countries` has been updated this session.
 #'   Defaults to `FALSE`.
 #'
-#' @return A tibble of `flag_code`, `flag_name`, and `flag_name_abbr`
-#'   if `simplify = FALSE` (the default); a named character vector of
-#'   `flag_name` if `simplify = TRUE`.
-#'
 #' @details
 #' `flag_name` and `flag_name_abbr` are sentence-cased and trimmed via
 #' `stringr::str_to_sentence()`/`stringr::str_trim()`. Where
@@ -28,7 +24,7 @@
 #' \dontrun{
 #' get_flagname()
 #' get_flagname(flag = c("JP", "KR"))
-#' get_flagname("VN", simplify = TRUE)
+#' get_flagname("VN")
 #' #>       VN
 #' #> "Vietnam"
 #' get_flagname(refresh = TRUE) # force a fresh pull from the database
@@ -53,12 +49,6 @@ get_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
             .cols = dplyr::contains("_name"),
             .fns = ~ stringr::str_to_sentence(stringr::str_trim(.x))
           )
-        ) |>
-        dplyr::mutate(
-          flag_name_abbr = dplyr::case_when(
-            is.na(flag_name_abbr) ~ flag_name,
-            .default = flag_name_abbr
-          )
         )
     },
     refresh = refresh
@@ -70,9 +60,5 @@ get_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
     flagnames |> dplyr::filter(flag_code %in% flag)
   }
 
-  if (simplify) {
-    tibble::deframe(out[c("flag_code", "flag_name")])
-  } else {
-    out
-  }
+  return(tibble::deframe(out[c("flag_code", "flag_name")]))
 }
