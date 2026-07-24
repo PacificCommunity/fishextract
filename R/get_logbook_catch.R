@@ -128,6 +128,6 @@ get_logbook_catch <- function(
     (\(df) {
       if ("sp_mt" %in% names(df)) df else dplyr::mutate(df, sp_mt = NA_real_)
     })() |>
-    dplyr::mutate(sp_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
-    dplyr::select(-any_of("sp_kg"))
+    dplyr::mutate(sum_catch_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
+    dplyr::select(-any_of(c("sp_kg", "sp_mt")))
 }

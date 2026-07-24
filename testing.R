@@ -228,3 +228,14 @@ countries <-
       )
     )
   )
+
+
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"))
+get_ace()
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"))
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
+get_ace(
+  species = c("YFT", "SKJ", "BET", "ALB"),
+  year = 2004:2025,
+  gear = c("L", "S")
+)

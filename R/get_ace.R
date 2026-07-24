@@ -46,7 +46,7 @@
 #'
 #' @export
 get_ace <- function(
-  ocean = NULL,
+  ocean = "WX",
   flag = NULL,
   gear = NULL,
   species = NULL,
