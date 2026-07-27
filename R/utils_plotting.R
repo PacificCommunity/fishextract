@@ -4,13 +4,6 @@
   if (!is.null(facet_by)) {
     facet_vals <- p$data[[facet_by]]
 
-    # # you need a least on var in each facet
-    # if (
-    #   is.null(facet_vals) || length(facet_vals) == 0 || all(is.na(facet_vals))
-    # ) {
-    #   return(p)
-    # }
-
     facet_lookup <- pkg_label_lookup(facet_by)
 
     facet_labeller <- if (!is.null(facet_lookup)) {
@@ -30,11 +23,11 @@
   p
 }
 
-# helper for the legend of the scatterpies
+
 .build_size_legend_geom <- function(
   pie_data,
   group_vars,
-  colour_by,
+  colour_var, # plain string or NULL, not a quosure
   x0,
   y0,
   breaks = NULL,
@@ -44,7 +37,7 @@
   site_totals <- pie_data |>
     dplyr::summarise(
       total_catch = sum(sum_catch_mt),
-      .by = setdiff(group_vars, rlang::as_name(colour_by))
+      .by = setdiff(group_vars, colour_var)
     )
 
   if (is.null(breaks)) {
