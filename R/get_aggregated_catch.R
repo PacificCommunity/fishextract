@@ -1,3 +1,4 @@
+#' @export
 get_aggregated_catch <- function(
   in_wcpfc = TRUE,
   year = NULL,

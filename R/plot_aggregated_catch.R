@@ -1,3 +1,4 @@
+#' @export
 plot_aggregated_catch <- function(
   aggregated_data = NULL,
   colour_by = SP_CODE,
