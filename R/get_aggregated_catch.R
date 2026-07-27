@@ -1,4 +1,4 @@
-#' Pull aggregated catch data from the BEST database
+#' Pull 5x5 aggregated catch data from the BEST database
 #'
 #' Queries `best.A_BEST_AGG_CATCH` (joined to `best.A_BEST_AGG`) for catch
 #' summed by flag, gear, species, year and location, with optional filters
@@ -35,7 +35,7 @@
 #' @examples
 #' \dontrun{
 #' get_aggregated_catch(year = 2020:2023, species = "SKJ")
-#' get_aggregated_catch(in_wcpfc = FALSE, exclude_gear = "PS")
+#' get_aggregated_catch(in_wcpfc = FALSE, exclude_gear = "S")
 #' }
 #'
 #' @export
@@ -47,9 +47,14 @@ get_aggregated_catch <- function(
   species = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  fine_scale = FALSE
 ) {
-  agg_extract <-
+  if (!fine_scale) {
+    gear <- "A"
+  }
+
+  agg_extract_single_gear <- function(.gear) {
     glue::glue(
       "
   SELECT 
@@ -58,13 +63,12 @@ get_aggregated_catch <- function(
     SP_CODE, 
     YY, 
     SUM(SP_MT) AS sum_catch_mt, latd, lond
-  FROM best.A_BEST_AGG_CATCH c
-	  INNER JOIN best.A_BEST_AGG a ON a.A_BEST_ID = c.A_BEST_ID
+  FROM best.{.gear}_BEST_AGG_CATCH c
+	  INNER JOIN best.{.gear}_BEST_AGG a ON a.{.gear}_BEST_ID = c.{.gear}_BEST_ID
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area', as.numeric(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
-    AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('SP_CODE', species)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
@@ -76,7 +80,13 @@ get_aggregated_catch <- function(
     YY, latd, lond
   "
     ) |>
-    .db_query() |>
+      .db_query()
+  }
+
+  out <-
+    purrr::map(gear, agg_extract_single_gear) |>
+    dplyr::bind_rows() |>
     dplyr::mutate(data_source = "aggregated_catch")
-  return(agg_extract)
+
+  return(out)
 }
