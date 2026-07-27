@@ -3,7 +3,7 @@
 #' Returns the full and abbreviated name(s) corresponding to one or
 #' more flag codes. Results are sourced from `ref.countries` on first
 #' call and cached for the rest of the session — subsequent calls
-#' (including single-code lookups like `get_flagname("VN")`) filter the
+#' (including single-code lookups like `lookup_flagname("VN")`) filter the
 #' cached table locally rather than re-querying the database.
 #'
 #' @param flag Optional character vector of flag codes to filter by.
@@ -22,20 +22,24 @@
 #'
 #' @examples
 #' \dontrun{
-#' get_flagname()
-#' get_flagname(flag = c("JP", "KR"))
-#' get_flagname("VN")
+#' lookup_flagname()
+#' lookup_flagname(flag = c("JP", "KR"))
+#' lookup_flagname("VN")
 #' #>       VN
 #' #> "Vietnam"
-#' get_flagname(refresh = TRUE) # force a fresh pull from the database
+#' lookup_flagname(refresh = TRUE) # force a fresh pull from the database
 #' }
 #'
 #' @export
-get_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
+lookup_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
   flagnames <- pkg_cached(
     "flagnames",
     compute = function() {
-      "SELECT country_code AS flag_code, country_name AS flag_name, country_short AS flag_name_abbr FROM ref.countries" |>
+      "SELECT 
+        country_code AS flag_code, 
+        country_name AS flag_name, 
+        country_short AS flag_name_abbr 
+        FROM ref.countries" |>
         .db_query() |>
         dplyr::bind_rows(
           tibble::tribble(

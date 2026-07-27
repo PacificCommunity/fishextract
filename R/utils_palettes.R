@@ -23,7 +23,9 @@ gear_colours <- function() {
     "L" = "#2A9D8F",
     "P" = "#E76F51",
     "T" = "#0B4F6C",
-    "O" = "#9B5DE5"
+    "O" = "#9B5DE5",
+    "H" = "#F2C14E",
+    "K" = "#CC79A7"
   )
 }
 

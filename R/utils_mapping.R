@@ -71,33 +71,33 @@
     stop("Unknown text type: ", type, call. = FALSE)
 }
 
-.plot_map_lookup <- list(
-  wcpfc = function(...) {
+.plot_region_lines_lookup <- list(
+  wcpfc = function(colour1 = "red", ...) {
     plot_pacific() |>
-      add_line("wcpfc") |>
-      add_text("wcpfc")
+      add_line("wcpfc", colour = colour1) |>
+      add_text("wcpfc", colour = colour1)
   },
 
-  wcpo_epo = function(...) {
+  wcpo_epo = function(colour1 = "red", ...) {
     plot_pacific() |>
-      add_line("meridian") |>
-      add_text("wcpo") |>
-      add_text("epo")
+      add_line("meridian", colour = colour1) |>
+      add_text("wcpo", colour = colour1) |>
+      add_text("epo", colour = colour1)
   },
 
-  npo_spo = function(...) {
+  npo_spo = function(colour1 = "red", ...) {
     plot_pacific() |>
-      add_line("equator") |>
-      add_text("np") |>
-      add_text("sp")
+      add_line("equator", colour = colour1) |>
+      add_text("np", colour = colour1) |>
+      add_text("sp", colour = colour1)
   },
 
-  nx_sx = function(...) {
+  nx_sx = function(colour1 = "red", ...) {
     plot_pacific() |>
-      add_line("wcpfc") |>
-      add_line("equator_wcpfc") |>
-      add_text("nx") |>
-      add_text("sx")
+      add_line("wcpfc", colour = colour1) |>
+      add_line("equator_wcpfc", colour = colour1) |>
+      add_text("nx", colour = colour1) |>
+      add_text("sx", colour = colour1)
   },
 
   wcpfc_epo = function(colour1 = "red", colour2 = "blue", ...) {
@@ -108,3 +108,12 @@
       add_text("wcpfc", colour = colour1)
   }
 )
+
+#' Convert decimal longitude (-180 to 180) to 0-360 for Pacific-centred maps
+#'
+#' @param lon Numeric vector of longitudes in -180 to 180 format.
+#' @return Numeric vector of longitudes in 0-360 format.
+#' @export
+lon_to_360 <- function(lon) {
+  dplyr::if_else(lon < 0, lon + 360, lon)
+}

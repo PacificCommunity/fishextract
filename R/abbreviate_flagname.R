@@ -10,7 +10,7 @@
 #' but otherwise unchanged.
 #'
 #' @param country_name Character vector of country names, as returned
-#'   by [get_flagname()].
+#'   by [lookup_flagname()].
 #'
 #' @return Character vector of shortened names, same length as input.
 #'

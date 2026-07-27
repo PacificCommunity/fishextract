@@ -30,26 +30,14 @@ pkg_colour_lookup <- function(var_name) {
 pkg_label_lookup <- function(var_name, abbreviate_flags = FALSE) {
   switch(
     var_name,
-    GEAR_CODE = pkg_gear_lookup(),
+    GEAR_CODE = lookup_gears(),
     SP_CODE = pkg_species_lookup(),
     OCEAN_CODE = pkg_ocean_lookup(),
     FLAG_CODE = {
-      flag_names <- get_flagname()
+      flag_names <- lookup_flagname()
       if (abbreviate_flags) abbreviate_flagname(flag_names) else flag_names
     },
     NULL
-  )
-}
-
-pkg_gear_lookup <- function() {
-  c(
-    "S" = "Purse seine",
-    "L" = "Longline",
-    "G" = "Gillnet",
-    "T" = "Troll",
-    "P" = "Pole & Line",
-    "G" = "Gillnet",
-    "O" = "Other"
   )
 }
 

@@ -5,19 +5,25 @@
 \title{Summarise ACE catch by ocean, flag, gear, species and year}
 \usage{
 get_ace(
-  ocean = NULL,
+  ocean = "WX",
+  year = NULL,
   flag = NULL,
   gear = NULL,
   species = NULL,
-  year = NULL,
-  group_species = FALSE,
+  exclude_flag = NULL,
+  exclude_gear = NULL,
+  exclude_species = NULL,
   group_flags = FALSE,
-  group_gears = FALSE
+  group_gears = FALSE,
+  group_species = FALSE
 )
 }
 \arguments{
 \item{ocean}{A character vector of ocean codes to filter on (e.g.
 \code{"WX"}), or \code{NULL} (default) to include all oceans.}
+
+\item{year}{A numeric or character vector of years to filter on (e.g.
+\code{2024:2025}), or \code{NULL} (default) to include all years.}
 
 \item{flag}{A character vector of flag codes to filter on (e.g.
 \code{c("ID", "VN")}), or \code{NULL} (default) to include all flags.}
@@ -27,9 +33,6 @@ for longline), or \code{NULL} (default) to include all gears.}
 
 \item{species}{A character vector of species codes to filter on (e.g.
 \code{c("YFT", "SKJ")}), or \code{NULL} (default) to include all species.}
-
-\item{year}{A numeric or character vector of years to filter on (e.g.
-\code{2024:2025}), or \code{NULL} (default) to include all years.}
 
 \item{group_species}{Boolean. If TRUE, return combined catch across all species specified}
 }

@@ -6,15 +6,19 @@
 \usage{
 get_logbook_catch(
   in_wcpfc = TRUE,
+  year = NULL,
   flag = NULL,
   gear = c("P", "S", "L", "T"),
   species = NULL,
-  year = NULL
+  exclude_flag = NULL,
+  exclude_species = NULL
 )
 }
 \arguments{
 \item{in_wcpfc}{Optional filter passed to \code{.sql_filter()} restricting
 records to those inside (or outside) the WCPFC Convention Area.}
+
+\item{year}{Optional numeric vector of years to filter by.}
 
 \item{flag}{Optional character vector of flag codes to filter by.}
 
@@ -23,8 +27,6 @@ records to those inside (or outside) the WCPFC Convention Area.}
 \code{"T"} (troll). Defaults to all four.}
 
 \item{species}{Optional character vector of species codes to filter by.}
-
-\item{year}{Optional numeric vector of years to filter by.}
 }
 \value{
 A tibble with one row per flag/year/species/gear combination,

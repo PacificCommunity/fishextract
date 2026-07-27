@@ -6,10 +6,13 @@
 \usage{
 get_logbook_coverage(
   in_wcpfc = TRUE,
+  year = NULL,
   flag = NULL,
   gear = c("P", "S", "L", "T"),
   species = NULL,
-  year = NULL,
+  exclude_flag = NULL,
+  exclude_gear = NULL,
+  exclude_species = NULL,
   group_species = TRUE
 )
 }
@@ -18,14 +21,14 @@ get_logbook_coverage(
 to the \code{"WX"} ocean code and is passed through to \code{logbook_catch()}
 as its WCPFC-area filter; if \code{NULL}, no ocean filter is applied.}
 
+\item{year}{Optional numeric vector of years to filter by.}
+
 \item{flag}{Optional character vector of flag codes to filter by.}
 
 \item{gear}{Optional character vector of gear codes to filter by
 (passed to \code{logbook_catch()}; \code{sum_ace()} is not filtered by gear).}
 
 \item{species}{Optional character vector of species codes to filter by.}
-
-\item{year}{Optional numeric vector of years to filter by.}
 
 \item{group_species}{Logical. If \code{TRUE}, catch is summed across all
 species within each remaining grouping (i.e. \code{SP_CODE} is dropped

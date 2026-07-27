@@ -76,13 +76,42 @@ nvessels |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
 get_n_vessels(year = 2000:2025, flags = get_flags("WPEA")) |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE, facet_scales = "free_y")
 ```
 
+### Plot aggregated data
+
+``` r
+get_aggregated_catch(1, flag = "ID", year = 2020:2025, gear = "S") |>
+  plot_aggregated_catch(
+    pie_radius = 3,
+    alpha = 0.7,
+    facet_by = YY,
+    xlim = c(100, 160),
+    ylim = c(-20, 25)
+  )
+```
+
+``` r
+get_aggregated_catch(
+  1,
+  year = 2025,
+  flag = get_flags("WPEA"),
+  gear = c("H", "K")
+) |>
+  plot_aggregated_catch(
+    pie_radius = 3,
+    alpha = 0.7,
+    facet_by = GEAR_CODE,
+    xlim = c(100, 160),
+    ylim = c(-20, 25)
+  )
+```
+
 ### Useful maps
 
 
 ``` r
-plot_map("wcpfc_epo")
-plot_map("wcpfc")
-plot_map("npo_spo")
+plot_region_lines("wcpfc_epo")
+plot_region_lines("wcpfc")
+plot_region_lines("npo_spo")
 ```
 
 # Other functions

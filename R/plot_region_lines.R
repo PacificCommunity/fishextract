@@ -26,28 +26,28 @@
 #' A ggplot object showing the requested Pacific Ocean region map.
 #'
 #' @examples
-#' plot_map("wcpfc")
+#' plot_region_lines("wcpfc")
 #'
-#' plot_map("wcpo_epo")
+#' plot_region_lines("wcpo_epo")
 #'
-#' plot_map("npo_spo")
+#' plot_region_lines("npo_spo")
 #'
-#' plot_map("nx_sx")
+#' plot_region_lines("nx_sx")
 #'
-#' plot_map("wcpfc_epo")
+#' plot_region_lines("wcpfc_epo")
 #'
 #' # Custom colours
-#' plot_map("wcpfc_epo",
+#' plot_region_lines("wcpfc_epo",
 #'          colour1 = "darkorange",
 #'          colour2 = "navy")
 #'
 #' @export
-plot_map <- function(type, colour1 = "red", colour2 = "blue") {
-  fun <- .plot_map_lookup[[type]]
+plot_region_lines <- function(type, colour1 = "red", colour2 = "blue") {
+  fun <- .plot_region_lines_lookup[[type]]
 
   if (is.null(fun)) {
     stop("Unknown plot type: ", type, call. = FALSE)
   }
 
-  fun()
+  fun(colour1 = colour1, colour2 = colour2)
 }

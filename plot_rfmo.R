@@ -53,9 +53,9 @@ fetch_rfmo <- function(layer) {
 }
 
 rfmo_sf <- tuna_rfmo %>%
-  mutate(geom_sf = purrr::map(wfs_layer, fetch_rfmo)) %>%
-  select(-wfs_layer) %>%
-  unnest(geom_sf) %>%
+  dplyr::mutate(geom_sf = purrr::map(wfs_layer, fetch_rfmo)) %>%
+  dplyr::select(-wfs_layer) %>%
+  tidyr::unnest(geom_sf) %>%
   st_as_sf(crs = st_crs(4326))
 
 # ---- 3. Flat basemap, Pacific-centred via maps::world2 ---------------------
@@ -70,30 +70,35 @@ rfmo_flat <- rfmo_sf %>% st_shift_longitude()
 legend_labels <- with(tuna_rfmo, paste0(acronym, " \u2013 ", full_name)) %>%
   set_names(tuna_rfmo$acronym)
 
-ggplot() +
-  geom_sf(data = world2, colour = "grey50", fill = "grey84", linewidth = 0.1) +
-  geom_sf(
+ggplot2::ggplot() +
+  ggplot2::geom_sf(
+    data = world2,
+    colour = "grey50",
+    fill = "grey84",
+    linewidth = 0.1
+  ) +
+  ggplot2::geom_sf(
     data = rfmo_flat,
-    aes(fill = acronym),
+    ggplot2::aes(fill = acronym),
     colour = "white",
     alpha = 0.65,
     linewidth = 0.2
   ) +
-  scale_fill_brewer(
+  ggplot2::scale_fill_brewer(
     palette = "Set2",
     name = "Tuna RFMO",
     labels = legend_labels
   ) +
-  coord_sf() +
-  theme_minimal(base_size = 11) +
-  theme(
+  ggplot2::coord_sf() +
+  ggplot2::theme_minimal(base_size = 11) +
+  ggplot2::theme(
     legend.position = "bottom",
-    legend.text = element_text(size = 7.5),
-    axis.text = element_blank(),
-    panel.grid = element_line(colour = "grey88")
+    legend.text = ggplot2::element_text(size = 7.5),
+    axis.text = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_line(colour = "grey88")
   ) +
-  guides(fill = guide_legend(ncol = 1)) +
-  labs(
+  ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1)) +
+  ggplot2::labs(
     title = "The five tuna Regional Fisheries Management Organisations",
     caption = "Boundaries: \u00a9 FAO, FAO Regional Fishery Bodies (fao.org/fishery/geoserver)"
   )
