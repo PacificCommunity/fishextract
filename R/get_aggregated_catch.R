@@ -54,6 +54,8 @@ get_aggregated_catch <- function(
     gear <- "A"
   }
 
+  # need to add a bit to say that if fine scale only for which gears?
+
   agg_extract_single_gear <- function(.gear) {
     glue::glue(
       "

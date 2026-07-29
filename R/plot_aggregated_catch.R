@@ -44,6 +44,7 @@ plot_aggregated_catch <- function(
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
+  latlon_offset = NULL,
   ...
 ) {
   # use the default values if NULL
@@ -55,6 +56,12 @@ plot_aggregated_catch <- function(
 
   if (is.null(aggregated_data)) {
     aggregated_data <- get_logbook_coverage(...)
+  }
+
+  if (is.null(latlon_offset)) {
+    unique_lats <- sort(unique(aggregated_data$latd))
+    latlon_gaps <- min(unique_lats - lag(unique_lats, 1), na.rm = TRUE)
+    latlon_offset <- latlon_gaps / 2
   }
 
   facet_by <- rlang::enquo(facet_by)
@@ -108,8 +115,8 @@ plot_aggregated_catch <- function(
     plot_pacific(xlim = xlim, ylim = ylim) +
     ggforce::geom_arc_bar(
       mapping = ggplot2::aes(
-        x0 = lond_360 + 2.5,
-        y0 = latd + 2.5,
+        x0 = lond_360 + latlon_offset,
+        y0 = latd + latlon_offset,
         r0 = 0,
         r = r * pie_radius,
         start = start,
