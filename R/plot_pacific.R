@@ -55,9 +55,10 @@ plot_pacific <- function(
   if (show_eez) {
     eez <-
       if (!is.null(eez_countries)) {
-        wcpfc_eez_simplified |> dplyr::filter(Territory1 %in% eez_countries)
+        sf::st_as_sf(wcpfc_eez_simplified) |>
+          dplyr::filter(Territory1 %in% eez_countries)
       } else {
-        wcpfc_eez_simplified
+        sf::st_as_sf(wcpfc_eez_simplified)
       }
 
     suppressMessages(

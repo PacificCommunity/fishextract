@@ -10,7 +10,9 @@ plot_pacific(
   land_fill = mapping_colours("land"),
   land_outline = mapping_colours("land_outline"),
   water_fill = mapping_colours("water"),
-  base_size = 15
+  base_size = 15,
+  show_eez = FALSE,
+  eez_countries = NULL
 )
 }
 \value{

@@ -4,7 +4,7 @@
 \alias{db_show_table}
 \title{Preview rows from a database table}
 \usage{
-db_show_table(schema, table)
+db_show_table(schema, table, n_rows = 10)
 }
 \arguments{
 \item{schema}{Character. Name of the database schema.}
@@ -25,7 +25,7 @@ table, returning a quick preview of its contents.
 \examples{
 \dontrun{
 quick_view(schema = "dbo", table = "samples")
-quick_view(schema = "dbo", table = "samples", nrow = NULL)
+quick_view(schema = "dbo", table = "samples", n_rows = NULL)
 }
 
 }

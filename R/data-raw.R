@@ -52,11 +52,14 @@
   wcpfc_eez <-
     "G:/Info_dbs/MapTabs/Boundaries/EEZ_VLIZ/VLIZ-v10/World_EEZ_v10_2018_0_360.shp" |>
     sf::st_read() |>
-    filter(Territory1 %in% wcpfc_all)
+    dplyr::filter(Territory1 %in% wcpfc_all)
 
   wcpfc_eez_simplified <-
-    wcpfc_eez %>%
-    sf::st_simplify(dTolerance = 1000, preserveTopology = TRUE)
+    wcpfc_eez |>
+    sf::st_transform(3832) |> # WGS 84 / Pacific-centred, metres
+    sf::st_simplify(dTolerance = 1000, preserveTopology = TRUE) |>
+    sf::st_transform(sf::st_crs(wcpfc_eez)) |>
+    sf::st_as_sf()
 
   usethis::use_data(
     wcpfc_eez_simplified,

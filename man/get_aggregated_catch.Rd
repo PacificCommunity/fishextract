@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_aggregated_catch.R
 \name{get_aggregated_catch}
 \alias{get_aggregated_catch}
-\title{Pull aggregated catch data from the BEST database}
+\title{Pull 5x5 aggregated catch data from the BEST database}
 \usage{
 get_aggregated_catch(
   in_wcpfc = TRUE,
@@ -12,7 +12,8 @@ get_aggregated_catch(
   species = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  fine_scale = FALSE
 )
 }
 \arguments{
@@ -63,7 +64,7 @@ restrict to the WCPFC convention area.
 \examples{
 \dontrun{
 get_aggregated_catch(year = 2020:2023, species = "SKJ")
-get_aggregated_catch(in_wcpfc = FALSE, exclude_gear = "PS")
+get_aggregated_catch(in_wcpfc = FALSE, exclude_gear = "S")
 }
 
 }
