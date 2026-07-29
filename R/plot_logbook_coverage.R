@@ -84,10 +84,12 @@ plot_logbook_coverage <- function(
       breaks = seq(min(coverage_data$YY), max(coverage_data$YY), 1),
       expand = c(0, 0)
     ) +
-    ggplot2::scale_y_continuous(
-      labels = scales::label_number(scale_cut = scales::cut_short_scale())
-    ) +
-    theme_fishextract()
+    ggplot2::labs(y = NULL) +
+    # ggplot2::scale_y_continuous(
+    #   labels = scales::label_number(scale_cut = scales::cut_short_scale())
+    # ) +
+    theme_fishextract() +
+    ggplot2::theme(legend.position = "none")
 
   p
 }
