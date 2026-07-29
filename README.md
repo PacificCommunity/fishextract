@@ -12,7 +12,7 @@ You can install the development version of fishextract like so:
 
 ``` r
 # install.packages("remotes")
-remotes::install.packages("FreddieJH/fishextract")
+remotes::install_github("FreddieJH/fishextract")
 library(fishextract)
 ```
 
