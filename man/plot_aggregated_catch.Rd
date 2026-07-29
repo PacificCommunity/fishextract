@@ -12,6 +12,7 @@ plot_aggregated_catch(
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
+  latlon_offset = NULL,
   ...
 )
 }

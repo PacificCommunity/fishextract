@@ -1,4 +1,4 @@
-# TO DO
+#' @export
 get_species <- function(
   group = c("tunas", "scidata", "purse_seine", "longline", "pole_line")
 ) {
