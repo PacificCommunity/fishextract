@@ -1,3 +1,4 @@
+#' @export
 plot_timeseries <- function(
   data,
   value_col = NULL,
