@@ -109,6 +109,10 @@ get_aggregated_catch(
 
 
 ``` r
+plot_pacific(show_eez = TRUE, xlim = c(95, 150), ylim = c(-15, 25), eez_countries = c("Indonesia", "Vietnam", "Philippines"))
+```
+
+``` r
 plot_region_lines("wcpfc_epo")
 plot_region_lines("wcpfc")
 plot_region_lines("npo_spo")

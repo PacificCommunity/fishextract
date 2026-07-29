@@ -10,13 +10,16 @@ plot_pacific <- function(
   land_fill = mapping_colours("land"),
   land_outline = mapping_colours("land_outline"),
   water_fill = mapping_colours("water"),
-  base_size = 15
+  base_size = 15,
+  show_eez = FALSE,
+  eez_countries = NULL
 ) {
   # in case the lims are overwritten by NULL elsewhere
   xlim <- xlim %||% c(100, 292)
   ylim <- ylim %||% c(-62, 60)
 
-  ggplot2::map_data("world2") |>
+  p <-
+    ggplot2::map_data("world2") |>
     ggplot2::ggplot(ggplot2::aes(long, lat, group = group)) +
     ggplot2::geom_polygon(
       fill = land_fill,
@@ -48,6 +51,32 @@ plot_pacific <- function(
       panel.grid.minor = ggplot2::element_blank()
     ) +
     ggplot2::labs(x = NULL, y = NULL)
+
+  if (show_eez) {
+    eez <-
+      if (!is.null(eez_countries)) {
+        wcpfc_eez_simplified |> dplyr::filter(Territory1 %in% eez_countries)
+      } else {
+        wcpfc_eez_simplified
+      }
+
+    suppressMessages(
+      p <-
+        p +
+        ggplot2::geom_sf(
+          data = eez,
+          inherit.aes = FALSE,
+          fill = NA,
+          col = "blue"
+        ) +
+        ggplot2::coord_sf(
+          xlim = p$coordinates$limits$x,
+          ylim = p$coordinates$limits$y,
+          expand = FALSE
+        )
+    )
+  }
+  return(p)
 }
 
 #' @noRd

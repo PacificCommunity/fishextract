@@ -251,3 +251,30 @@ get_ace(year = 2000:2025, gear = "S") |>
 
 
 get_logbook_catch(year = 2015:2025, gear = "S")
+
+
+p <- plot_pacific()
+
+
+p +
+  ggplot2::geom_sf(
+    data = pacific_eez,
+    inherit.aes = FALSE,
+    fill = NA,
+    col = "blue"
+  ) +
+  ggplot2::coord_sf(
+    xlim = p$coordinates$limits$x,
+    ylim = p$coordinates$limits$y,
+    expand = FALSE
+  )
+
+pacific_eez <- "G:/Info_dbs/MapTabs/Boundaries/EEZ_VLIZ/VLIZ-v10/SHP/Pacific_EEZ_v10.shp" |>
+  sf::st_read()
+usethis::use_data(pacific_eez, compress = "xz", internal = TRUE)
+world_eez %>% st_drop_geometry() %>% distinct(ID)
+
+world_eez <- 
+  "G:/Info_dbs/MapTabs/Boundaries/EEZ_VLIZ/VLIZ-v10/World_EEZ_v10_2018_0_360.shp" |>
+  sf::st_read() |> 
+  filter(Territory1 %in% )

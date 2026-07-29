@@ -14,17 +14,17 @@
 #' @examples
 #' \dontrun{
 #' quick_view(schema = "dbo", table = "samples")
-#' quick_view(schema = "dbo", table = "samples", nrow = NULL)
+#' quick_view(schema = "dbo", table = "samples", n_rows = NULL)
 #' }
 #'
 #' @export
-db_show_table <- function(schema, table) {
+db_show_table <- function(schema, table, n_rows = 10) {
   if (!table %in% db_list_tables(schema = schema)) {
     stop(glue::glue("table ('{table}') not in schema ('{schema}')"))
   }
 
-  nrow_clause <- if (!is.null(nrow)) {
-    glue::glue("TOP {nrow}")
+  nrow_clause <- if (!is.null(n_rows)) {
+    glue::glue("TOP {n_rows}")
   } else {
     ""
   }
