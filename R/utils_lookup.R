@@ -14,6 +14,7 @@ pkg_colour_lookup <- function(var_name) {
     SP_CODE = species_colours(),
     GEAR_CODE = gear_colours(),
     OCEAN_CODE = ocean_colours(),
+    FLAG_CODE = flag_colours(),
     NULL
   )
 }

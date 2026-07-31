@@ -36,16 +36,9 @@ gear_colours <- function() {
 #' @importFrom RColorBrewer brewer.pal
 #' @keywords internal
 ocean_colours <- function() {
-  set2_pallette <- RColorBrewer::brewer.pal(name = "Set2", n = 8)
-  c(
-    "AO" = set2_pallette[1],
-    "IO" = set2_pallette[2],
-    "SP" = set2_pallette[3],
-    "EP" = set2_pallette[4],
-    "WP" = set2_pallette[5],
-    "NP" = set2_pallette[6],
-    "WCPO" = set2_pallette[7]
-  )
+  oceans <- c("AO", "IO", "SP", "EP", "WP", "NP", "WCPO")
+  set2_pallette <- RColorBrewer::brewer.pal(name = "Set2", n = length(oceans))
+  setNames(set2_pallette, oceans)
 }
 
 #' colours for geographical maps
@@ -56,5 +49,14 @@ mapping_colours <- function(type) {
     "land" = "#F5EFE0",
     "water" = "#DCEBF2",
     "land_outline" = "grey40",
+  )
+}
+
+flag_colours <- function() {
+  flag_pal <- palette.colors(palette = "Polychrome 36")
+  c(
+    "ID" = flag_pal[1],
+    "VN" = flag_pal[3],
+    "PH" = flag_pal[6]
   )
 }

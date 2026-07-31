@@ -56,10 +56,11 @@
 
   wcpfc_eez_simplified <-
     wcpfc_eez |>
-    sf::st_transform(3832) |> # WGS 84 / Pacific-centred, metres
     sf::st_simplify(dTolerance = 1000, preserveTopology = TRUE) |>
-    sf::st_transform(sf::st_crs(wcpfc_eez)) |>
-    sf::st_as_sf()
+    sf::st_wrap_dateline(
+      options = c("WRAPDATELINE=YES", "DATELINEOFFSET=180")
+    ) |>
+    sf::st_shift_longitude()
 
   usethis::use_data(
     wcpfc_eez_simplified,
