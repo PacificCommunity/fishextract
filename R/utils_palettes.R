@@ -16,7 +16,7 @@ species_colours <- function() {
 #'
 #' Fixed colours for each gear type, keyed by name.
 #'
-#' @keywords internal
+#' @export
 gear_colours <- function() {
   c(
     "S" = "#01BAEF",
