@@ -3,10 +3,12 @@ lookup_gears <- function(gear = NULL, refresh = FALSE) {
   gears <- pkg_cached(
     "gears",
     compute = function() {
-      "SELECT
-	gear_code AS GEAR_CODE, 
-	gear_desc AS GEAR_DESC
-FROM ref.gears" |>
+      "
+      SELECT
+        gear_code AS GEAR_CODE, 
+        gear_desc AS GEAR_DESC
+      FROM ref.gears
+      " |>
         .db_query()
     },
     refresh = refresh
