@@ -1,3 +1,4 @@
+#' @export
 lookup_gears <- function(gear = NULL, refresh = FALSE) {
   gears <- pkg_cached(
     "gears",
