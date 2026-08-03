@@ -36,7 +36,7 @@ plot_timeseries <- function(
   colour_by <- rlang::enquo(colour_by)
   facet_by <- rlang::enquo(facet_by)
   colour_values <- if (!rlang::quo_is_null(colour_by)) {
-    pkg_colour_lookup(rlang::as_name(colour_by))
+    lookup_colour(rlang::as_name(colour_by))
   } else {
     NULL
   }

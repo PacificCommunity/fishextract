@@ -78,7 +78,7 @@ plot_aggregated_catch <- function(
   }
 
   fill_values <- if (!is.null(colour_var)) {
-    pkg_colour_lookup(colour_var)
+    lookup_colour(colour_var)
   } else {
     NULL
   }

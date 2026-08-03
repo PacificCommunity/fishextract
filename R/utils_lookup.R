@@ -8,7 +8,7 @@
 #' @return A named character vector of colours, or \code{NULL} if no fixed
 #'   mapping exists for \code{var_name} (falls back to ggplot's default).
 #' @keywords internal
-pkg_colour_lookup <- function(var_name) {
+lookup_colour <- function(var_name) {
   switch(
     var_name,
     SP_CODE = species_colours(),
