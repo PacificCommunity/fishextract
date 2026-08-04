@@ -9,4 +9,3 @@ gear_colours()
 \description{
 Fixed colours for each gear type, keyed by name.
 }
-\keyword{internal}
