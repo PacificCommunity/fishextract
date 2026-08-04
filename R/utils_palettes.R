@@ -3,7 +3,7 @@
 #' Fixed colours for each species, keyed by name so mappings stay correct
 #' even when only a subset of species appears in a plot. From: Okabe-Ito pallete.
 #'
-#' @keywords internal
+#' @export
 species_colours <- function() {
   c(
     "YFT" = "#F0E442",
@@ -34,7 +34,7 @@ gear_colours <- function() {
 #' Fixed colours for each ocean, keyed by name. Okabe-Ito pallete
 #'
 #' @importFrom RColorBrewer brewer.pal
-#' @keywords internal
+#' @export
 ocean_colours <- function() {
   oceans <- c("AO", "IO", "SP", "EP", "WP", "NP", "WCPO")
   set2_pallette <- RColorBrewer::brewer.pal(name = "Set2", n = length(oceans))
@@ -42,7 +42,7 @@ ocean_colours <- function() {
 }
 
 #' colours for geographical maps
-#' @keywords internal
+#' @export
 mapping_colours <- function(type) {
   switch(
     type,
@@ -51,7 +51,7 @@ mapping_colours <- function(type) {
     "land_outline" = "grey40",
   )
 }
-
+#' @export
 flag_colours <- function() {
   flag_pal <- palette.colors(palette = "Polychrome 36")
   c(

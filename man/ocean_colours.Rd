@@ -9,4 +9,3 @@ ocean_colours()
 \description{
 Fixed colours for each ocean, keyed by name. Okabe-Ito pallete
 }
-\keyword{internal}

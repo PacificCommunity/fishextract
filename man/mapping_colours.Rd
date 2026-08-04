@@ -9,4 +9,3 @@ mapping_colours(type)
 \description{
 colours for geographical maps
 }
-\keyword{internal}

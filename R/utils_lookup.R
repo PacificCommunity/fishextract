@@ -27,7 +27,7 @@ lookup_colour <- function(var_name) {
 #'
 #' @param var_name String. Column name, e.g. `"GEAR_CODE"`.
 #' @return A named character vector, or `NULL`.
-#' @noRd
+#' @export
 pkg_label_lookup <- function(var_name, abbreviate_flags = FALSE) {
   switch(
     var_name,
