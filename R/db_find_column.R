@@ -9,7 +9,7 @@
 #'   to. If `NULL` (default), all schemas are searched.
 #' @param ... Additional arguments passed to `db_connection()`.
 #'
-#' @return A data frame (or tibble, depending on `.db_query()`) with one
+#' @return A data frame (or tibble, depending on `db_query()`) with one
 #'   row per matching column, giving `table_schema`, `table_name`,
 #'   `column_name`, and `data_type`, ordered by schema and table.
 #'
@@ -49,5 +49,5 @@ find_column <- function(
     ",
     .con = db_con
   ) |>
-    .db_query()
+    db_query()
 }

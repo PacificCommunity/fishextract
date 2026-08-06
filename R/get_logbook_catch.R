@@ -125,7 +125,7 @@ get_logbook_catch <- function(
     YY, 
     SP_CODE"
     ) |>
-      .db_query() |>
+      db_query() |>
       dplyr::mutate(GEAR_CODE = .gear)
   }
 

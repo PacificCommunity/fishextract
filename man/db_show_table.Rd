@@ -15,7 +15,7 @@ db_show_table(schema, table, n_rows = 10)
 all rows (omits the \code{TOP} clause). Defaults to \code{10}.}
 }
 \value{
-A data frame (or tibble, depending on \code{.db_query()}) containing
+A data frame (or tibble, depending on \code{db_query()}) containing
 the queried rows.
 }
 \description{

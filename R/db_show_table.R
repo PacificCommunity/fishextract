@@ -8,7 +8,7 @@
 #' @param nrow Integer. Number of rows to return. Set to `NULL` to return
 #'   all rows (omits the `TOP` clause). Defaults to `10`.
 #'
-#' @return A data frame (or tibble, depending on `.db_query()`) containing
+#' @return A data frame (or tibble, depending on `db_query()`) containing
 #'   the queried rows.
 #'
 #' @examples
@@ -35,5 +35,5 @@ db_show_table <- function(schema, table, n_rows = 10) {
   FROM {schema}.{table}
   "
   ) |>
-    .db_query()
+    db_query()
 }

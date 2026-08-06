@@ -14,7 +14,7 @@
 #' @param year Integer. Year to filter on. `NULL` (default) returns all
 #'   years.
 #'
-#' @return A data frame (or tibble, depending on `.db_query()`) with one
+#' @return A data frame (or tibble, depending on `db_query()`) with one
 #'   row per ocean/flag/gear/year combination, giving `ocean_code`,
 #'   `flag_code`, `gear_code`, `year`, and `n_vessels`.
 #'
@@ -63,7 +63,7 @@ get_n_vessels <- function(
   ORDER BY OCEAN_CODE, FLAG_CODE, GEAR_CODE, YY
   "
     ) |>
-    .db_query() |>
+    db_query() |>
     dplyr::mutate(data_source = "ace_n_vessels")
 
   drop_cols <- c(

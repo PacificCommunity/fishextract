@@ -40,7 +40,7 @@ lookup_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
         country_name AS flag_name, 
         country_short AS flag_name_abbr 
         FROM ref.countries" |>
-        .db_query() |>
+        db_query() |>
         dplyr::bind_rows(
           tibble::tribble(
             ~flag_code , ~flag_name            ,

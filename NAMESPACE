@@ -3,6 +3,7 @@
 export(abbreviate_flagname)
 export(db_connection)
 export(db_list_tables)
+export(db_query)
 export(db_show_table)
 export(find_column)
 export(flag_colours)

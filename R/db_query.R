@@ -8,13 +8,13 @@
 #' @return A [tibble::tibble()] containing the query result.
 #'
 #' @examples
-#' .db_query("SELECT TOP 10 * FROM ace.A_ACE")
+#' db_query("SELECT TOP 10 * FROM ace.A_ACE")
 #'
 #' @importFrom tibble tibble
 #' @importFrom DBI dbGetQuery
 #'
-#' @noRd
-.db_query <- function(query, ...) {
+#' @export
+db_query <- function(query, ...) {
   DBI::dbGetQuery(
     conn = db_connection(),
     statement = query,

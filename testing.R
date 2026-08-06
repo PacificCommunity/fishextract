@@ -6,4 +6,4 @@ glue::glue(
   FROM tufman2.unload2.unloadings
   "
 ) |>
-  .db_query()
+  db_query()

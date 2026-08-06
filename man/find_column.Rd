@@ -15,7 +15,7 @@ to. If \code{NULL} (default), all schemas are searched.}
 \item{...}{Additional arguments passed to \code{db_connection()}.}
 }
 \value{
-A data frame (or tibble, depending on \code{.db_query()}) with one
+A data frame (or tibble, depending on \code{db_query()}) with one
 row per matching column, giving \code{table_schema}, \code{table_name},
 \code{column_name}, and \code{data_type}, ordered by schema and table.
 }

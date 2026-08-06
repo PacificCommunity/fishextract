@@ -9,7 +9,7 @@ lookup_gears <- function(gear = NULL, refresh = FALSE) {
         gear_desc AS GEAR_DESC
       FROM ref.gears
       " |>
-        .db_query()
+        db_query()
     },
     refresh = refresh
   )

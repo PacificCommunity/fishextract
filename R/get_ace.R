@@ -90,7 +90,7 @@ get_ace <- function(
     YY
   "
     ) |>
-    .db_query() |>
+    db_query() |>
     dplyr::mutate(data_source = "ace")
 
   drop_cols <- c(

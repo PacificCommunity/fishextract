@@ -29,7 +29,7 @@ returns all gears.}
 years.}
 }
 \value{
-A data frame (or tibble, depending on \code{.db_query()}) with one
+A data frame (or tibble, depending on \code{db_query()}) with one
 row per ocean/flag/gear/year combination, giving \code{ocean_code},
 \code{flag_code}, \code{gear_code}, \code{year}, and \code{n_vessels}.
 }

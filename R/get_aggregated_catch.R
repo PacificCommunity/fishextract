@@ -82,7 +82,7 @@ get_aggregated_catch <- function(
     YY, latd, lond
   "
     ) |>
-      .db_query()
+      db_query()
   }
 
   out <-
