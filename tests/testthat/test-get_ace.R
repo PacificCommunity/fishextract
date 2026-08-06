@@ -7,7 +7,16 @@ test_that("get_ace hits the real database and returns a well-formed tibble", {
   expect_s3_class(out, "tbl_df")
   expect_setequal(
     names(out),
-    c("OCEAN_CODE", "FLAG_CODE", "GEAR_CODE", "SP_CODE", "YY", "sum_catch_mt")
+    c(
+      "ACE_ID",
+      "OCEAN_CODE",
+      "FLAG_CODE",
+      "GEAR_CODE",
+      "SP_CODE",
+      "YY",
+      "sum_catch_mt",
+      "data_source"
+    )
   )
   expect_true(nrow(out) > 0)
   expect_true(all(!is.na(out$sum_catch_mt)))

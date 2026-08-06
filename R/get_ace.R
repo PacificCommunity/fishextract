@@ -62,6 +62,7 @@ get_ace <- function(
     glue::glue(
       "
   SELECT 
+  a.ACE_ID,
     OCEAN_CODE, 
     FLAG_CODE, 
     GEAR_CODE, 
@@ -81,6 +82,7 @@ get_ace <- function(
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
   GROUP BY 
+  a.ACE_ID,
     OCEAN_CODE, 
     FLAG_CODE, 
     GEAR_CODE,
