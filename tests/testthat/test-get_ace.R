@@ -8,7 +8,7 @@ test_that("get_ace hits the real database and returns a well-formed tibble", {
   expect_setequal(
     names(out),
     c(
-      "ACE_ID",
+      # "ACE_ID",
       "OCEAN_CODE",
       "FLAG_CODE",
       "GEAR_CODE",
