@@ -113,7 +113,7 @@ get_logbook_coverage <-
     if (nrow_low_ace > 0) {
       warning(
         glue::glue(
-          "{nrow_low_ace} rows recorded logbook catches greater than ACE catches. In these cases they have been treated at 100% logbook coverage."
+          "{nrow_low_ace} rows recorded logbook catches greater than ACE catches."
         ),
         call. = FALSE
       )
