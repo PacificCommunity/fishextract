@@ -2,6 +2,10 @@
 get_species <- function(
   group = c("tunas", "scidata", "purse_seine", "longline", "pole_line")
 ) {
+  mako_sharks <- c("MAK", "SMA")
+  thresher_sharks <- c("THR", "ALV", "PTH", "BTH")
+  hammerheads <- c("SPN", "SPK", "SPL", "SPZ", "SPQ", "EUB")
+
   species_groups <- list(
     scidata = c(
       "ALB",
@@ -17,20 +21,11 @@ get_species <- function(
       "BSH",
       "FAL",
       "OCS",
-      "MAK", # mako
-      "SMA", # mako
+      mako_sharks,
       "LMA",
-      "THR", # thresher
-      "ALV", # thresher
-      "PTH", # thresher
-      "BTH", # thresher
+      thresher_sharks,
       "POR",
-      "SPN", # hammerhead
-      "SPK", # hammerhead
-      "SPL", # hammerhead
-      "SPZ", # hammerhead
-      "SPQ", # hammerhead
-      "EUB", # hammerhead
+      hammerheads,
       "RHN"
     ),
     tunas = c("YFT", "ALB", "BET", "SKJ"),
@@ -50,31 +45,18 @@ get_species <- function(
       "MLS",
       "SWO",
       "PBF",
-      "THR", # thresher
-      "ALV", # thresher
-      "PTH", # thresher
-      "BTH", # thresher
+      thresher_sharks,
       "BSH",
-      "MAK", # mako
-      "SMA", # mako
+      mako_sharks
     ),
     scidata_group3 = c(
       "BSH",
       "FAL",
       "OSC",
-      "THR", # thresher
-      "ALV", # thresher
-      "PTH", # thresher
-      "BTH", # thresher
-      "MAK", # mako
-      "SMA", # mako
+      thresher_sharks,
+      mako_sharks,
       "POR",
-      "SPN", # hammerhead
-      "SPK", # hammerhead
-      "SPL", # hammerhead
-      "SPZ", # hammerhead
-      "SPQ", # hammerhead
-      "EUB", # hammerhead
+      hammerheads,
       "RHN"
     )
   )
