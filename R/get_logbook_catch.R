@@ -94,7 +94,7 @@ get_logbook_catch <- function(
       "
     WITH logbook_catch_temp AS(
     SELECT 
-    trips.log_trip_id,
+    --trips.log_trip_id,
     flag_id AS FLAG_CODE, 
     year(sets.logdate) AS YY, 
     catch.sp_code AS SP_CODE,
@@ -112,14 +112,18 @@ get_logbook_catch <- function(
   )
 
   SELECT 
-    log_trip_id,
+    --log_trip_id,
     FLAG_CODE,
     YY,
     SP_CODE,
     SUM({catch_unit}) AS {catch_unit}
     FROM logbook_catch_temp
   WHERE {.sql_filter('YY', year)}
-  GROUP BY log_trip_id, FLAG_CODE, YY, SP_CODE"
+  GROUP BY 
+    --log_trip_id, 
+    FLAG_CODE, 
+    YY, 
+    SP_CODE"
     ) |>
       .db_query() |>
       dplyr::mutate(GEAR_CODE = .gear)
