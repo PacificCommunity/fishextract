@@ -79,7 +79,7 @@ get_n_vessels(year = 2000:2025, flags = get_flags("WPEA")) |> plot_timeseries(co
 ### Plot aggregated data
 
 ``` r
-get_aggregated_catch(1, flag = "ID", year = 2020:2025, gear = "S") |>
+get_aggregated_catch(in_wcpfc = TRUE, flag = "ID", year = 2020:2025, gear = "S") |>
   plot_aggregated_catch(
     pie_radius = 3,
     alpha = 0.7,
@@ -91,13 +91,12 @@ get_aggregated_catch(1, flag = "ID", year = 2020:2025, gear = "S") |>
 
 ``` r
 get_aggregated_catch(
-  1,
   year = 2025,
   flag = get_flags("WPEA"),
   gear = c("H", "K")
 ) |>
   plot_aggregated_catch(
-    pie_radius = 3,
+    pie_radius = 1,
     alpha = 0.7,
     facet_by = GEAR_CODE,
     xlim = c(100, 160),
@@ -136,7 +135,7 @@ get_flags("WPEA")
 
 ```r
 
-catch_data <- bind_rows(
+catch_data <- dplyr::bind_rows(
   get_ace(year = 2000:2025, gear = "S"),
   get_logbook_catch(year = 2000:2025, gear = "S")
 ) |>
