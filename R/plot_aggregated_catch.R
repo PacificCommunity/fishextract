@@ -83,7 +83,7 @@ plot_aggregated_catch <- function(
     NULL
   }
   fill_labels <- if (!is.null(colour_var)) {
-    pkg_label_lookup(colour_var)
+    label_lookup(colour_var)
   } else {
     NULL
   }

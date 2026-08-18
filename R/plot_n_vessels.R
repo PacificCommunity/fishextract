@@ -45,7 +45,7 @@ plot_n_vessels <- function(
     theme_fishextract()
 
   if (!rlang::quo_is_null(facet_by)) {
-    facet_lookup <- pkg_label_lookup(rlang::as_name(facet_by))
+    facet_lookup <- label_lookup(rlang::as_name(facet_by))
     facet_labeller <- if (!is.null(facet_lookup)) {
       ggplot2::as_labeller(facet_lookup)
     } else {
@@ -61,7 +61,7 @@ plot_n_vessels <- function(
   }
 
   if (!is.null(colour_values)) {
-    colour_lookup <- pkg_label_lookup(rlang::as_name(colour_by))
+    colour_lookup <- label_lookup(rlang::as_name(colour_by))
     colour_labels <- if (!is.null(colour_lookup)) {
       colour_lookup
     } else {

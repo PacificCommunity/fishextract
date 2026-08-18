@@ -1,24 +1,3 @@
-#' Pick the correct colour mapping for a grouping variable
-#'
-#' Internal helper used by plotting functions to select the right fixed
-#' colour mapping (species, gear, etc.) based on the column being coloured.
-#'
-#' @param var_name Character string giving the name of the grouping column.
-#'
-#' @return A named character vector of colours, or \code{NULL} if no fixed
-#'   mapping exists for \code{var_name} (falls back to ggplot's default).
-#' @keywords internal
-lookup_colour <- function(var_name) {
-  switch(
-    var_name,
-    SP_CODE = species_colours(),
-    GEAR_CODE = gear_colours(),
-    OCEAN_CODE = ocean_colours(),
-    FLAG_CODE = flag_colours(),
-    NULL
-  )
-}
-
 #' Look up display labels for known ACE grouping columns
 #'
 #' Internal helper returning a named lookup vector for columns with
@@ -28,7 +7,7 @@ lookup_colour <- function(var_name) {
 #' @param var_name String. Column name, e.g. `"GEAR_CODE"`.
 #' @return A named character vector, or `NULL`.
 #' @export
-pkg_label_lookup <- function(var_name, abbreviate_flags = FALSE) {
+label_lookup <- function(var_name, abbreviate_flags = FALSE) {
   switch(
     var_name,
     GEAR_CODE = lookup_gears(),

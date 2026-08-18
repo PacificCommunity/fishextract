@@ -4,7 +4,7 @@
   if (!is.null(facet_by)) {
     facet_vals <- p$data[[facet_by]]
 
-    facet_lookup <- pkg_label_lookup(facet_by)
+    facet_lookup <- label_lookup(facet_by)
 
     facet_labeller <- if (!is.null(facet_lookup)) {
       ggplot2::as_labeller(facet_lookup)

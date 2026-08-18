@@ -41,7 +41,7 @@ table_ace <- function(
 ) {
   pivot_by <- rlang::enquo(pivot_by)
   pivot_name <- rlang::as_name(pivot_by)
-  pivot_lookup <- pkg_label_lookup(
+  pivot_lookup <- label_lookup(
     pivot_name,
     abbreviate_flags = abbreviate_flags
   )
