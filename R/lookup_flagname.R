@@ -64,5 +64,5 @@ lookup_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
     flagnames |> dplyr::filter(flag_code %in% flag)
   }
 
-  return(tibble::deframe(out[c("flag_code", "flag_name")]))
+  return(out)
 }

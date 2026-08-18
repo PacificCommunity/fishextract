@@ -20,5 +20,5 @@ lookup_gears <- function(gear = NULL, refresh = FALSE) {
     gears |> dplyr::filter(GEAR_CODE %in% gear)
   }
 
-  return(tibble::deframe(out[c("GEAR_CODE", "GEAR_DESC")]))
+  return(out)
 }
