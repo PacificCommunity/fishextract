@@ -10,7 +10,7 @@
 label_lookup <- function(var_name, abbreviate_flags = FALSE) {
   switch(
     var_name,
-    GEAR_CODE = lookup_gears(),
+    GEAR_CODE = pkg_gears_lookup(),
     SP_CODE = pkg_species_lookup(),
     OCEAN_CODE = pkg_ocean_lookup(),
     FLAG_CODE = {
@@ -19,6 +19,11 @@ label_lookup <- function(var_name, abbreviate_flags = FALSE) {
     },
     NULL
   )
+}
+
+pkg_gears_lookup <- function() {
+  lookup_gears() |>
+    tibble::deframe()
 }
 
 pkg_species_lookup <- function() {
