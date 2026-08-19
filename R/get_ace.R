@@ -81,9 +81,9 @@ get_ace <- function(
     ocean_column <- ""
     eez_column <- "EEZ_CODE,"
     eez_abbr <- "_EZ"
-    include_eez <- glue::glue("AND {.sql_filter('SP_CODE', species)}")
+    include_eez <- glue::glue("AND {.sql_filter('EEZ_CODE', eez)}")
     exclude_eez <- glue::glue(
-      "AND {.sql_filter('EEZ_CODE', exclude_species, exclude = TRUE)}"
+      "AND {.sql_filter('EEZ_CODE', exclude_eez, exclude = TRUE)}"
     )
   } else {
     ocean_column <- "OCEAN_CODE,"

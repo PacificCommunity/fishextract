@@ -1,4 +1,5 @@
 library(tidyverse)
+devtools::load_all()
 
 glue::glue(
   "
@@ -9,15 +10,23 @@ glue::glue(
   db_query()
 
 
-ace_byEEZ_cn <- get_ace_byEEZ(flag = "CN")
 ace_cn <- get_ace(flag = "CN")
 
 library(tidyverse)
-ace_byEEZ_cn |>
+get_ace(flag = "CN", ungroup_eez = TRUE) |>
   dplyr::summarise(
-    catch = sum(sum_catch_mt),
+    eez_sum_catch = sum(sum_catch_mt),
     .by = c(FLAG_CODE, GEAR_CODE, SP_CODE, YY)
   ) |>
-  dplyr::full_join(ace_cn) |>
-  ggplot(aes(catch, sum_catch_mt)) +
+  dplyr::full_join(get_ace(flag = "CN")) |>
+  ggplot(aes(eez_sum_catch, sum_catch_mt)) +
   geom_point()
+
+
+get_ace(
+  flag = "CN",
+  eez = "I5",
+  year = 2000:2024,
+  ungroup_eez = TRUE,
+  species = "ALB"
+)
