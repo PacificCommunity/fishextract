@@ -1,10 +1,10 @@
 Package: fishextract
-Title: What the Package Does (One Line, Title Case)
+Title: Common data extraction and visualisation functions 
 Version: 0.0.0.9000
-URL: https://freddieh.github.io/fishextract/
+URL: https://pacificcommunity.github.io/fishextract/
 Authors@R: 
     person("Freddie", "Heather", , "freddieh@spc.int", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: `fishextract` aims to simplify, document, and automate some of the most common functions used in the process of data extraction and visualisation in OFP data. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
