@@ -56,22 +56,33 @@ get_ace <- function(
   exclude_species = NULL,
   group_flags = FALSE,
   group_gears = FALSE,
-  group_species = FALSE
+  group_species = FALSE,
+  ungroup_eez = FALSE
 ) {
+  if (ungroup_eez) {
+    ocean_column <- ""
+    eez_column <- "EEZ_CODE,"
+    eez_abbr <- "_EZ"
+  } else {
+    ocean_column <- "OCEAN_CODE,"
+    eez_column <- ""
+    eez_abbr <- ""
+  }
+
   ace_extract <-
     glue::glue(
       "
   SELECT 
-    --a.ACE_ID,
-    OCEAN_CODE, 
+    {ocean_column}
     FLAG_CODE, 
+    {eez_column}
     GEAR_CODE, 
     SP_CODE, 
     YY, 
     SUM(SP_MT) AS sum_catch_mt
-  FROM ace.A_ACE a
-    INNER JOIN ace.A_ACE_CATCH c 
-      ON a.ACE_ID = c.ACE_ID
+  FROM ace.A_ACE{eez_abbr} a
+    INNER JOIN ace.A_ACE{eez_abbr}_CATCH c 
+      ON a.ACE{eez_abbr}_ID = c.ACE{eez_abbr}_ID
   WHERE 1 = 1
     AND {.sql_filter('OCEAN_CODE', ocean)}
     AND {.sql_filter('YY', year)}
@@ -82,16 +93,16 @@ get_ace <- function(
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
   GROUP BY 
-  --a.ACE_ID,
-    OCEAN_CODE, 
+     {ocean_column}
     FLAG_CODE, 
-    GEAR_CODE,
+    {eez_column}
+    GEAR_CODE, 
     SP_CODE, 
     YY
   "
     ) |>
     db_query() |>
-    dplyr::mutate(data_source = "ace")
+    dplyr::mutate(data_source = if_else(ungroup_eez, "ace_byEEZ", "ace"))
 
   drop_cols <- c(
     if (group_species) "SP_CODE",

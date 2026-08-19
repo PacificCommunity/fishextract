@@ -15,7 +15,8 @@ get_ace(
   exclude_species = NULL,
   group_flags = FALSE,
   group_gears = FALSE,
-  group_species = FALSE
+  group_species = FALSE,
+  ungroup_eez = FALSE
 )
 }
 \arguments{
