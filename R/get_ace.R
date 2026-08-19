@@ -51,22 +51,46 @@ get_ace <- function(
   flag = NULL,
   gear = NULL,
   species = NULL,
+  eez = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
+  exclude_eez = NULL,
   group_flags = FALSE,
   group_gears = FALSE,
   group_species = FALSE,
   ungroup_eez = FALSE
 ) {
+  if ((!is.null(ocean)) & ungroup_eez) {
+    message(
+      "Note: `ocean` argument is ignored when ungrouping by EEZ (i.e., when `ungroup_eez = TRUE`)"
+    )
+  }
+  if ((!ungroup_eez) & (!is.null(eez))) {
+    warning(
+      "`eez` filtering argument is ignored when not ungrouping by EEZ (i.e., when `ungroup_eez = FALSE`) "
+    )
+  }
+  if ((!ungroup_eez) & (!is.null(exclude_eez))) {
+    warning(
+      "`exclude_eez` filtering argument is ignored when not ungrouping by EEZ (i.e., when `ungroup_eez = FALSE`) "
+    )
+  }
+
   if (ungroup_eez) {
     ocean_column <- ""
     eez_column <- "EEZ_CODE,"
     eez_abbr <- "_EZ"
+    include_eez <- glue::glue("AND {.sql_filter('SP_CODE', species)}")
+    exclude_eez <- glue::glue(
+      "AND {.sql_filter('EEZ_CODE', exclude_species, exclude = TRUE)}"
+    )
   } else {
     ocean_column <- "OCEAN_CODE,"
     eez_column <- ""
     eez_abbr <- ""
+    include_eez <- ""
+    exclude_eez <- ""
   }
 
   ace_extract <-
@@ -89,11 +113,13 @@ get_ace <- function(
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('SP_CODE', species)}
+    {include_eez}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
+    {exclude_eez}
   GROUP BY 
-     {ocean_column}
+    {ocean_column}
     FLAG_CODE, 
     {eez_column}
     GEAR_CODE, 
