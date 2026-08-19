@@ -24,9 +24,28 @@ get_ace(flag = "CN", ungroup_eez = TRUE) |>
 
 
 get_ace(
-  flag = "CN",
+  # flag = c("TW"),
   eez = "I5",
-  year = 2000:2024,
+  year = 2000:2025,
   ungroup_eez = TRUE,
   species = "ALB"
+) |>
+  ggplot(aes(YY, sum_catch_mt, col = FLAG_CODE)) +
+  geom_line() +
+  geom_point()
+
+
+flag_list <- c("NZ", "PF", "US", "AU", "CA")
+params <- list(
+  flag = c("NZ", "PF", "US", "AU", "CA"),
+  species = "ALB",
+  gear = "T",
+  year = 2000:2025
 )
+
+do.call(get_ace, c(params, list(ocean = "SX"))) |>
+  pivot_wider(names_from = FLAG_CODE, values_from = sum_catch_mt)
+
+do.call(get_ace, c(params, list(ungroup_eez = TRUE))) |>
+  mutate(flag_eez = paste(FLAG_CODE, EEZ_CODE)) |>
+  pivot_wider(names_from = flag_eez, values_from = sum_catch_mt)

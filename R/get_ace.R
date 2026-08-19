@@ -128,7 +128,7 @@ get_ace <- function(
   "
     ) |>
     db_query() |>
-    dplyr::mutate(data_source = if_else(ungroup_eez, "ace_byEEZ", "ace"))
+    dplyr::mutate(data_source = dplyr::if_else(ungroup_eez, "ace_byEEZ", "ace"))
 
   drop_cols <- c(
     if (group_species) "SP_CODE",
