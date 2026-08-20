@@ -71,6 +71,113 @@
     stop("Unknown text type: ", type, call. = FALSE)
 }
 
+# ---- Shading polygons ----------------------------------------------------
+
+.map_xlim <- c(100, 292)
+.map_ylim <- c(-62, 60)
+
+.close_ring <- function(df) {
+  rbind(as.matrix(df[c("x", "y")]), as.matrix(df[1, c("x", "y")]))
+}
+.to_sf_polygon <- function(df) sf::st_polygon(list(.close_ring(df)))
+
+.rect_polygon <- function(xmin, xmax, ymin, ymax) {
+  .to_sf_polygon(data.frame(
+    x = c(xmin, xmax, xmax, xmin),
+    y = c(ymin, ymin, ymax, ymax)
+  ))
+}
+
+# WCPFC-CA: stepped boundary line, closed to the map's NW edge, with a
+# CRUDE line following the Indonesian boundary (need to make sure we state that this is for visual purposes only)
+.wcpfc_polygon <- dplyr::bind_rows(
+  .mapping_lines_lookup$wcpfc,
+  data.frame(
+    x = c(.map_xlim[1], 100, 108, 115),
+    y = c(.map_ylim[2], 0, -8, -8)
+  )
+) |>
+  .to_sf_polygon()
+
+#' Closed polygons for shaded map regions, keyed to match `.mapping_text_lookup`
+#' @keywords internal
+.mapping_polygons_lookup <- list(
+  wcpfc = .wcpfc_polygon,
+  wcpo = .rect_polygon(.map_xlim[1], 210, .map_ylim[1], .map_ylim[2]),
+  epo = .rect_polygon(210, .map_xlim[2], .map_ylim[1], .map_ylim[2]),
+  np = .rect_polygon(.map_xlim[1], .map_xlim[2], 0, .map_ylim[2]),
+  sp = .rect_polygon(.map_xlim[1], .map_xlim[2], .map_ylim[1], 0)
+)
+.mapping_polygons_lookup$nx <- sf::st_intersection(
+  .mapping_polygons_lookup$wcpfc,
+  .mapping_polygons_lookup$np
+)
+.mapping_polygons_lookup$sx <- sf::st_intersection(
+  .mapping_polygons_lookup$wcpfc,
+  .mapping_polygons_lookup$sp
+)
+
+#' Add shaded region(s) to a Pacific map
+#'
+#' Shades the area of one or more named regions (see `.mapping_polygons_lookup`).
+#' When `type` has length > 1, their union is shaded as a single polygon —
+#' use this for regions that share a colour (e.g. `c("nx", "sx")`).
+#'
+#' @param plot A ggplot object, as built by `plot_pacific()`.
+#' @param type Character vector of region name(s) to shade.
+#' @param fill Fill colour.
+#' @param alpha Fill transparency.
+#' @keywords internal
+add_shading <- function(plot, type, fill = "red", alpha = 0.2) {
+  polys <- .mapping_polygons_lookup[type]
+  missing_types <- type[vapply(polys, is.null, logical(1))]
+  if (length(missing_types) > 0) {
+    stop(
+      "Unknown shading type(s): ",
+      paste(missing_types, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  region <- if (length(polys) > 1) {
+    sf::st_union(sf::st_sfc(polys))
+  } else {
+    polys[[1]]
+  }
+  coords <- as.data.frame(sf::st_coordinates(region))[c("X", "Y")]
+
+  shading_layer <- ggplot2::geom_polygon(
+    data = coords,
+    mapping = ggplot2::aes(x = X, y = Y),
+    fill = fill,
+    alpha = alpha,
+    colour = NA,
+    inherit.aes = FALSE
+  )
+  # insert after the base land/water layer(s), below lines and text
+  plot$layers <- append(plot$layers, shading_layer, after = 1)
+  plot
+}
+
+# Which region(s) to shade per plot type, and which colour arg to use.
+# Regions sharing a colour_arg are 'unioned' into one shaded polygon.
+.plot_region_shading_lookup <- list(
+  wcpfc = list(list(types = "wcpfc", colour_arg = "colour1")),
+  wcpo_epo = list(
+    list(types = "wcpo", colour_arg = "colour1"),
+    list(types = "epo", colour_arg = "colour2")
+  ),
+  npo_spo = list(
+    list(types = "np", colour_arg = "colour1"),
+    list(types = "sp", colour_arg = "colour2")
+  ),
+  nx_sx = list(list(types = c("nx", "sx"), colour_arg = "colour1")),
+  wcpfc_epo = list(
+    list(types = "wcpfc", colour_arg = "colour1"),
+    list(types = "epo", colour_arg = "colour2")
+  )
+)
+
 .plot_region_lines_lookup <- list(
   wcpfc = function(colour1 = "red", ...) {
     plot_pacific() |>
