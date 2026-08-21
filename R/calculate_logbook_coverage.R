@@ -34,12 +34,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' calc_coverage(in_wcpfc = TRUE)
-#' calc_coverage(in_wcpfc = TRUE, group_species = TRUE)
+#' calculate_logbook_coverage(in_wcpfc = TRUE)
+#' calculate_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE)
 #' }
 #'
 #' @export
-get_logbook_coverage <-
+calculate_logbook_coverage <-
   function(
     in_wcpfc = TRUE,
     year = NULL,
