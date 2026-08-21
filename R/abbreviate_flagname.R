@@ -38,7 +38,7 @@ abbreviate_flagname <- function(country_name) {
     country_name |>
     stringr::str_remove(
       stringr::regex(
-        ",?\\s*(kingdom|republic|state|federation|territory|province)\\s+of\\b.*$",
+        ",?\\s*(kingdom|republic|state|federation|territory|province)\\s+of\\b",
         ignore_case = TRUE
       )
     ) |>

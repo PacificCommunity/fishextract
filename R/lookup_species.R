@@ -1,5 +1,5 @@
 #' @export
-get_species <- function(
+lookup_species <- function(
   group = c("tunas", "scidata", "purse_seine", "longline", "pole_line")
 ) {
   mako_sharks <- c("MAK", "SMA")

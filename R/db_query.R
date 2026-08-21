@@ -16,9 +16,8 @@
 #' @export
 db_query <- function(query, ...) {
   DBI::dbGetQuery(
-    conn = db_connection(),
-    statement = query,
-    ...
+    conn = db_connection(...),
+    statement = query
   ) |>
     tibble::as_tibble()
 }
