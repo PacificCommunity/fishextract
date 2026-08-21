@@ -7,12 +7,12 @@
 plot_logbook_coverage(coverage_data = NULL, ...)
 }
 \arguments{
-\item{coverage_data}{A tibble as returned by \code{get_logbook_coverage()},
+\item{coverage_data}{A tibble as returned by \code{calculate_logbook_coverage()},
 containing at least \code{FLAG_CODE}, \code{YY}, and \code{coverage} columns (and
-optionally \code{GEAR_CODE}). If \code{NULL} (the default), \code{get_logbook_coverage()}
+optionally \code{GEAR_CODE}). If \code{NULL} (the default), \code{calculate_logbook_coverage()}
 is called using \code{...}.}
 
-\item{...}{Additional arguments passed to \code{get_logbook_coverage()} when
+\item{...}{Additional arguments passed to \code{calculate_logbook_coverage()} when
 \code{coverage_data} is \code{NULL} (e.g. \code{in_wcpfc}, \code{flag}, \code{gear},
 \code{species}, \code{year}, \code{group_species}).}
 
@@ -29,7 +29,7 @@ missing).
 }
 \description{
 Visualises logbook reporting coverage (as calculated by
-\code{get_logbook_coverage()}) as a flag x year heatmap, with each tile shaded by
+\code{calculate_logbook_coverage()}) as a flag x year heatmap, with each tile shaded by
 coverage and labelled with the coverage percentage. Facets by gear
 automatically if more than one gear is present in the data.
 }
@@ -43,10 +43,10 @@ text legible against both light and dark fills.
 }
 \examples{
 \dontrun{
-get_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "L", year = 2004:2025) |>
+calculate_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "L", year = 2004:2025) |>
   plot_logbook_coverage()
 
-# or call get_logbook_coverage() implicitly
+# or call calculate_logbook_coverage() implicitly
 plot_logbook_coverage(in_wcpfc = TRUE, group_species = TRUE, gear = "S", year = 2004:2025)
 }
 

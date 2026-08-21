@@ -19,7 +19,7 @@ plot_aggregated_catch(
 \arguments{
 \item{aggregated_data}{A data frame of catch data with, at minimum,
 \code{latd}, \code{lond} and \code{sum_catch_mt} columns. If \code{NULL} (the default),
-data are pulled via \code{\link[=get_logbook_coverage]{get_logbook_coverage()}}, with \code{...} passed through.}
+data are pulled via \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}}, with \code{...} passed through.}
 
 \item{colour_by}{<\code{\link[rlang:args_data_masking]{data-masked}}> Column used
 to fill and split each pie into wedges (e.g. species code). Set to
@@ -41,7 +41,7 @@ convention). Defaults to \code{c(100, 292)}.}
 \item{ylim}{Numeric vector of length 2 giving latitude limits. Defaults
 to \code{c(-62, 60)}.}
 
-\item{...}{Additional arguments passed to \code{\link[=get_logbook_coverage]{get_logbook_coverage()}} when
+\item{...}{Additional arguments passed to \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}} when
 \code{aggregated_data} is \code{NULL}.}
 }
 \value{

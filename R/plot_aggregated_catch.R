@@ -8,7 +8,7 @@
 #'
 #' @param aggregated_data A data frame of catch data with, at minimum,
 #'   `latd`, `lond` and `sum_catch_mt` columns. If `NULL` (the default),
-#'   data are pulled via [get_logbook_coverage()], with `...` passed through.
+#'   data are pulled via [calculate_logbook_coverage()], with `...` passed through.
 #' @param colour_by <[`data-masked`][rlang::args_data_masking]> Column used
 #'   to fill and split each pie into wedges (e.g. species code). Set to
 #'   `NULL` to omit colour splitting and plot single-colour pies.
@@ -23,7 +23,7 @@
 #'   convention). Defaults to `c(100, 292)`.
 #' @param ylim Numeric vector of length 2 giving latitude limits. Defaults
 #'   to `c(-62, 60)`.
-#' @param ... Additional arguments passed to [get_logbook_coverage()] when
+#' @param ... Additional arguments passed to [calculate_logbook_coverage()] when
 #'   `aggregated_data` is `NULL`.
 #'
 #' @return A `ggplot` object.
@@ -55,7 +55,7 @@ plot_aggregated_catch <- function(
   y0 <- min(ylim) + 0.05 * diff(ylim)
 
   if (is.null(aggregated_data)) {
-    aggregated_data <- get_logbook_coverage(...)
+    aggregated_data <- calculate_logbook_coverage(...)
   }
 
   if (is.null(latlon_offset)) {

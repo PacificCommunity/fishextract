@@ -24,8 +24,8 @@ table, returning a quick preview of its contents.
 }
 \examples{
 \dontrun{
-quick_view(schema = "dbo", table = "samples")
-quick_view(schema = "dbo", table = "samples", n_rows = NULL)
+db_show_table(schema = "log", table = "trips_ll")
+db_show_table(schema = "ref", table = "entities", n_rows = NULL)
 }
 
 }
