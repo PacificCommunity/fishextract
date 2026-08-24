@@ -6,16 +6,26 @@
 #'
 #' @param plot A ggplot object to add region boundaries to, as built by
 #'   `plot_pacific()`.
-#' @param model_id Integer. The `model_id` to filter region boundaries by.
+#' @param species Single character string indicating the species for which the models regions are to be plotted.
 #' @param linewidth Boundary line width. Defaults to `0.5`.
 #'
 #' @return A ggplot object with region boundary polygons added.
 #'
 #' @examples
-#' plot_pacific() |> add_assessment_region(model_id = 129)
+#' plot_pacific() |> add_assessment_region(species = 129)
 #'
 #' @export
-add_assessment_region <- function(plot, model_id, linewidth = 0.5) {
+add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
+  allowed_species <- c("YFT", "SKJ", "ALB", "BET")
+  verified_species <- match.arg(species, choices = allowed_species)
+  model_id <- switch(
+    verified_species,
+    YFT = 130,
+    BET = 129,
+    # SKJ = 129,
+    # ALB = 129
+  )
+
   xx <-
     db_query(
       server = "noufamesql01",

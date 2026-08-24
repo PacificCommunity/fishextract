@@ -1,5 +1,5 @@
 
-# fishextract - under active development - not yet tested!
+# fishextract - under active development - expect issues!
 
 <!-- badges: start -->
 <!-- badges: end -->

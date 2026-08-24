@@ -49,3 +49,8 @@ do.call(get_ace, c(params, list(ocean = "SX"))) |>
 do.call(get_ace, c(params, list(ungroup_eez = TRUE))) |>
   mutate(flag_eez = paste(FLAG_CODE, EEZ_CODE)) |>
   pivot_wider(names_from = flag_eez, values_from = sum_catch_mt)
+
+
+get_aggregated_catch(species = lookup_species("tunas")) |>
+  plot_aggregated_catch(facet_by = SP_CODE, pie_radius = 0.3) |>
+  add_line("wcpfc")

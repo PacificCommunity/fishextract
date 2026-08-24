@@ -4,13 +4,13 @@
 \alias{add_assessment_region}
 \title{Add Stock assessment region boundaries to a Pacific map}
 \usage{
-add_assessment_region(plot, model_id, linewidth = 0.5)
+add_assessment_region(plot, species = NULL, linewidth = 0.5)
 }
 \arguments{
 \item{plot}{A ggplot object to add region boundaries to, as built by
 \code{plot_pacific()}.}
 
-\item{model_id}{Integer. The \code{model_id} to filter region boundaries by.}
+\item{species}{Single character string indicating the species for which the models regions are to be plotted.}
 
 \item{linewidth}{Boundary line width. Defaults to \code{0.5}.}
 }
@@ -23,6 +23,6 @@ and layers them onto an existing Pacific map (typically from
 \code{plot_pacific()}), coloured by \code{region_id}.
 }
 \examples{
-plot_pacific() |> add_assessment_region(model_id = 129)
+plot_pacific() |> add_assessment_region(species = 129)
 
 }

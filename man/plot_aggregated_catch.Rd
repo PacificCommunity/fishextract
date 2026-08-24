@@ -6,13 +6,14 @@
 \usage{
 plot_aggregated_catch(
   aggregated_data = NULL,
-  colour_by = SP_CODE,
+  colour_by = NULL,
   facet_by = NULL,
-  pie_radius = 1,
+  pie_radius = NULL,
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
   latlon_offset = NULL,
+  lim_buffer = 0.1,
   ...
 )
 }
@@ -58,7 +59,7 @@ automatically, and the plot can optionally be faceted.
 \dontrun{
 plot_aggregated_catch(catch_data, colour_by = SP_CODE)
 plot_aggregated_catch(catch_data, colour_by = SP_CODE, facet_by = yy)
-plot_aggregated_catch(colour_by = SP_CODE, yy = 2020:2023)
+plot_aggregated_catch(colour_by = SP_CODE, year = 2020:2023)
 }
 
 }

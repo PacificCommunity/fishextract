@@ -49,6 +49,8 @@
 
   wcpfc_all <- c(wcpfc_members, wcpfc_territories, wcpfc_cnm)
 
+  # at some point we should use the following (although currently only for PICTs)
+  # https://geonode.pacificdata.org/catalogue/#/dataset/1579
   wcpfc_eez <-
     "G:/Info_dbs/MapTabs/Boundaries/EEZ_VLIZ/VLIZ-v10/World_EEZ_v10_2018_0_360.shp" |>
     sf::st_read() |>

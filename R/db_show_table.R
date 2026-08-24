@@ -19,9 +19,10 @@
 #'
 #' @export
 db_show_table <- function(schema, table, n_rows = 10) {
-  if (!table %in% db_list_tables(schema = schema)) {
-    stop(glue::glue("table ('{table}') not in schema ('{schema}')"))
-  }
+  # i removed the db_list_tables function, so this will no longer work:
+  # if (!table %in% db_list_tables(schema = schema)) {
+  #   stop(glue::glue("table ('{table}') not in schema ('{schema}')"))
+  # }
 
   nrow_clause <- if (!is.null(n_rows)) {
     glue::glue("TOP {n_rows}")

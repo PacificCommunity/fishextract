@@ -32,31 +32,37 @@
 #' \dontrun{
 #' plot_aggregated_catch(catch_data, colour_by = SP_CODE)
 #' plot_aggregated_catch(catch_data, colour_by = SP_CODE, facet_by = yy)
-#' plot_aggregated_catch(colour_by = SP_CODE, yy = 2020:2023)
+#' plot_aggregated_catch(colour_by = SP_CODE, year = 2020:2023)
 #' }
 #'
 #' @export
 plot_aggregated_catch <- function(
   aggregated_data = NULL,
-  colour_by = SP_CODE,
+  colour_by = NULL,
   facet_by = NULL,
-  pie_radius = 1,
+  pie_radius = NULL,
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
   latlon_offset = NULL,
+  lim_buffer = 0.1,
   ...
 ) {
-  # use the default values if NULL
-  xlim <- xlim %||% c(100, 292)
-  ylim <- ylim %||% c(-62, 60)
-  # for the legend position
-  x0 <- max(xlim) - 0.2 * diff(xlim)
-  y0 <- min(ylim) + 0.05 * diff(ylim)
-
   if (is.null(aggregated_data)) {
     aggregated_data <- calculate_logbook_coverage(...)
   }
+
+  if (is.null(xlim) || is.null(ylim)) {
+    lond_360_range <- range(lon_to_360(aggregated_data$lond), na.rm = TRUE)
+    latd_range <- range(aggregated_data$latd, na.rm = TRUE)
+    xlim <- xlim %||%
+      (lond_360_range + c(-1, 1) * lim_buffer * diff(lond_360_range))
+    ylim <- ylim %||% (latd_range + c(-1, 1) * lim_buffer * diff(latd_range))
+  }
+
+  # legend position
+  x0 <- max(xlim) - 0.2 * diff(xlim)
+  y0 <- min(ylim) + 0.05 * diff(ylim)
 
   if (is.null(latlon_offset)) {
     unique_lats <- sort(unique(aggregated_data$latd))
@@ -66,33 +72,22 @@ plot_aggregated_catch <- function(
 
   facet_by <- rlang::enquo(facet_by)
   colour_by <- rlang::enquo(colour_by)
-  colour_var <- if (!rlang::quo_is_null(colour_by)) {
-    rlang::as_name(colour_by)
-  } else {
-    NULL
-  }
+  has_colour <- !rlang::quo_is_null(colour_by)
+  colour_var <- if (has_colour) rlang::as_name(colour_by) else NULL
   facet_var <- if (!rlang::quo_is_null(facet_by)) {
     rlang::as_name(facet_by)
   } else {
     NULL
   }
 
-  fill_values <- if (!is.null(colour_var)) {
-    lookup_colour(colour_var)
-  } else {
-    NULL
-  }
-  fill_labels <- if (!is.null(colour_var)) {
-    label_lookup(colour_var)
-  } else {
-    NULL
-  }
+  fill_values <- if (has_colour) lookup_colour(colour_var) else NULL
+  fill_labels <- if (has_colour) label_lookup(colour_var) else NULL
 
   group_vars <- c(
     "latd",
     "lond",
-    if (!rlang::quo_is_null(colour_by)) rlang::as_name(colour_by),
-    if (!rlang::quo_is_null(facet_by)) rlang::as_name(facet_by)
+    if (has_colour) colour_var,
+    if (!is.null(facet_var)) facet_var
   )
 
   pie_data <-
@@ -111,24 +106,53 @@ plot_aggregated_catch <- function(
       .by = setdiff(group_vars, colour_var)
     )
 
+  # auto calculate the pie radius if it isn't provided (is NULl)
+  if (is.null(pie_radius)) {
+    target_r <- 0.04 * min(diff(xlim), diff(ylim))
+    pie_radius <- target_r / max(pie_data$r, na.rm = TRUE)
+  }
+
+  p <- plot_pacific(xlim = xlim, ylim = ylim)
+
+  if (has_colour) {
+    p <-
+      p +
+      ggforce::geom_arc_bar(
+        mapping = ggplot2::aes(
+          x0 = lond_360 + latlon_offset,
+          y0 = latd + latlon_offset,
+          r0 = 0,
+          r = r * pie_radius,
+          start = start,
+          end = end,
+          fill = !!colour_by
+        ),
+        data = pie_data,
+        colour = "black",
+        linewidth = 0.2,
+        alpha = alpha,
+        inherit.aes = FALSE
+      )
+  } else {
+    p <-
+      p +
+      ggforce::geom_circle(
+        mapping = ggplot2::aes(
+          x0 = lond_360 + latlon_offset,
+          y0 = latd + latlon_offset,
+          r = r * pie_radius
+        ),
+        data = pie_data,
+        colour = "black",
+        fill = "grey30",
+        linewidth = 0.2,
+        alpha = alpha,
+        inherit.aes = FALSE
+      )
+  }
+
   p <-
-    plot_pacific(xlim = xlim, ylim = ylim) +
-    ggforce::geom_arc_bar(
-      mapping = ggplot2::aes(
-        x0 = lond_360 + latlon_offset,
-        y0 = latd + latlon_offset,
-        r0 = 0,
-        r = r * pie_radius,
-        start = start,
-        end = end,
-        fill = !!colour_by
-      ),
-      data = pie_data,
-      colour = "black",
-      linewidth = 0.2,
-      alpha = alpha,
-      inherit.aes = FALSE
-    ) +
+    p +
     .build_size_legend_geom(
       pie_data,
       group_vars,
@@ -140,7 +164,7 @@ plot_aggregated_catch <- function(
     ) +
     ggplot2::labs(fill = NULL)
 
-  if (!is.null(fill_values)) {
+  if (has_colour && !is.null(fill_values)) {
     p <-
       p +
       ggplot2::scale_fill_manual(
