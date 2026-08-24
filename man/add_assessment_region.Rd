@@ -23,6 +23,6 @@ and layers them onto an existing Pacific map (typically from
 \code{plot_pacific()}), coloured by \code{region_id}.
 }
 \examples{
-plot_pacific() |> add_assessment_region(species = 129)
+plot_pacific() |> add_assessment_region(species = "YFT")
 
 }

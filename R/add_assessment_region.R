@@ -12,7 +12,7 @@
 #' @return A ggplot object with region boundary polygons added.
 #'
 #' @examples
-#' plot_pacific() |> add_assessment_region(species = 129)
+#' plot_pacific() |> add_assessment_region(species = "YFT")
 #'
 #' @export
 add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {

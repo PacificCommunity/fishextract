@@ -1,5 +1,5 @@
 Package: fishextract
-Title: Common data extraction and visualisation functions 
+Title: Common data extraction and visualisation functions for OFP data 
 Version: 0.0.0.9000
 URL: https://pacificcommunity.github.io/fishextract/
 Authors@R: 
