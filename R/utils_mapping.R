@@ -177,6 +177,10 @@ add_shading <- function(plot, type, fill = "red", alpha = 0.2) {
     list(types = "epo", colour_arg = "colour2")
   )
 )
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 .plot_region_lines_lookup <- list(
   wcpfc = function(plot, colour1 = "red", ...) {
     plot |>
