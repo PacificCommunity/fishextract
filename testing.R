@@ -54,3 +54,18 @@ do.call(get_ace, c(params, list(ungroup_eez = TRUE))) |>
 get_aggregated_catch(species = lookup_species("tunas")) |>
   plot_aggregated_catch(facet_by = SP_CODE, pie_radius = 0.3) |>
   add_line("wcpfc")
+
+
+get_aggregated_catch(species = c("YFT")) |>  
+  filter(FLAG_CODE == "US") |> 
+  filter( GEAR_CODE == "S") |> 
+  filter(latd >= 10)
+  filter(FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd =< 50 & lond > 119)
+
+
+  get_aggregated_catch(species = c("YFT"), flag = "US", gear = "S") |> 
+    plot_aggregated_catch( )
+
+
+get_aggregated_catch(species = c("YFT")) |>  
+  filter(FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd <= 50 & lond >= 119)

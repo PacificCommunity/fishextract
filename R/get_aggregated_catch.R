@@ -64,7 +64,9 @@ get_aggregated_catch <- function(
     GEAR_CODE, 
     SP_CODE, 
     YY, 
-    SUM(SP_MT) AS sum_catch_mt, latd, lond
+    SUM(SP_MT) AS sum_catch_mt, 
+    latd, 
+    lond
   FROM best.{.gear}_BEST_AGG_CATCH c
 	  INNER JOIN best.{.gear}_BEST_AGG a ON a.{.gear}_BEST_ID = c.{.gear}_BEST_ID
   WHERE 1 = 1
