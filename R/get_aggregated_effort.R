@@ -102,7 +102,7 @@ get_aggregated_effort <- function(
   out <-
     purrr::map(gear, agg_extract_effort_single_gear) |>
     dplyr::bind_rows() |>
-    dplyr::mutate(data_source = "logbook_effort")
+    dplyr::mutate(data_source = "aggregate_effort")
 
   return(out)
 }

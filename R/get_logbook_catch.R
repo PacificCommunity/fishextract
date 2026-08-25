@@ -162,7 +162,7 @@ get_logbook_catch <- function(
   final_output <-
     combined_output |>
     dplyr::filter(!is.na(sum_catch_mt)) |>
-    dplyr::mutate(data_source = "logbook")
+    dplyr::mutate(data_source = "logbook_catch")
 
   return(final_output)
 }

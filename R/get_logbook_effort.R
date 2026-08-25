@@ -152,7 +152,7 @@ get_logbook_effort <- function(
   final_output <-
     combined_output |>
     # dplyr::filter(!is.na(sum_catch_mt)) |>
-    dplyr::mutate(data_source = "logbook")
+    dplyr::mutate(data_source = "logbook_effort")
 
   return(final_output)
 }
