@@ -36,7 +36,7 @@ library(fishextract)
 ``` r
 get_ace() 
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"))
-get_ace(species = lookup_species("tunas")) # same as above
+get_ace(species = list_species("tunas")) # same as above
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
@@ -64,7 +64,7 @@ ace |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
 ``` r
 get_logbook_catch() 
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"))
-get_logbook_catch(species = lookup_species("tunas")) # same as above
+get_logbook_catch(species = list_species("tunas")) # same as above
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
@@ -109,7 +109,7 @@ get_aggregated_catch(in_wcpfc = TRUE, flag = "ID", year = 2020:2025, gear = "S")
 ``` r
 get_aggregated_catch(
   year = 2025,
-  flag = lookup_flags("WPEA"),
+  flag = list_flags("WPEA"),
   gear = c("H", "K")
 ) |>
   plot_aggregated_catch(
@@ -139,12 +139,12 @@ plot_pacific() |> add_region_line("npo_spo")
 
 
 ``` r
-# LOOKUP_SPECIES function to be finished***
-lookup_species("tunas")
-lookup_species("purse_seine")
-lookup_species("scidata")
+# list_species function to be finished***
+list_species("tunas")
+list_species("purse_seine")
+list_species("scidata")
 
-lookup_flags("WPEA")
+list_flags("WPEA")
 ```
 
 

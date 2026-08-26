@@ -1,7 +1,7 @@
 # TO DO
 # this could just reference the table FISH_MASTER.ref.entities
 #' @export
-lookup_flags <- function(
+list_flags <- function(
   group = c("WCPFC", "PNA", "WPEA", "DWFN")
   # year = NULL
 ) {
