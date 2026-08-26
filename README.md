@@ -10,7 +10,7 @@
 
 You can install the development version of `fishextract` like so:
 
-```{r}
+``` r
 # install.packages("remotes")
 remotes::install_github("PacificCommunity/fishextract")
 library(fishextract)
@@ -33,10 +33,10 @@ library(fishextract)
 
 ### Extracting Annual Catch Estimates (ACE)
 
-```{r}
+``` r
 get_ace() 
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"))
-get_ace(species = lookup_species("tunas")) # same as above
+get_ace(species = list_species("tunas")) # same as above
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
@@ -45,7 +45,7 @@ get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L",
 
 ### Plot ACE data (timeseries)
 
-```{r}
+``` r
 ace <- 
 get_ace(species = c("YFT", "SKJ", "BET", "ALB"), 
 year = 2004:2025, 
@@ -61,10 +61,10 @@ ace |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
 
 ### Get logbook data
 
-```{r}
+``` r
 get_logbook_catch() 
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"))
-get_logbook_catch(species = lookup_species("tunas")) # same as above
+get_logbook_catch(species = list_species("tunas")) # same as above
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
 get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
@@ -73,7 +73,7 @@ get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gea
 
 ### Plot logbook data (timeseries)
 
-```{r}
+``` r
 logbook <- get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
 
 logbook |> plot_timeseries()
@@ -85,7 +85,7 @@ logbook |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
 
 ### Get number of vessels
 
-```{r}
+``` r
 nvessels <- get_n_vessels(year = 2000:2025)
 nvessels |> plot_timeseries()
 nvessels |> plot_timeseries(colour_by = GEAR_CODE)
@@ -95,7 +95,7 @@ get_n_vessels(year = 2000:2025, flags = get_flags("WPEA")) |> plot_timeseries(co
 
 ### Plot aggregated data
 
-```{r}
+``` r
 get_aggregated_catch(in_wcpfc = TRUE, flag = "ID", year = 2020:2025, gear = "S") |>
   plot_aggregated_catch(
     pie_radius = 1,
@@ -106,10 +106,10 @@ get_aggregated_catch(in_wcpfc = TRUE, flag = "ID", year = 2020:2025, gear = "S")
   )
 ```
 
-```{r}
+``` r
 get_aggregated_catch(
   year = 2025,
-  flag = lookup_flags("WPEA"),
+  flag = list_flags("WPEA"),
   gear = c("H", "K")
 ) |>
   plot_aggregated_catch(
@@ -124,11 +124,11 @@ get_aggregated_catch(
 ### Useful maps
 
 
-```{r}
+``` r
 plot_pacific(show_eez = TRUE, xlim = c(95, 150), ylim = c(-15, 25), eez_countries = c("Indonesia", "Vietnam", "Philippines"))
 ```
 
-```{r}
+``` r
 plot_pacific() |> add_region_line("wcpfc_epo")
 plot_pacific() |> add_region_line("wcpfc")
 plot_pacific() |> add_region_line("npo_spo")
@@ -138,13 +138,13 @@ plot_pacific() |> add_region_line("npo_spo")
 
 
 
-```{r}
-# LOOKUP_SPECIES function to be finished***
-lookup_species("tunas")
-lookup_species("purse_seine")
-lookup_species("scidata")
+``` r
+# list_species function to be finished***
+list_species("tunas")
+list_species("purse_seine")
+list_species("scidata")
 
-lookup_flags("WPEA")
+list_flags("WPEA")
 ```
 
 

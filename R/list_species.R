@@ -1,12 +1,19 @@
 #' @export
-lookup_species <- function(
-  group = c("tunas", "scidata", "purse_seine", "longline", "pole_line")
-) {
+list_species <- function(group) {
+  allowed_groups <- c(
+    "tunas",
+    "scidata",
+    "purse_seine",
+    "longline",
+    "pole_line"
+  )
+  verified_group <- match.arg(group, choices = allowed_groups)
   mako_sharks <- c("MAK", "SMA")
   thresher_sharks <- c("THR", "ALV", "PTH", "BTH")
   hammerheads <- c("SPN", "SPK", "SPL", "SPZ", "SPQ", "EUB")
+  billfish <- c("SWO", "MLS") # from claudio
 
-  species_groups <- list(
+  list_speciess <- list(
     scidata = c(
       "ALB",
       "BET",
@@ -59,7 +66,7 @@ lookup_species <- function(
       hammerheads,
       "RHN"
     ),
-    billfish = c("SWO", "MLS") # from claudio
+    billfish = billfish
   )
-  species_groups[[group]]
+  list_speciess[[verified_group]]
 }
