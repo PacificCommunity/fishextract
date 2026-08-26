@@ -1,18 +1,38 @@
 Package: fishextract
-Title: Common data extraction and visualisation functions for OFP data 
+Title: Common data extraction and visualisation functions for OFP data
 Version: 0.0.0.9000
-URL: https://pacificcommunity.github.io/fishextract/
 Authors@R: 
     person("Freddie", "Heather", , "freddieh@spc.int", role = c("aut", "cre"))
-Description: `fishextract` aims to simplify, document, and automate some of the most common functions used in the process of data extraction and visualisation in OFP data. 
+Description: `fishextract` aims to simplify, document, and automate some
+    of the most common functions used in the process of data extraction
+    and visualisation in OFP data.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 8.0.0
-Suggests: 
-    rmarkdown,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
+URL: https://pacificcommunity.github.io/fishextract/
 Depends: 
     R (>= 3.5)
+Imports:
+    DBI,
+    dplyr,
+    forcats,
+    ggforce,
+    ggnewscale,
+    ggplot2,
+    glue,
+    grDevices,
+    odbc,
+    purrr,
+    RColorBrewer,
+    rlang,
+    scales,
+    sf,
+    stringr,
+    tibble,
+    tidyr,
+    usethis
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0

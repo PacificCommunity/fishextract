@@ -58,7 +58,8 @@ lookup_species <- function(
       "POR",
       hammerheads,
       "RHN"
-    )
+    ),
+    billfish = c("SWO", "MLS") # from claudio
   )
   species_groups[[group]]
 }
