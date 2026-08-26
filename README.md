@@ -129,9 +129,9 @@ plot_pacific(show_eez = TRUE, xlim = c(95, 150), ylim = c(-15, 25), eez_countrie
 ```
 
 ``` r
-plot_pacific() |> add_region_line("wcpfc_epo")
-plot_pacific() |> add_region_line("wcpfc")
-plot_pacific() |> add_region_line("npo_spo")
+plot_pacific() |> add_statistical_region("wcpfc_epo")
+plot_pacific() |> add_statistical_region("wcpfc")
+plot_pacific() |> add_statistical_region("npo_spo")
 ```
 
 # Other functions
