@@ -90,7 +90,7 @@ nvessels <- get_n_vessels(year = 2000:2025)
 nvessels |> plot_timeseries()
 nvessels |> plot_timeseries(colour_by = GEAR_CODE)
 nvessels |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
-get_n_vessels(year = 2000:2025, flags = get_flags("WPEA")) |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE, facet_scales = "free_y")
+get_n_vessels(year = 2000:2025, flag = list_flags("WPEA")) |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE, facet_scales = "free_y")
 ```
 
 ### Plot aggregated data
