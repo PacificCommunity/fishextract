@@ -5,3 +5,7 @@ attachment::att_from_rscripts() |>
 devtools::document()
 devtools::build()
 devtools::test()
+
+utils::remove.packages("purrr")
+utils::remove.packages("fishextract")
+remotes::install_github("PacificCommunity/fishextract")
