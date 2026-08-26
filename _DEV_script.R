@@ -5,6 +5,8 @@ attachment::att_from_rscripts() |>
 devtools::document()
 devtools::build()
 devtools::test()
+devtools::load_all()
+
 
 utils::remove.packages("purrr")
 utils::remove.packages("fishextract")

@@ -56,19 +56,43 @@ get_aggregated_catch(species = list_species("tunas")) |>
   add_line("wcpfc")
 
 
-get_aggregated_catch(species = c("YFT")) |>  
-  filter(FLAG_CODE == "US") |> 
-  filter( GEAR_CODE == "S") |> 
+get_aggregated_catch(species = c("YFT")) |>
+  filter(FLAG_CODE == "US") |>
+  filter(GEAR_CODE == "S") |>
   filter(latd >= 10)
-  filter(FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd =< 50 & lond > 119)
+filter(
+  FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd <= 50 & lond > 119
+)
 
 
-  get_aggregated_catch(species = c("YFT"), flag = "US", gear = "S") |> 
-    plot_aggregated_catch( )
+get_aggregated_catch(species = c("YFT"), flag = "US", gear = "S") |>
+  plot_aggregated_catch()
 
 
-get_aggregated_catch(species = c("YFT")) |>  
-  filter(FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd <= 50 & lond >= 119)
+get_aggregated_catch(species = c("YFT")) |>
+  filter(
+    FLAG_CODE == "US" & GEAR_CODE == "S" & latd >= 10 & latd <= 50 & lond >= 119
+  )
 
 
 # remotes::install_github()
+
+get_lengths(flag = "PH", year = 2025, species = "SKJ") |>
+  summarise(n = sum(n), .by = c(YY, GEAR_CODE, length)) |>
+  arrange(length) |>
+  uncount(n) |>
+  summarise(
+    mean = mean(length),
+    median = quantile(length, 0.5),
+    upper = quantile(length, 0.975),
+    lower = quantile(length, 0.025),
+    .by = GEAR_CODE
+  )
+
+
+get_lengths(flag = "PH", year = 2000:2025, species = c("SKJ", "YFT")) |>
+  summarise(n = sum(n), .by = c(GEAR_CODE, length, SP_CODE)) |>
+  arrange(length) |>
+  ggplot(aes(length, n, col = GEAR_CODE)) +
+  geom_path() +
+  facet_wrap(~SP_CODE)
