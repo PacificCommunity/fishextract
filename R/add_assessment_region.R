@@ -22,8 +22,8 @@ add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
     verified_species,
     YFT = 130,
     BET = 129,
-    # SKJ = 129,
-    # ALB = 129
+    SKJ = 108,
+    ALB = 103
   )
 
   xx <-
