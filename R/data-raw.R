@@ -56,16 +56,23 @@
     sf::st_read() |>
     dplyr::filter(Territory1 %in% wcpfc_all)
 
-  wcpfc_eez_simplified <-
-    wcpfc_eez |>
-    sf::st_simplify(dTolerance = 1000, preserveTopology = TRUE) |>
-    sf::st_wrap_dateline(
-      options = c("WRAPDATELINE=YES", "DATELINEOFFSET=180")
-    ) |>
-    sf::st_shift_longitude()
+  # wcpfc_eez_simplified <-
+  #   wcpfc_eez |>
+  #   sf::st_simplify(dTolerance = 1000, preserveTopology = TRUE) |>
+  #   sf::st_wrap_dateline(
+  #     options = c("WRAPDATELINE=YES", "DATELINEOFFSET=180")
+  #   ) |>
+  #   sf::st_shift_longitude()
+
+  # usethis::use_data(
+  #   wcpfc_eez_simplified,
+  #   compress = "xz",
+  #   internal = TRUE,
+  #   overwrite = TRUE
+  # )
 
   usethis::use_data(
-    wcpfc_eez_simplified,
+    wcpfc_eez,
     compress = "xz",
     internal = TRUE,
     overwrite = TRUE

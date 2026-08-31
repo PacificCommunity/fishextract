@@ -11,8 +11,7 @@ plot_pacific <- function(
   land_outline = mapping_colours("land_outline"),
   water_fill = mapping_colours("water"),
   base_size = 15,
-  show_eez = FALSE,
-  eez_countries = NULL
+  show_eez = FALSE
 ) {
   # in case the lims are overwritten by NULL elsewhere
   xlim <- xlim %||% c(100, 292)
@@ -53,13 +52,7 @@ plot_pacific <- function(
     ggplot2::labs(x = NULL, y = NULL)
 
   if (show_eez) {
-    eez <-
-      if (!is.null(eez_countries)) {
-        sf::st_as_sf(wcpfc_eez_simplified) |>
-          dplyr::filter(Territory1 %in% eez_countries)
-      } else {
-        sf::st_as_sf(wcpfc_eez_simplified)
-      }
+    eez <- .get_eez()
 
     suppressMessages(
       p <-
