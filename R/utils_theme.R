@@ -18,10 +18,11 @@
 #'
 #' @importFrom ggplot2 %+replace%
 #' @export
-theme_fishextract <- function(base_size = 14) {
+theme_fishextract <- function(base_size = 16) {
   ggplot2::theme_minimal(base_size = base_size) %+replace%
     ggplot2::theme(
       panel.grid.minor = ggplot2::element_blank(),
+      panel.grid.major.x = ggplot2::element_blank(),
       strip.background = ggplot2::element_rect(fill = "white", colour = NA),
       legend.position = "bottom"
     )
