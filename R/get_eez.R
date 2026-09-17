@@ -1,11 +1,15 @@
-.get_eez <- function() {
-  " 
-SELECT eez_filename , 
+.get_eez <- function(flag = NULL) {
+  glue::glue(
+    " 
+SELECT 
+  eez_filename, 
 	ez_area.STAsText() AS area_polygon
 FROM ref.eez_definitions d
 INNER JOIN ref.eez_sources s ON s.eez_source_no = d.eez_source_no
 WHERE d.eez_source_no = 1
-" |>
+  AND {.sql_filter('country_code', flag)}
+"
+  ) |>
     db_query(
       server = "NOUFAMESQL01",
       database = "tufman2"

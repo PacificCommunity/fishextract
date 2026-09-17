@@ -11,7 +11,9 @@ plot_pacific <- function(
   land_outline = mapping_colours("land_outline"),
   water_fill = mapping_colours("water"),
   base_size = 15,
-  show_eez = FALSE
+  show_eez = FALSE,
+  eez_flag = NULL,
+  eez_colour = "blue"
 ) {
   # in case the lims are overwritten by NULL elsewhere
   xlim <- xlim %||% c(100, 292)
@@ -52,7 +54,7 @@ plot_pacific <- function(
     ggplot2::labs(x = NULL, y = NULL)
 
   if (show_eez) {
-    eez <- .get_eez()
+    eez <- .get_eez(flag = eez_flag)
 
     suppressMessages(
       p <-
@@ -61,7 +63,12 @@ plot_pacific <- function(
           data = eez,
           inherit.aes = FALSE,
           fill = NA,
-          col = "blue"
+          col = eez_colour
+        ) +
+        ggplot2::geom_polygon(
+          fill = land_fill,
+          colour = land_outline,
+          linewidth = 0.2
         ) +
         ggplot2::coord_sf(
           xlim = p$coordinates$limits$x,
