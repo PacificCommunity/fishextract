@@ -1,4 +1,4 @@
-#' Retrieve WCPFC logbook catch data
+#' Retrieve logbook catch data
 #'
 #' Queries logbook catch-and-effort tables for one or more gear types and
 #' returns total catch (metric tonnes) summarised by flag, year, species

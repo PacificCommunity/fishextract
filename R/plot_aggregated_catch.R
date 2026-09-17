@@ -46,6 +46,7 @@ plot_aggregated_catch <- function(
   ylim = NULL,
   latlon_offset = NULL,
   lim_buffer = 0.1,
+  water_fill = "white",
   ...
 ) {
   if (is.null(aggregated_data)) {
@@ -112,7 +113,7 @@ plot_aggregated_catch <- function(
     pie_radius <- target_r / max(pie_data$r, na.rm = TRUE)
   }
 
-  p <- plot_pacific(xlim = xlim, ylim = ylim)
+  p <- plot_pacific(xlim = xlim, ylim = ylim, water_fill = water_fill)
 
   if (has_colour) {
     p <-
@@ -132,37 +133,55 @@ plot_aggregated_catch <- function(
         linewidth = 0.2,
         alpha = alpha,
         inherit.aes = FALSE
-      )
+      ) +
+      .build_size_legend_geom(
+        pie_data,
+        group_vars,
+        colour_var = colour_var,
+        x0 = x0,
+        y0 = y0,
+        breaks = NULL,
+        pie_radius = pie_radius
+      ) +
+      ggplot2::labs(fill = NULL)
   } else {
-    p <-
-      p +
-      ggforce::geom_circle(
+    # if no colour is suggested then we can do tile plot rather than the pie chart
+    # (which i think is a little ugly anyway)
+    rect_layer <-
+      geom_raster(
         mapping = ggplot2::aes(
-          x0 = lond_360 + latlon_offset,
-          y0 = latd + latlon_offset,
-          r = r * pie_radius
+          x = lond_360 + latlon_offset,
+          y = latd + latlon_offset,
+          # xmax = lond_360 + (latlon_offset * 2),
+          # ymax = latd + (latlon_offset * 2),
+          fill = total_catch_mt,
+          # alpha = total_catch_mt
         ),
         data = pie_data,
-        colour = "black",
-        fill = "grey30",
-        linewidth = 0.2,
-        alpha = alpha,
+        # colour = "grey20",
+        # linewidth = 0.2,
         inherit.aes = FALSE
       )
-  }
 
-  p <-
-    p +
-    .build_size_legend_geom(
-      pie_data,
-      group_vars,
-      colour_var = colour_var,
-      x0 = x0,
-      y0 = y0,
-      breaks = NULL,
-      pie_radius = pie_radius
-    ) +
-    ggplot2::labs(fill = NULL)
+    p$layers <- append(p$layers, list(rect_layer), after = 0)
+
+    p <-
+      p +
+      scale_fill_viridis_c(
+        name = "Total catch (mt)",
+        labels = scales::label_number(
+          scale_cut = scales::cut_short_scale(),
+          trans = "log"
+        )
+      )
+    # scale_fill_gradient(
+    #     low = "white",
+    #     high = "#08306b",
+    #     name = "Total catch (mt)",
+    #     labels = scales::label_number(scale_cut = scales::cut_short_scale())
+    #   ) #+
+    # scale_alpha(range = c(0, 1), trans = "sqrt", guide = "none")
+  }
 
   if (has_colour && !is.null(fill_values)) {
     p <-
