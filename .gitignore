@@ -5,3 +5,5 @@
 .DS_Store
 .quarto
 *.pptx
+infographic.qmd
+testing.R
