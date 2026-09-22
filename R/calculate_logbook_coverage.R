@@ -49,7 +49,8 @@ calculate_logbook_coverage <-
     exclude_flag = NULL,
     exclude_gear = NULL,
     exclude_species = NULL,
-    group_species = TRUE
+    group_species = TRUE,
+    ...
   ) {
     ace_catch <-
       get_ace(
@@ -69,14 +70,19 @@ calculate_logbook_coverage <-
         flag = flag,
         gear = gear,
         species = species,
-        year = year
+        year = year,
+        ...
       ) |>
-      dplyr::rename(logbook_catch = sum_catch_mt)
+      dplyr::rename(logbook_catch = sum_catch_mt) |>
+      dplyr::summarise(
+        logbook_catch = sum(logbook_catch),
+        .by = c(SP_CODE, FLAG_CODE, GEAR_CODE, YY)
+      )
 
     joined_catch <-
       ace_catch |>
       dplyr::select(-data_source) |>
-      dplyr::full_join(logbook_catch |> dplyr::select(-data_source)) |>
+      dplyr::full_join(logbook_catch) |>
       dplyr::mutate(
         ace_catch = tidyr::replace_na(ace_catch, 0),
         logbook_catch = tidyr::replace_na(logbook_catch, 0)
