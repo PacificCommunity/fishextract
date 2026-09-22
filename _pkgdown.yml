@@ -9,11 +9,10 @@ navbar:
   components:
     intro:
       text: ACE
-      href: articles/ace.html
-      text: Logbook catch data
-      href: articles/logbook_catch.html
-      text: Logbook effort data
-      href: articles/logbook_effort.html
-      text: Logbook coverage
-      href: articles/logbook_coverage.html
-
+      menu:
+        - text: Logbook catch data
+          href: articles/logbook_catch.html
+        - text: Logbook effort data
+          href: articles/logbook_effort.html
+        - text: Logbook coverage
+          href: articles/logbook_coverage.html
