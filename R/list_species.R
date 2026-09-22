@@ -37,7 +37,7 @@ list_species <- function(group) {
     ),
     tunas = c("YFT", "ALB", "BET", "SKJ"),
     purse_seine = c("YFT", "BET", "SKJ"),
-    longline = c("YFT", "BET", "SKJ"),
+    longline = c("YFT", "BET", "ALB"),
     pole_line = c("YFT", "BET", "SKJ"),
     scidata_group1 = c(
       "BET",
