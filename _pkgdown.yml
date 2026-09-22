@@ -16,3 +16,27 @@ navbar:
           href: articles/logbook_effort.html
         - text: Logbook coverage
           href: articles/logbook_coverage.html
+      text: Aggregate
+      menu:
+        - text: Logbook catch data
+          href: articles/logbook_catch.html
+        - text: Logbook effort data
+          href: articles/logbook_effort.html
+        - text: Logbook coverage
+          href: articles/logbook_coverage.html
+      text: Operational
+      menu:
+        - text: Logbook catch data
+          href: articles/logbook_catch.html
+        - text: Logbook effort data
+          href: articles/logbook_effort.html
+        - text: Logbook coverage
+          href: articles/logbook_coverage.html
+      text: Lengths
+      menu:
+        - text: Logbook catch data
+          href: articles/logbook_catch.html
+        - text: Logbook effort data
+          href: articles/logbook_effort.html
+        - text: Logbook coverage
+          href: articles/logbook_coverage.html
