@@ -31,7 +31,25 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-ace" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">ACE</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-ace">
+<li><a class="dropdown-item" href="articles/logbook_catch.html">Logbook catch data</a></li>
+    <li><a class="dropdown-item" href="articles/logbook_effort.html">Logbook effort data</a></li>
+    <li><a class="dropdown-item" href="articles/logbook_coverage.html">Logbook coverage</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/ace.html">ace</a></li>
+    <li><a class="dropdown-item" href="articles/logbook_catch.html">logbook_catch</a></li>
+    <li><a class="dropdown-item" href="articles/logbook_coverage.html">logbook_coverage</a></li>
+    <li><a class="dropdown-item" href="articles/logbook_effort.html">logbook_effort</a></li>
+    <li><a class="dropdown-item" href="articles/plotting.html">plotting</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -55,8 +73,8 @@
 </h2>
 <p>You can install the development version of <code>fishextract</code> like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"PacificCommunity/fishextract"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"PacificCommunity/fishextract"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pacificcommunity.github.io/fishextract/">fishextract</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">

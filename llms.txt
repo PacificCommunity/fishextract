@@ -10,8 +10,8 @@ You can install the development version of `fishextract` like so:
 
 ``` r
 
-# install.packages("remotes")
-remotes::install_github("PacificCommunity/fishextract")
+# install.packages("pak")
+pak::pak("PacificCommunity/fishextract")
 library(fishextract)
 ```
 
@@ -227,3 +227,12 @@ catch_data |>
 - [`theme_fishextract()`](https://pacificcommunity.github.io/fishextract/reference/theme_fishextract.md)
   : Package plotting theme
 
+# Articles
+
+### All vignettes
+
+- [ace](https://pacificcommunity.github.io/fishextract/articles/ace.md):
+- [logbook_catch](https://pacificcommunity.github.io/fishextract/articles/logbook_catch.md):
+- [logbook_coverage](https://pacificcommunity.github.io/fishextract/articles/logbook_coverage.md):
+- [logbook_effort](https://pacificcommunity.github.io/fishextract/articles/logbook_effort.md):
+- [plotting](https://pacificcommunity.github.io/fishextract/articles/plotting.md):
