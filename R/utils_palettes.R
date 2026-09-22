@@ -28,10 +28,20 @@ lookup_colour <- function(var_name) {
 #' @export
 species_colours <- function() {
   c(
-    "YFT" = "#F0E442",
-    "ALB" = "#009E73",
-    "BET" = "#D55E00",
-    "SKJ" = "#0072B2"
+    BET = "tomato1",
+    YFT = "gold2",
+    SKJ = "dodgerblue",
+    ALB = 'seagreen3',
+    BILL = 'gray60',
+    OTH = 'gray60',
+    BLM = 'black',
+    BUM = 'cyan1',
+    MLS = 'purple4',
+    SWO = '#66CCFF'
+    # "YFT" = "#F0E442",
+    # "ALB" = "#009E73",
+    # "BET" = "#D55E00",
+    # "SKJ" = "#0072B2"
   )
 }
 #' Gear colour mapping
