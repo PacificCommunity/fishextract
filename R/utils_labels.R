@@ -28,10 +28,16 @@ pkg_gears_lookup <- function() {
 
 pkg_species_lookup <- function() {
   c(
-    "YFT" = "Yellowfin",
-    "SKJ" = "Skipjack",
-    "BET" = "Bigeye",
-    "ALB" = "Albacore"
+    BET = "Bigeye",
+    YFT = "Yellowfin",
+    SKJ = 'Skipjack',
+    ALB = "Albacore",
+    BILL = 'Billfish',
+    OTH = 'Other',
+    BLM = 'Black Marlin',
+    BUM = "Blue Marlin",
+    MLS = "Striped Marlin",
+    SWO = "Swordfish"
   )
 }
 
