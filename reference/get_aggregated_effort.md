@@ -1,0 +1,90 @@
+# Extract aggregated catch data (either at 1x1 or 5x5 gridcell) from the BEST database
+
+Queries `best.A_BEST_AGG` for effort (effort type determined by the
+selected gear) summed by flag, gear, species, year and location, with
+optional filters to include/exclude specific flags, gears, species,
+years, and to restrict to the WCPFC convention area.
+
+## Usage
+
+``` r
+get_aggregated_effort(
+  in_wcpfc = TRUE,
+  year = NULL,
+  flag = NULL,
+  gear = NULL,
+  exclude_flag = NULL,
+  exclude_gear = NULL,
+  exclude_species = NULL,
+  fine_scale = FALSE
+)
+```
+
+## Arguments
+
+- in_wcpfc:
+
+  Logical; if `TRUE` (the default), restrict results to the WCPFC
+  convention area.
+
+- year:
+
+  Optional numeric vector of years (`YY`) to include. Defaults to `NULL`
+  (all years).
+
+- flag:
+
+  Optional character vector of flag codes to include. Defaults to `NULL`
+  (all flags).
+
+- gear:
+
+  Optional character vector of gear codes to include. Defaults to `NULL`
+  (all gears).
+
+- exclude_flag:
+
+  Optional character vector of flag codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_gear:
+
+  Optional character vector of gear codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_species:
+
+  Optional character vector of species codes to exclude. Defaults to
+  `NULL`.
+
+- species:
+
+  Optional character vector of species codes to include. Defaults to
+  `NULL` (all species).
+
+- group_flags:
+
+  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+
+- group_gears:
+
+  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+
+- group_species:
+
+  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+
+## Value
+
+A data frame with columns `FLAG_CODE`, `GEAR_CODE`, `SP_CODE`, `YY`,
+`sum_catch_mt`, `latd`, `lond`, and `data_source` and aditional columns
+for the effort metrics, which are determined by the gear selected.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+get_aggregated_effort(year = 2020:2023)
+get_aggregated_effort(in_wcpfc = FALSE, exclude_gear = "S")
+} # }
+```
