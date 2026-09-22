@@ -57,7 +57,8 @@ get_logbook_effort <- function(
   gear = c("P", "S", "L", "T"),
   species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  show_sql = FALSE
 ) {
   gear_suffix <- c(
     "P" = "pl",
@@ -82,8 +83,9 @@ get_logbook_effort <- function(
         S = "set_time, end_set_time, effort_factor"
       )
 
-    glue::glue(
-      "
+    sql_query <-
+      glue::glue(
+        "
     WITH logbook_effort_temp AS(
     SELECT 
       trips.log_trip_id AS trip_id,
@@ -116,7 +118,13 @@ get_logbook_effort <- function(
       {effort_columns}, 
       trip_id, 
       set_id"
-    ) |>
+      )
+
+    if (show_sql) {
+      .clean_sql(sql_query)
+    }
+
+    sql_query |>
       db_query() |>
       dplyr::mutate(GEAR_CODE = .gear) |>
       dplyr::relocate(GEAR_CODE, .before = 1)

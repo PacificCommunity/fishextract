@@ -59,7 +59,8 @@ get_ace <- function(
   group_flags = FALSE,
   group_gears = FALSE,
   group_species = FALSE,
-  ungroup_eez = FALSE
+  ungroup_eez = FALSE,
+  show_sql = FALSE
 ) {
   if ((!is.null(ocean)) & ungroup_eez) {
     message(
@@ -93,7 +94,7 @@ get_ace <- function(
     exclude_eez <- ""
   }
 
-  ace_extract <-
+  sql_query <-
     glue::glue(
       "
   SELECT 
@@ -126,7 +127,14 @@ get_ace <- function(
     SP_CODE, 
     YY
   "
-    ) |>
+    )
+
+  if (show_sql) {
+    .clean_sql(sql_query)
+  }
+
+  ace_extract <-
+    sql_query |>
     db_query() |>
     dplyr::mutate(data_source = dplyr::if_else(ungroup_eez, "ace_byEEZ", "ace"))
 

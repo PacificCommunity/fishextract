@@ -33,7 +33,8 @@ get_n_vessels <- function(
   group_species = FALSE,
   group_flags = FALSE,
   group_gears = FALSE,
-  include_size_classes = FALSE
+  include_size_classes = FALSE,
+  show_sql = FALSE
 ) {
   vessel_class_cols <- if (include_size_classes) {
     c("VESS_CAT1_N", "VESS_CAT2_N", "VESS_CAT3_N", "VESS_CAT4_N")
@@ -50,7 +51,7 @@ get_n_vessels <- function(
     "VESS_N AS n_vessels"
   )
 
-  n_vessels_extract <-
+  sql_query <-
     glue::glue(
       "
   SELECT 
@@ -62,7 +63,14 @@ get_n_vessels <- function(
     AND {.sql_filter('GEAR_CODE', gear)}
   ORDER BY OCEAN_CODE, FLAG_CODE, GEAR_CODE, YY
   "
-    ) |>
+    )
+
+  if (show_sql) {
+    .clean_sql(sql_query)
+  }
+
+  n_vessels_extract <-
+    sql_query |>
     db_query() |>
     dplyr::mutate(data_source = "ace_n_vessels")
 

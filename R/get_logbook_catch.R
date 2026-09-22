@@ -57,7 +57,9 @@ get_logbook_catch <- function(
   gear = c("P", "S", "L", "T"),
   species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  show_sql = FALSE,
+  ...
 ) {
   gear_suffix <- c(
     "P" = "pl",
@@ -79,9 +81,9 @@ get_logbook_catch <- function(
     # gears report catch directly in tonnes.
     catch_column <-
       if (.gear == "L") {
-        "coalesce(catch.sp_kg, 0) + coalesce(spdiscard_kg, 0) AS sp_kg"
+        "coalesce(c.sp_kg, 0) + coalesce(spdiscard_kg, 0) AS sp_kg"
       } else {
-        "catch.sp_mt AS sp_mt"
+        "c.sp_mt AS sp_mt"
       }
     catch_unit <-
       if (.gear == "L") {
@@ -90,20 +92,21 @@ get_logbook_catch <- function(
         "sp_mt"
       }
 
-    glue::glue(
-      "
+    sql_query <-
+      glue::glue(
+        "
     WITH logbook_catch_temp AS(
     SELECT 
-    trips.log_trip_id AS trip_id,
-    sets.log_set_id AS set_id,
+    t.log_trip_id AS trip_id,
+    s.log_set_id AS set_id,
     flag_id AS FLAG_CODE, 
-    year(sets.logdate) AS YY, 
-    catch.sp_code AS SP_CODE,
+    year(s.logdate) AS YY, 
+    c.sp_code AS SP_CODE,
     {catch_column}
-  FROM log.trips_{gear_suffix[[.gear]]} trips 
-  INNER JOIN log.sets_{gear_suffix[[.gear]]} sets on sets.log_trip_id = trips.log_trip_id
-  INNER JOIN log.catch_{gear_suffix[[.gear]]} catch on catch.log_set_id = sets.log_set_id
-  INNER JOIN ref.vessel_instances vesssels on vesssels.vessel_id = trips.vessel_id
+  FROM log.trips_{gear_suffix[[.gear]]} t 
+  INNER JOIN log.sets_{gear_suffix[[.gear]]} s on s.log_trip_id = t.log_trip_id
+  INNER JOIN log.catch_{gear_suffix[[.gear]]} c on c.log_set_id = s.log_set_id
+  INNER JOIN ref.vessel_instances vi on vi.vessel_id = t.vessel_id
     AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
   WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
     AND {.sql_filter('flag_id', flag)}
@@ -127,8 +130,14 @@ get_logbook_catch <- function(
     FLAG_CODE, 
     YY, 
     SP_CODE"
-    ) |>
-      db_query() |>
+      )
+
+    if (show_sql) {
+      .clean_sql(sql_query)
+    }
+
+    sql_query |>
+      db_query(...) |>
       dplyr::mutate(GEAR_CODE = .gear)
   }
 
