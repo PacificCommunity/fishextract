@@ -12,6 +12,7 @@ list_species <- function(group) {
   thresher_sharks <- c("THR", "ALV", "PTH", "BTH")
   hammerheads <- c("SPN", "SPK", "SPL", "SPZ", "SPQ", "EUB")
   billfish <- c("SWO", "MLS") # from claudio
+  ssi <- c("RHN", "OCS", "FAL", "RMB", "SHK", "RMV") # see https://meetings.wcpfc.int/file/5594/download
 
   list_speciess <- list(
     scidata = c(
