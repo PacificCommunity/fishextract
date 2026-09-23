@@ -21,8 +21,9 @@ plot_pacific <- function(
 
   p <-
     ggplot2::map_data("world2") |>
-    ggplot2::ggplot(ggplot2::aes(long, lat, group = group)) +
+    ggplot2::ggplot() +
     ggplot2::geom_polygon(
+      ggplot2::aes(x = long, y = lat, group = group),
       fill = land_fill,
       colour = land_outline,
       linewidth = 0.2
@@ -66,6 +67,7 @@ plot_pacific <- function(
           col = eez_colour
         ) +
         ggplot2::geom_polygon(
+          ggplot2::aes(x = long, y = lat, group = group),
           fill = land_fill,
           colour = land_outline,
           linewidth = 0.2
