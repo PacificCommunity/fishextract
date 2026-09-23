@@ -10,22 +10,24 @@ navbar:
     intro:
       text: ACE
       menu:
-        - text: Logbook catch data
-          href: articles/logbook_catch.html
-        - text: Logbook effort data
-          href: articles/logbook_effort.html
-        - text: Logbook coverage
-          href: articles/logbook_coverage.html
+        - text: All about ACE
+          href: articles/ace_info.html
+        - text: Extracting ACE
+          href: articles/ace_extract.html
+        - text: Plotting ACE
+          href: articles/ace_plot.html
       text: Aggregate
       menu:
-        - text: Logbook catch data
-          href: articles/logbook_catch.html
-        - text: Logbook effort data
-          href: articles/logbook_effort.html
-        - text: Logbook coverage
-          href: articles/logbook_coverage.html
+        - text: All about Aggregate
+          href: articles/aggragate_info.html
+        - text: Extracting Aggregate
+          href: articles/aggragate_extract.html
+        - text: Plotting Aggregate
+          href: articles/aggragate_plot.html
       text: Operational
       menu:
+        - text: All about operational
+          href: articles/logbook_info.html
         - text: Logbook catch data
           href: articles/logbook_catch.html
         - text: Logbook effort data
@@ -34,9 +36,9 @@ navbar:
           href: articles/logbook_coverage.html
       text: Lengths
       menu:
-        - text: Logbook catch data
-          href: articles/logbook_catch.html
-        - text: Logbook effort data
-          href: articles/logbook_effort.html
-        - text: Logbook coverage
-          href: articles/logbook_coverage.html
+        - text: All about length data
+          href: articles/length_info.html
+        - text: Length extract
+          href: articles/length_extract.html
+        - text: Length plotting
+          href: articles/length_plot.html
