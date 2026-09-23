@@ -4,10 +4,10 @@ template:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, tutorials, news]
+    left:  [ace, aggregate, operational, lengths, reference]
     right: [search, github]
   components:
-    intro:
+    ace:
       text: ACE
       menu:
         - text: All about ACE
@@ -16,14 +16,16 @@ navbar:
           href: articles/ace_extract.html
         - text: Plotting ACE
           href: articles/ace_plot.html
+    aggregate:
       text: Aggregate
       menu:
         - text: All about Aggregate
-          href: articles/aggragate_info.html
+          href: articles/aggregate_info.html
         - text: Extracting Aggregate
-          href: articles/aggragate_extract.html
+          href: articles/aggregate_extract.html
         - text: Plotting Aggregate
-          href: articles/aggragate_plot.html
+          href: articles/aggregate_plot.html
+    operational:
       text: Operational
       menu:
         - text: All about operational
@@ -34,6 +36,7 @@ navbar:
           href: articles/logbook_effort.html
         - text: Logbook coverage
           href: articles/logbook_coverage.html
+    lengths:
       text: Lengths
       menu:
         - text: All about length data
