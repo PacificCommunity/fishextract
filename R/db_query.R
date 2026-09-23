@@ -1,9 +1,10 @@
-#' Run a query against the fish master database
+#' Run a query against a given database (default = FISH_MASTER)
 #'
-#' Executes a SQL query against the fish master database connection and
+#' Executes a SQL query against a given database connection (default = FISH_MASTER) and
 #' returns the result as a tibble.
 #'
 #' @param query A string containing the SQL query to execute.
+#' @param ... database and server specific information including the arguments `database` and `server`
 #'
 #' @return A [tibble::tibble()] containing the query result.
 #'
