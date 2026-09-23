@@ -2,12 +2,20 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  ace: ace.html
+  ace_extract: ace_extract.html
+  ace_info: ace_info.html
+  ace_plot: ace_plot.html
+  aggregate_extract: aggregate_extract.html
+  aggregate_info: aggregate_info.html
+  aggregate_plot: aggregate_plot.html
+  length_extract: length_extract.html
+  length_info: length_info.html
+  length_plot: length_plot.html
   logbook_catch: logbook_catch.html
   logbook_coverage: logbook_coverage.html
   logbook_effort: logbook_effort.html
   plotting: plotting.html
-last_built: 2026-09-22T23:25Z
+last_built: 2026-09-23T05:38Z
 urls:
   reference: https://pacificcommunity.github.io/fishextract/reference
   article: https://pacificcommunity.github.io/fishextract/articles
