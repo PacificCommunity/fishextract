@@ -17,3 +17,13 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(fishextract)
 ```
+
+``` r
+get_ace() 
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"))
+get_ace(species = list_species("tunas")) # same as above
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
+get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"), ocean = "NX")
+```

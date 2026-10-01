@@ -52,6 +52,7 @@ get_ace <- function(
   gear = NULL,
   species = NULL,
   eez = NULL,
+  in_archipelagic = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
@@ -94,6 +95,19 @@ get_ace <- function(
     exclude_eez <- ""
   }
 
+  if ((!is.null(in_archipelagic))) {
+    message(
+      "Note: When specifying the in_archipelagic (in archipelagic waters) argument, the ACE by EEZ database is used. This involves some raising estimates, and associated assumptions, based on available operational data."
+    )
+    # make sure we are using the ACE_EZ database
+    eez_abbr <- "_EZ"
+    arch <- ifelse(in_archipelagic, "T", "F")
+    arch_column <- "in_arch,"
+  } else {
+    arch_column <- ""
+    arch <- NULL
+  }
+
   sql_query <-
     glue::glue(
       "
@@ -101,6 +115,7 @@ get_ace <- function(
     {ocean_column}
     FLAG_CODE, 
     {eez_column}
+    {arch_column}
     GEAR_CODE, 
     SP_CODE, 
     YY, 
@@ -115,6 +130,7 @@ get_ace <- function(
     AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('SP_CODE', species)}
     {include_eez}
+    AND {.sql_filter('in_arch', arch)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
@@ -123,6 +139,7 @@ get_ace <- function(
     {ocean_column}
     FLAG_CODE, 
     {eez_column}
+    {arch_column}
     GEAR_CODE, 
     SP_CODE, 
     YY
