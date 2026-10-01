@@ -13,7 +13,8 @@ calculate_logbook_coverage(
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  group_species = TRUE
+  group_species = TRUE,
+  ...
 )
 }
 \arguments{

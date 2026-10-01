@@ -8,17 +8,22 @@ get_ace(
   ocean = "WX",
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = NULL,
   species = NULL,
   eez = NULL,
+  in_archipelagic = NULL,
   exclude_flag = NULL,
+  exclude_fleet = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
   exclude_eez = NULL,
   group_flags = FALSE,
+  group_fleets = TRUE,
   group_gears = FALSE,
   group_species = FALSE,
-  ungroup_eez = FALSE
+  ungroup_eez = FALSE,
+  show_sql = FALSE
 )
 }
 \arguments{

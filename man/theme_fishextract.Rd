@@ -4,7 +4,7 @@
 \alias{theme_fishextract}
 \title{Package plotting theme}
 \usage{
-theme_fishextract(base_size = 14)
+theme_fishextract(base_size = 16)
 }
 \arguments{
 \item{base_size}{Base font size, in points. Defaults to 11.}
