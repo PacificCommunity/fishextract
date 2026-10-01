@@ -1,7 +1,7 @@
-# Run a query against the fish master database
+# Run a query against a given database (default = FISH_MASTER)
 
-Executes a SQL query against the fish master database connection and
-returns the result as a tibble.
+Executes a SQL query against a given database connection (default =
+FISH_MASTER) and returns the result as a tibble.
 
 ## Usage
 
@@ -14,6 +14,11 @@ db_query(query, ...)
 - query:
 
   A string containing the SQL query to execute.
+
+- ...:
+
+  database and server specific information including the arguments
+  `database` and `server`
 
 ## Value
 

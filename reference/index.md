@@ -13,7 +13,7 @@
 - [`db_connection()`](https://pacificcommunity.github.io/fishextract/reference/db_connection.md)
   : Connect to the database
 - [`db_query()`](https://pacificcommunity.github.io/fishextract/reference/db_query.md)
-  : Run a query against the fish master database
+  : Run a query against a given database (default = FISH_MASTER)
 - [`db_show_table()`](https://pacificcommunity.github.io/fishextract/reference/db_show_table.md)
   : Preview rows from a database table
 - [`gear_colours()`](https://pacificcommunity.github.io/fishextract/reference/gear_colours.md)
@@ -26,7 +26,7 @@
   : Extract aggregated catch data (either at 1x1 or 5x5 gridcell) from
   the BEST database
 - [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md)
-  : Retrieve WCPFC logbook catch data
+  : Retrieve logbook catch data
 - [`get_logbook_effort()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_effort.md)
   : Retrieve WCPFC logbook effort data
 - [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md)

@@ -19,6 +19,7 @@ plot_aggregated_catch(
   ylim = NULL,
   latlon_offset = NULL,
   lim_buffer = 0.1,
+  water_fill = "white",
   ...
 )
 ```

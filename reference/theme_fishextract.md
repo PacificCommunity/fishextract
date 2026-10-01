@@ -9,7 +9,7 @@ below the plot.
 ## Usage
 
 ``` r
-theme_fishextract(base_size = 14)
+theme_fishextract(base_size = 16)
 ```
 
 ## Arguments
