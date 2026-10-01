@@ -5,7 +5,8 @@ plot_timeseries <- function(
   colour_by = NULL,
   facet_by = NULL,
   facet_scales = "fixed",
-  y_lab = NULL
+  y_lab = NULL,
+  n_breaks = 5
 ) {
   if (is.null(value_col)) {
     defaults <- switch(
@@ -54,6 +55,15 @@ plot_timeseries <- function(
       .by = dplyr::all_of(group_vars)
     )
 
+  integer_breaks <- function(n = n_breaks, ...) {
+    fxn <- function(x) {
+      breaks <- floor(pretty(x, n, ...))
+      names(breaks) <- attr(breaks, "labels")
+      breaks
+    }
+    return(fxn)
+  }
+
   p <-
     ggplot2::ggplot(
       plot_data,
@@ -70,7 +80,7 @@ plot_timeseries <- function(
     ggplot2::scale_y_continuous(
       labels = scales::label_number(scale_cut = scales::cut_short_scale())
     ) +
-    ggplot2::scale_x_continuous(breaks = scales::breaks_pretty()) +
+    ggplot2::scale_x_continuous(breaks = integer_breaks(n = n_breaks)) +
     theme_fishextract()
 
   if (!rlang::quo_is_null(facet_by)) {
