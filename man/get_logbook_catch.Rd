@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_logbook_catch.R
 \name{get_logbook_catch}
 \alias{get_logbook_catch}
-\title{Retrieve WCPFC logbook catch data}
+\title{Retrieve logbook catch data}
 \usage{
 get_logbook_catch(
   in_wcpfc = TRUE,
@@ -11,7 +11,9 @@ get_logbook_catch(
   gear = c("P", "S", "L", "T"),
   species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  show_sql = FALSE,
+  ...
 )
 }
 \arguments{

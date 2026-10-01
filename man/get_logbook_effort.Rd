@@ -11,7 +11,8 @@ get_logbook_effort(
   gear = c("P", "S", "L", "T"),
   species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL
+  exclude_species = NULL,
+  show_sql = FALSE
 )
 }
 \arguments{

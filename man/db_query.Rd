@@ -2,18 +2,20 @@
 % Please edit documentation in R/db_query.R
 \name{db_query}
 \alias{db_query}
-\title{Run a query against the fish master database}
+\title{Run a query against a given database (default = FISH_MASTER)}
 \usage{
 db_query(query, ...)
 }
 \arguments{
 \item{query}{A string containing the SQL query to execute.}
+
+\item{...}{database and server specific information including the arguments \code{database} and \code{server}}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}} containing the query result.
 }
 \description{
-Executes a SQL query against the fish master database connection and
+Executes a SQL query against a given database connection (default = FISH_MASTER) and
 returns the result as a tibble.
 }
 \examples{

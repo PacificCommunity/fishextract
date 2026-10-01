@@ -12,7 +12,8 @@ get_n_vessels(
   group_species = FALSE,
   group_flags = FALSE,
   group_gears = FALSE,
-  include_size_classes = FALSE
+  include_size_classes = FALSE,
+  show_sql = FALSE
 )
 }
 \arguments{
