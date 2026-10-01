@@ -49,15 +49,18 @@ get_ace <- function(
   ocean = "WX",
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = NULL,
   species = NULL,
   eez = NULL,
   in_archipelagic = NULL,
   exclude_flag = NULL,
+  exclude_fleet = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
   exclude_eez = NULL,
   group_flags = FALSE,
+  group_fleets = TRUE,
   group_gears = FALSE,
   group_species = FALSE,
   ungroup_eez = FALSE,
@@ -97,7 +100,7 @@ get_ace <- function(
 
   if ((!is.null(in_archipelagic))) {
     message(
-      "Note: When specifying the in_archipelagic (in archipelagic waters) argument, the ACE by EEZ database is used. This involves some raising estimates, and associated assumptions, based on available operational data."
+      "Note: When specifying the `in_archipelagic` (in archipelagic waters) argument, the ACE by EEZ database is used. This involves some raising estimates, and associated assumptions, based on available operational data."
     )
     # make sure we are using the ACE_EZ database
     eez_abbr <- "_EZ"
@@ -114,6 +117,7 @@ get_ace <- function(
   SELECT 
     {ocean_column}
     FLAG_CODE, 
+    FLEET_CODE,
     {eez_column}
     {arch_column}
     GEAR_CODE, 
@@ -127,17 +131,20 @@ get_ace <- function(
     AND {.sql_filter('OCEAN_CODE', ocean)}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
+    AND {.sql_filter('FLEET_CODE', fleet)}
     AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('SP_CODE', species)}
     {include_eez}
     AND {.sql_filter('in_arch', arch)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
+    AND {.sql_filter('FLEET_CODE', exclude_fleet, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
     {exclude_eez}
   GROUP BY 
     {ocean_column}
     FLAG_CODE, 
+    FLEET_CODE,
     {eez_column}
     {arch_column}
     GEAR_CODE, 
@@ -158,6 +165,7 @@ get_ace <- function(
   drop_cols <- c(
     if (group_species) "SP_CODE",
     if (group_flags) "FLAG_CODE",
+    if (group_fleets) "FLEET_CODE",
     if (group_gears) "GEAR_CODE"
   )
 
