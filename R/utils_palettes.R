@@ -9,8 +9,7 @@
 #'   mapping exists for \code{var_name} (falls back to ggplot's default).
 #' @keywords internal
 lookup_colour <- function(var_name) {
-  switch(
-    var_name,
+  switch(var_name,
     SP_CODE = species_colours(),
     GEAR_CODE = gear_colours(),
     OCEAN_CODE = ocean_colours(),
@@ -31,13 +30,13 @@ species_colours <- function() {
     BET = "tomato1",
     YFT = "gold2",
     SKJ = "dodgerblue",
-    ALB = 'seagreen3',
-    BILL = 'gray60',
-    OTH = 'gray60',
-    BLM = 'black',
-    BUM = 'cyan1',
-    MLS = 'purple4',
-    SWO = '#66CCFF'
+    ALB = "seagreen3",
+    BILL = "gray60",
+    OTH = "gray60",
+    BLM = "black",
+    BUM = "cyan1",
+    MLS = "purple4",
+    SWO = "#66CCFF"
     # "YFT" = "#F0E442",
     # "ALB" = "#009E73",
     # "BET" = "#D55E00",
@@ -51,13 +50,16 @@ species_colours <- function() {
 #' @export
 gear_colours <- function() {
   c(
-    "S" = "#01BAEF",
-    "L" = "#2A9D8F",
-    "P" = "#E76F51",
-    "T" = "#0B4F6C",
-    "O" = "#9B5DE5",
+    "G" = "#9d2a2a",
     "H" = "#F2C14E",
-    "K" = "#CC79A7"
+    "K" = "#CC79A7",
+    "L" = "#2A9D8F",
+    "N" = "#9da0a0",
+    "O" = "#9B5DE5",
+    "P" = "#E76F51",
+    "R" = "#3e7d21",
+    "S" = "#01BAEF",
+    "T" = "#0B4F6C"
   )
 }
 
@@ -76,8 +78,7 @@ ocean_colours <- function() {
 #' colours for geographical maps
 #' @export
 mapping_colours <- function(type) {
-  switch(
-    type,
+  switch(type,
     "land" = "#F5EFE0",
     "water" = "#DCEBF2",
     "land_outline" = "grey40",
