@@ -5,7 +5,10 @@
 .DS_Store
 .quarto
 *.pptx
+# other random files and folders
 infographic.qmd
 testing.R
 docs
 inst/doc
+_DEV_script.R
+plot_rfmo.R

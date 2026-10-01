@@ -70,6 +70,9 @@ plot_timeseries <- function(
     ggplot2::scale_y_continuous(
       labels = scales::label_number(scale_cut = scales::cut_short_scale())
     ) +
+    ggplot2::scale_x_continuous(
+      scale_x_continuous(breaks = scales::breaks_pretty())
+    ) +
     theme_fishextract()
 
   if (!rlang::quo_is_null(facet_by)) {
