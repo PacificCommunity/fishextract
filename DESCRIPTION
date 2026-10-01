@@ -1,14 +1,14 @@
 Package: fishextract
 Title: Common data extraction and visualisation functions for OFP data
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person("Freddie", "Heather", , "freddieh@spc.int", role = c("aut", "cre"))
 Description: `fishextract` aims to simplify, document, and automate some
     of the most common functions used in the process of data extraction
     and visualisation in OFP data.
 License: MIT + file LICENSE
 URL: https://pacificcommunity.github.io/fishextract/
-Depends: 
+Depends:
     R (>= 4.1.0)
 Imports:
     DBI (>= 1.3.0),
@@ -18,18 +18,18 @@ Imports:
     ggnewscale (>= 0.5.2),
     ggplot2 (>= 4.0.3),
     glue (>= 1.8.1),
-    grDevices (>= 4.6.0),
+    grDevices,
     odbc (>= 1.7.0),
     purrr (>= 1.2.2),
     RColorBrewer (>= 1.1.3),
     rlang (>= 1.3.0),
     scales (>= 1.4.0),
-    sf (>= 1.1.2),
+    sf,
     stringr (>= 1.6.0),
     tibble (>= 3.3.1),
     tidyr (>= 1.3.2),
     usethis (>= 3.2.1)
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
