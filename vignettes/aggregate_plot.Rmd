@@ -1,5 +1,5 @@
 ---
-title: "ace"
+title: "aggregate_plot"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ace}

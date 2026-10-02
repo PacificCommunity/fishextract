@@ -1,5 +1,5 @@
 ---
-title: "ace"
+title: "aggregate_extract"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ace}

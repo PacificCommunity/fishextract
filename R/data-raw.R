@@ -63,18 +63,4 @@
   #     options = c("WRAPDATELINE=YES", "DATELINEOFFSET=180")
   #   ) |>
   #   sf::st_shift_longitude()
-
-  # usethis::use_data(
-  #   wcpfc_eez_simplified,
-  #   compress = "xz",
-  #   internal = TRUE,
-  #   overwrite = TRUE
-  # )
-
-  usethis::use_data(
-    wcpfc_eez,
-    compress = "xz",
-    internal = TRUE,
-    overwrite = TRUE
-  )
 }
