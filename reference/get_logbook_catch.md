@@ -11,7 +11,7 @@ get_logbook_catch(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
-  gear = c("P", "S", "L", "T"),
+  gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
   exclude_species = NULL,
