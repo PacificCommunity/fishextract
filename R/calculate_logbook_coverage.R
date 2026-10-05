@@ -44,7 +44,7 @@ calculate_logbook_coverage <-
     in_wcpfc = TRUE,
     year = NULL,
     flag = NULL,
-    gear = c("P", "S", "L", "T", "O"),
+    gear = NULL,
     species = NULL,
     exclude_flag = NULL,
     exclude_gear = NULL,
@@ -56,7 +56,7 @@ calculate_logbook_coverage <-
       get_ace(
         ocean = if (is.null(in_wcpfc)) NULL else "WX",
         flag = flag,
-        gear = gear,
+        # gear = gear,
         species = species,
         year = year,
         group_species = FALSE
@@ -68,7 +68,7 @@ calculate_logbook_coverage <-
       get_logbook_catch(
         in_wcpfc = in_wcpfc,
         flag = flag,
-        gear = gear,
+        # gear = gear,
         species = species,
         year = year,
         ...
