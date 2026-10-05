@@ -54,7 +54,7 @@ get_logbook_catch <- function(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
-  gear = c("P", "S", "L", "T"),
+  gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
   exclude_species = NULL,
@@ -92,6 +92,12 @@ get_logbook_catch <- function(
       } else {
         "sp_mt"
       }
+    gear_code_column <-
+      if (.gear == "O") {
+        "GEAR_CODE,"
+      } else {
+        ""
+      }
 
     sql_query <-
       glue::glue(
@@ -102,6 +108,7 @@ get_logbook_catch <- function(
     s.log_set_id AS set_id,
     flag_id AS FLAG_CODE, 
     year(s.logdate) AS YY, 
+    {gear_code_column}
     c.sp_code AS SP_CODE,
     {catch_column}
   FROM log.trips_{gear_suffix[[.gear]]} t 
@@ -120,6 +127,7 @@ get_logbook_catch <- function(
     FLAG_CODE,
     YY,
     SP_CODE,
+    {gear_code_column}
     SUM({catch_unit}) AS {catch_unit}, 
     trip_id, 
     set_id
@@ -129,6 +137,7 @@ get_logbook_catch <- function(
     trip_id, 
     set_id,
     FLAG_CODE, 
+    {gear_code_column}
     YY, 
     SP_CODE"
       )
@@ -137,14 +146,24 @@ get_logbook_catch <- function(
       .clean_sql(sql_query)
     }
 
-    sql_query |>
-      db_query(...) |>
-      dplyr::mutate(GEAR_CODE = .gear)
+    output_raw <-
+      sql_query |>
+      db_query(...)
+
+    if (suppressWarnings(is.null(output_raw$GEAR_CODE))) {
+      output <-
+        output_raw |>
+        dplyr::mutate(GEAR_CODE = .gear)
+    } else {
+      output <-
+        output_raw
+    }
   }
 
   # run for each gear that is specified and combine
   combined_output <-
-    purrr::map(gear, logbook_catch_extract) |>
+    unique(ifelse(gear %in% names(gear_suffix), gear, "O")) |>
+    purrr::map(logbook_catch_extract) |>
     dplyr::bind_rows() |>
     (\(df) {
       if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
