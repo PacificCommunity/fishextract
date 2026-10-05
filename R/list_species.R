@@ -5,7 +5,12 @@ list_species <- function(group) {
     "scidata",
     "purse_seine",
     "longline",
-    "pole_line"
+    "billfish",
+    "ssi",
+    "pole_line",
+    "scidata_group1",
+    "scidata_group2",
+    "scidata_group3"
   )
   verified_group <- match.arg(group, choices = allowed_groups)
   mako_sharks <- c("MAK", "SMA")
