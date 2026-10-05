@@ -44,7 +44,7 @@ calculate_logbook_coverage <-
     in_wcpfc = TRUE,
     year = NULL,
     flag = NULL,
-    gear = c("P", "S", "L", "T"),
+    gear = c("P", "S", "L", "T", "O"),
     species = NULL,
     exclude_flag = NULL,
     exclude_gear = NULL,
@@ -113,7 +113,7 @@ calculate_logbook_coverage <-
 
     nrow_low_ace <-
       coverage_output |>
-      dplyr::filter(coverage > 1) |>
+      dplyr::filter(logbook_catch > ace_catch) |>
       nrow()
 
     if (nrow_low_ace > 0) {
@@ -125,9 +125,9 @@ calculate_logbook_coverage <-
       )
     }
 
-    final_coverage <-
-      coverage_output |>
-      dplyr::mutate(coverage = dplyr::if_else(coverage > 1, 1, coverage))
+    # final_coverage <-
+    #   coverage_output |>
+    #   dplyr::mutate(coverage = dplyr::if_else(coverage > 1, 1, coverage))
 
     return(coverage_output)
   }

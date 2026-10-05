@@ -65,7 +65,8 @@ get_logbook_catch <- function(
     "P" = "pl",
     "S" = "ps",
     "L" = "ll",
-    "T" = "tr"
+    "T" = "tr",
+    "O" = "ot"
   )
 
   convert_catch_to_mt <- function(df) {
