@@ -8,7 +8,7 @@ calculate_logbook_coverage(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
-  gear = c("P", "S", "L", "T"),
+  gear = NULL,
   species = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
