@@ -26,7 +26,7 @@ add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
     ALB = 103
   )
 
-  xx <-
+  assessment_region <-
     db_query(
       server = "noufamesql01",
       database = "md2",
@@ -44,18 +44,20 @@ add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
     sf::st_as_sf(wkt = "geometry", crs = 4326) |>
     sf::st_shift_longitude() # -180/180 -> 0/360, to match plot_pacific()'s world2 basemap
 
-  plot +
-    ggplot2::geom_sf(
-      data = xx,
-      ggplot2::aes(colour = factor(region_id)),
-      fill = NA,
-      linewidth = linewidth,
-      inherit.aes = FALSE
-    ) +
-    ggplot2::coord_sf(
-      xlim = plot$coordinates$limits$x,
-      ylim = plot$coordinates$limits$y,
-      expand = FALSE
-    ) +
-    ggplot2::labs(colour = "Region")
+  suppressMessages(
+    plot +
+      ggplot2::geom_sf(
+        data = assessment_region,
+        ggplot2::aes(colour = factor(region_id)),
+        fill = NA,
+        linewidth = linewidth,
+        inherit.aes = FALSE
+      ) +
+      ggplot2::coord_sf(
+        xlim = plot$coordinates$limits$x,
+        ylim = plot$coordinates$limits$y,
+        expand = FALSE
+      ) +
+      ggplot2::labs(colour = "Region")
+  )
 }

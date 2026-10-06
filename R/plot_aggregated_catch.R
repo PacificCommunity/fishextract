@@ -148,7 +148,7 @@ plot_aggregated_catch <- function(
     # if no colour is suggested then we can do tile plot rather than the pie chart
     # (which i think is a little ugly anyway)
     rect_layer <-
-      geom_raster(
+      ggplot2::geom_raster(
         mapping = ggplot2::aes(
           x = lond_360 + latlon_offset,
           y = latd + latlon_offset,
@@ -167,7 +167,7 @@ plot_aggregated_catch <- function(
 
     p <-
       p +
-      scale_fill_viridis_c(
+      ggplot2::scale_fill_viridis_c(
         name = "Total catch (mt)",
         labels = scales::label_number(
           scale_cut = scales::cut_short_scale(),
