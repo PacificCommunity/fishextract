@@ -220,6 +220,4 @@ add_shading <- function(plot, type, fill = "red", alpha = 0.2) {
 #' @param lon Numeric vector of longitudes in -180 to 180 format.
 #' @return Numeric vector of longitudes in 0-360 format.
 #' @export
-lon_to_360 <- function(lon) {
-  dplyr::if_else(lon < 0, lon + 360, lon)
-}
+lon_to_360 <- function(lon) lon %% 360
