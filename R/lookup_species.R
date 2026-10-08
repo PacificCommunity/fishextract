@@ -1,3 +1,10 @@
+#' Look up the species names given the species codes
+#'
+#' @param species Optional character vector of species codes to filter by.
+#'   If `NULL`, all species are returned.
+#' @param refresh Logical. Force a re-query of the database and refresh
+#'   the cache. Defaults to `FALSE`.
+#'
 #' @export
 lookup_species <- function(species = NULL, refresh = FALSE) {
   species_tbl <- pkg_cached(
@@ -15,12 +22,13 @@ lookup_species <- function(species = NULL, refresh = FALSE) {
     },
     refresh = refresh
   ) |>
-    dplyr::mutate(sp_name = stringr::str_to_title(sp_name))
+    dplyr::mutate(sp_name = stringr::str_to_title(.data$sp_name)) |>
+    dplyr::filter(.data$SP_CODE != "   ")
 
   out <- if (is.null(species)) {
     species_tbl
   } else {
-    species_tbl |> dplyr::filter(SP_CODE %in% species)
+    species_tbl |> dplyr::filter(.data$SP_CODE %in% species)
   }
 
   return(out)

@@ -36,13 +36,43 @@ get_ace(
 \item{flag}{A character vector of flag codes to filter on (e.g.
 \code{c("ID", "VN")}), or \code{NULL} (default) to include all flags.}
 
+\item{fleet}{A character vector of fleet codes to filter by.}
+
 \item{gear}{A character vector of gear codes to filter on (e.g. \code{"L"}
 for longline), or \code{NULL} (default) to include all gears.}
 
 \item{species}{A character vector of species codes to filter on (e.g.
 \code{c("YFT", "SKJ")}), or \code{NULL} (default) to include all species.}
 
-\item{group_species}{Boolean. If TRUE, return combined catch across all species specified}
+\item{eez}{A character vector of country codes to filter the EEZ(s) where the fishing has occured.}
+
+\item{in_archipelagic}{Logical. If \code{TRUE} filter for archipelagic waters only.}
+
+\item{exclude_flag}{Optional character vector of flag codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_fleet}{Optional character vector of fleet codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_gear}{Optional character vector of gear codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_species}{Optional character vector of species codes to
+exclude. Defaults to \code{NULL}.}
+
+\item{exclude_eez}{Optional character vector of EEZ codes to exclude. Defaults to \code{NULL}.}
+
+\item{group_flags}{Logical. If \code{TRUE}, return combined catch across all flags specified. Default = \code{FALSE}.}
+
+\item{group_fleets}{Logical. If \code{TRUE}, return combined catch across all fleets specified. Default = \code{TRUE}.}
+
+\item{group_gears}{Logical. If \code{TRUE}, return combined catch across all gears specified. Default = \code{FALSE}.}
+
+\item{group_species}{Logical. If \code{TRUE}, return combined catch across all species specified. Default = \code{FALSE}.}
+
+\item{ungroup_eez}{Logical. If \code{TRUE}, ACE will be ungrouped into the EEZs where the catch occured. Default = \code{FALSE}.}
+
+\item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{OCEAN_CODE}, \code{FLAG_CODE},

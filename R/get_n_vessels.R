@@ -13,6 +13,11 @@
 #'   returns all gears.
 #' @param year Integer. Year to filter on. `NULL` (default) returns all
 #'   years.
+#' @param group_species Logical. Groups all selected species in the outputted `n_vessels`.
+#' @param group_flags Logical. Groups all selected flags in the outputted `n_vessels`.
+#' @param group_gears Logical. Groups all selected gears in the outputted `n_vessels`.
+#' @param include_size_classes Logical. Include the vessel size classes. Defaults to TRUE.
+#' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
 #'
 #' @return A data frame (or tibble, depending on `db_query()`) with one
 #'   row per ocean/flag/gear/year combination, giving `ocean_code`,
@@ -33,7 +38,7 @@ get_n_vessels <- function(
   group_species = FALSE,
   group_flags = FALSE,
   group_gears = FALSE,
-  include_size_classes = FALSE,
+  include_size_classes = TRUE,
   show_sql = FALSE
 ) {
   vessel_class_cols <- if (include_size_classes) {
@@ -86,7 +91,7 @@ get_n_vessels <- function(
 
   n_vessels_extract |>
     dplyr::summarise(
-      n_vessels = sum(n_vessels),
+      n_vessels = sum(.data$n_vessels),
       .by = -dplyr::all_of(c(drop_cols, "n_vessels"))
     )
 }

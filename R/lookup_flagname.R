@@ -12,8 +12,7 @@
 #'   of `flag_name`, named by `flag_code`, rather than the full tibble.
 #'   Defaults to `FALSE`.
 #' @param refresh Logical. Force a re-query of the database and refresh
-#'   the cache, e.g. if `ref.countries` has been updated this session.
-#'   Defaults to `FALSE`.
+#'   the cache. Defaults to `FALSE`.
 #'
 #' @details
 #' `flag_name` and `flag_name_abbr` are sentence-cased and trimmed via
@@ -61,7 +60,7 @@ lookup_flagname <- function(flag = NULL, simplify = FALSE, refresh = FALSE) {
   out <- if (is.null(flag)) {
     flagnames
   } else {
-    flagnames |> dplyr::filter(flag_code %in% flag)
+    flagnames |> dplyr::filter(.data$flag_code %in% flag)
   }
 
   return(out)

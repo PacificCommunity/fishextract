@@ -15,9 +15,13 @@
 #' plot_pacific() |> add_assessment_region(species = "YFT")
 #'
 #' @export
-add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
-  allowed_species <- c("YFT", "SKJ", "ALB", "BET")
-  verified_species <- match.arg(species, choices = allowed_species)
+add_assessment_region <- function(
+  plot,
+  # bounding_box,
+  species = c("YFT", "SKJ", "ALB", "BET"),
+  linewidth = 0.5
+) {
+  verified_species <- rlang::arg_match(species)
   model_id <- switch(
     verified_species,
     YFT = 130,
@@ -48,7 +52,7 @@ add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
     plot +
       ggplot2::geom_sf(
         data = assessment_region,
-        ggplot2::aes(colour = factor(region_id)),
+        ggplot2::aes(colour = factor(.data$region_id)),
         fill = NA,
         linewidth = linewidth,
         inherit.aes = FALSE
@@ -60,4 +64,31 @@ add_assessment_region <- function(plot, species = NULL, linewidth = 0.5) {
       ) +
       ggplot2::labs(colour = "Region")
   )
+}
+
+#
+as_area <- function(points, crs = 4326) {
+  if (inherits(points, c("sf", "sfc", "bbox"))) {
+    return(sf::st_as_sfc(points))
+  }
+
+  if (!all(c("lon", "lat") %in% names(points))) {
+    rlang::abort("{.arg points} needs {.val lon} and {.val lat} columns.")
+  }
+  if (nrow(points) < 3) {
+    rlang::abort("{.arg points} needs at least 3 distinct points.")
+  }
+
+  coords <- as.matrix(points[c("lon", "lat")])
+  if (!identical(coords[1, ], coords[nrow(coords), ])) {
+    coords <- rbind(coords, coords[1, ]) # close the ring
+  }
+
+  area <- sf::st_sfc(sf::st_polygon(list(coords)), crs = crs)
+  if (!sf::st_is_valid(area)) {
+    rlang::abort(
+      "{.arg points} form a self-intersecting shape; check the point order."
+    )
+  }
+  area
 }

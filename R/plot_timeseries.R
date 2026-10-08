@@ -1,3 +1,34 @@
+#' Plot a timeseries from a given data extract
+#'
+#' Sums a value column by year (`YY`) and, optionally, by a colouring and/or
+#' faceting variable, then draws the result as a line-and-point plot. Colours
+#' and facet labels are looked up from the package's internal lookups where
+#' available.
+#'
+#' @param data A tibble extracted from one of the `fishextract::get_*`
+#'   functions. Must contain a `YY` column (year) and the column to be
+#'   plotted.
+#' @param value_col <[`data-masking`][rlang::args_data_masking]> Column to sum
+#'   and plot on the y-axis, supplied unquoted. If `NULL` (default), it is
+#'   detected from `data`: `sum_catch_mt` if present, otherwise `n_vessels`.
+#'   An error is raised if neither is found.
+#' @param colour_by <[`data-masking`][rlang::args_data_masking]> Optional
+#'   column to group and colour the timeseries by, supplied unquoted. If
+#'   `NULL` (default), a single series is drawn.
+#' @param facet_by <[`data-masking`][rlang::args_data_masking]> Optional
+#'   column to split the plot into facets by, supplied unquoted. If `NULL`
+#'   (default), no faceting is applied.
+#' @param facet_scales Character string passed to [ggplot2::facet_wrap()].
+#'   One of `"fixed"` (default), `"free"`, `"free_x"` or `"free_y"`. Ignored
+#'   when `facet_by = NULL`.
+#' @param y_lab Character string for the y-axis label. If `NULL` (default),
+#'   `"Catch (mt)"` or `"Number of vessels"` is used when `value_col` is
+#'   detected automatically, otherwise the name of `value_col`.
+#' @param n_breaks Integer. Approximate number of x-axis (year) breaks, passed
+#'   to [base::pretty()]. Defaults to `5`.
+#'
+#' @return A `ggplot` object.
+#'
 #' @export
 plot_timeseries <- function(
   data,
@@ -68,8 +99,8 @@ plot_timeseries <- function(
     ggplot2::ggplot(
       plot_data,
       ggplot2::aes(
-        x = YY,
-        y = y_variable,
+        x = .data$YY,
+        y = .data$y_variable,
         colour = !!colour_by,
         group = !!colour_by
       )

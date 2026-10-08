@@ -1,3 +1,9 @@
+#' Get weight-frequency data
+#'
+#' @param year,flag,gear,species filters to include (`NULL` = no filter).
+#' @param exclude_flag,exclude_gear,exclude_species filters to exclude.
+#'
+#' @return A tibble of weight-frequency records.
 #' @export
 get_weights <- function(
   year = NULL,

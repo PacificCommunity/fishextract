@@ -10,7 +10,7 @@ add_line <- function(
   layer <-
     ggplot2::geom_path(
       data = .mapping_lines(type),
-      ggplot2::aes(x = x, y = y),
+      ggplot2::aes(x = .data$x, y = .data$y),
       colour = colour,
       linewidth = linewidth,
       linetype = linetype,

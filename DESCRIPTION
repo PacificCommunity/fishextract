@@ -27,7 +27,8 @@ Imports:
     sf,
     stringr,
     tibble,
-    tidyr
+    tidyr, 
+    maps
 Suggests: 
     knitr,
     rmarkdown,

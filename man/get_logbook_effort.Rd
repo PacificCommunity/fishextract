@@ -12,7 +12,8 @@ get_logbook_effort(
   species = NULL,
   exclude_flag = NULL,
   exclude_species = NULL,
-  show_sql = FALSE
+  show_sql = FALSE,
+  ...
 )
 }
 \arguments{
@@ -28,6 +29,17 @@ records to those inside (or outside) the WCPFC Convention Area.}
 \code{"T"} (troll). Defaults to all four.}
 
 \item{species}{Optional character vector of species codes to filter by.}
+
+\item{exclude_flag}{Optional character vector of flag codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_species}{Optional character vector of species codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
+
+\item{...}{optional arguments that get passed to \code{db_query()} such as
+the database server and connection}
 }
 \value{
 A tibble with one row per flag/year/species/gear combination,

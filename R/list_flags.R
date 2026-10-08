@@ -1,10 +1,14 @@
-# TO DO
-# this could just reference the table FISH_MASTER.ref.entities
+#' List the FLAG_CODE values for a given group
+#'
+#' @param group (e.g. `WPEA`)
+#'
+#' @return A character vector of FLAG_CODEs
 #' @export
 list_flags <- function(
   group = c("WCPFC", "PNA", "WPEA", "DWFN")
-  # year = NULL
 ) {
+  # note we could just use FISH_MASTER.ref.entities
+
   # pna_flags <-
   #   glue::glue(
   #     "

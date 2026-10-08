@@ -13,9 +13,17 @@
 #'   (passed to `logbook_catch()`; `sum_ace()` is not filtered by gear).
 #' @param species Optional character vector of species codes to filter by.
 #' @param year Optional numeric vector of years to filter by.
+#' @param exclude_flag Optional character vector of flag codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_gear Optional character vector of gear codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_species Optional character vector of species codes to exclude.
+#'   Defaults to `NULL`.
 #' @param group_species Logical. If `TRUE`, catch is summed across all
 #'   species within each remaining grouping (i.e. `SP_CODE` is dropped
 #'   before summarising). Defaults to `FALSE`.
+#' @param ... optional arguments that get passed to `db_query()` such as
+#'   the database server and connection
 #'
 #' @return A tibble of `ace_catch`, `logbook_catch`, and `coverage`
 #'   (`(ace_catch - logbook_catch) / ace_catch`) by flag, year, species
@@ -61,8 +69,8 @@ calculate_logbook_coverage <-
         year = year,
         group_species = FALSE
       ) |>
-      dplyr::rename(ace_catch = sum_catch_mt) |>
-      dplyr::select(-any_of("OCEAN_CODE"))
+      dplyr::rename(ace_catch = .data$sum_catch_mt) |>
+      dplyr::select(-dplyr::any_of("OCEAN_CODE"))
 
     logbook_catch <-
       get_logbook_catch(
@@ -73,15 +81,15 @@ calculate_logbook_coverage <-
         year = year,
         ...
       ) |>
-      dplyr::rename(logbook_catch = sum_catch_mt) |>
+      dplyr::rename(logbook_catch = .data$sum_catch_mt) |>
       dplyr::summarise(
         logbook_catch = sum(logbook_catch),
-        .by = c(SP_CODE, FLAG_CODE, GEAR_CODE, YY)
+        .by = c(.data$SP_CODE, .data$FLAG_CODE, .data$GEAR_CODE, .data$YY)
       )
 
     joined_catch <-
       ace_catch |>
-      dplyr::select(-data_source) |>
+      dplyr::select(-.data$data_source) |>
       dplyr::full_join(logbook_catch) |>
       dplyr::mutate(
         ace_catch = tidyr::replace_na(ace_catch, 0),
@@ -94,7 +102,7 @@ calculate_logbook_coverage <-
         dplyr::summarise(
           logbook_catch = sum(logbook_catch),
           ace_catch = sum(ace_catch),
-          .by = -c(SP_CODE, ace_catch, logbook_catch)
+          .by = -c(.data$SP_CODE, ace_catch, logbook_catch)
         )
     } else {
       joined_catch_spp <- joined_catch

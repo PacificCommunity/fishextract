@@ -2,7 +2,7 @@
 title: "ace_plot"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{ace_plot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

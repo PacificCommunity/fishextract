@@ -31,9 +31,21 @@ as its WCPFC-area filter; if \code{NULL}, no ocean filter is applied.}
 
 \item{species}{Optional character vector of species codes to filter by.}
 
+\item{exclude_flag}{Optional character vector of flag codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_gear}{Optional character vector of gear codes to exclude.
+Defaults to \code{NULL}.}
+
+\item{exclude_species}{Optional character vector of species codes to exclude.
+Defaults to \code{NULL}.}
+
 \item{group_species}{Logical. If \code{TRUE}, catch is summed across all
 species within each remaining grouping (i.e. \code{SP_CODE} is dropped
 before summarising). Defaults to \code{FALSE}.}
+
+\item{...}{optional arguments that get passed to \code{db_query()} such as
+the database server and connection}
 }
 \value{
 A tibble of \code{ace_catch}, \code{logbook_catch}, and \code{coverage}

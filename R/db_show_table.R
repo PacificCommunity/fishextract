@@ -17,7 +17,7 @@
 #' db_show_table(schema = "ref", table = "entities", n_rows = NULL)
 #' }
 #'
-#' @export
+#' @noRd
 db_show_table <- function(schema, table, n_rows = 10) {
   # i removed the db_list_tables function, so this will no longer work:
   # if (!table %in% db_list_tables(schema = schema)) {

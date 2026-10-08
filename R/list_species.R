@@ -1,3 +1,8 @@
+#' List the SP_CODE values for a given group of species
+#'
+#' @param group (otpions include `scidata`, `tunas`, `purse_seine`, `longline`, `pole_line`)
+#'
+#' @return A character vector of FLAG_CODEs
 #' @export
 list_species <- function(group) {
   allowed_groups <- c(
@@ -19,7 +24,7 @@ list_species <- function(group) {
   billfish <- c("SWO", "MLS") # from claudio
   ssi <- c("RHN", "OCS", "FAL", "RMB", "SHK", "RMV") # see https://meetings.wcpfc.int/file/5594/download
 
-  list_speciess <- list(
+  species_list <- list(
     scidata = c(
       "ALB",
       "BET",
@@ -74,5 +79,5 @@ list_species <- function(group) {
     ),
     billfish = billfish
   )
-  list_speciess[[verified_group]]
+  species_list[[verified_group]]
 }

@@ -12,7 +12,6 @@ plot_aggregated_catch(
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
-  latlon_offset = NULL,
   lim_buffer = 0.1,
   water_fill = "white",
   ...
@@ -42,6 +41,10 @@ convention). Defaults to \code{c(100, 292)}.}
 
 \item{ylim}{Numeric vector of length 2 giving latitude limits. Defaults
 to \code{c(-62, 60)}.}
+
+\item{lim_buffer}{Numeric. Buffer around the outermost data points. Defaults to \code{0.1}.}
+
+\item{water_fill}{Character string. Fill colour of the water.}
 
 \item{...}{Additional arguments passed to \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}} when
 \code{aggregated_data} is \code{NULL}.}

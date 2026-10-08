@@ -12,6 +12,13 @@
 #'   `"T"` (troll). Defaults to all four.
 #' @param species Optional character vector of species codes to filter by.
 #' @param year Optional numeric vector of years to filter by.
+#' @param exclude_flag Optional character vector of flag codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_species Optional character vector of species codes to exclude.
+#'   Defaults to `NULL`.
+#' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
+#' @param ... optional arguments that get passed to `db_query()` such as
+#'   the database server and connection
 #'
 #' @return A tibble with one row per flag/year/species/gear combination,
 #'   containing:
@@ -69,120 +76,80 @@ get_logbook_catch <- function(
     "O" = "ot"
   )
 
-  convert_catch_to_mt <- function(df) {
-    if ("sp_kg" %in% names(df)) {
-      df <- df %>%
-        dplyr::mutate(catch_mt = catch_kg / 1000, .keep = "unused")
-    }
-    df
-  }
+  # convert_catch_to_mt <- function(df) {
+  #   if ("sp_kg" %in% names(df)) {
+  #     df <- df %>%
+  #       dplyr::mutate(catch_mt = catch_kg / 1000, .keep = "unused")
+  #   }
+  #   df
+  # }
 
-  logbook_catch_extract <- function(.gear) {
+  generate_logbook_query <- function(.gear) {
+    suffix <- gear_suffix[[.gear]]
+
     # Longline catch (incl. discards) is only available in kg; all other
     # gears report catch directly in tonnes.
-    catch_column <-
+    catch_expr <-
       if (.gear == "L") {
-        "coalesce(c.sp_kg, 0) + coalesce(spdiscard_kg, 0) AS sp_kg"
+        "(coalesce(c.sp_kg, 0) + coalesce(c.spdiscard_kg, 0)) / 1000"
       } else {
-        "c.sp_mt AS sp_mt"
-      }
-    catch_unit <-
-      if (.gear == "L") {
-        "sp_kg"
-      } else {
-        "sp_mt"
-      }
-    gear_code_column <-
-      if (.gear == "O") {
-        "GEAR_CODE,"
-      } else {
-        ""
+        "c.sp_mt"
       }
 
-    sql_query <-
-      glue::glue(
-        "
-    WITH logbook_catch_temp AS(
-    SELECT 
-    t.log_trip_id AS trip_id,
-    s.log_set_id AS set_id,
-    flag_id AS FLAG_CODE, 
-    year(s.logdate) AS YY, 
-    {gear_code_column}
-    c.sp_code AS SP_CODE,
-    {catch_column}
-  FROM log.trips_{gear_suffix[[.gear]]} t 
-  INNER JOIN log.sets_{gear_suffix[[.gear]]} s on s.log_trip_id = t.log_trip_id
-  INNER JOIN log.catch_{gear_suffix[[.gear]]} c on c.log_set_id = s.log_set_id
-  INNER JOIN ref.vessel_instances vi on vi.vessel_id = t.vessel_id
-    AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
-  WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
-    AND {.sql_filter('flag_id', flag)}
-    AND {.sql_filter('sp_code', species)}
-    AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
-    AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
-  )
+    # Only "other" gears (i.e, in the "_ot" tables) have the GEAR_CODE column
+    gear_select <- if (.gear == "O") "GEAR_CODE" else glue::glue("'{.gear}'")
+    gear_group <- if (.gear == "O") "GEAR_CODE," else ""
 
-  SELECT 
-    FLAG_CODE,
-    YY,
-    SP_CODE,
-    {gear_code_column}
-    SUM({catch_unit}) AS {catch_unit}, 
-    trip_id, 
-    set_id
-  FROM logbook_catch_temp
-  WHERE {.sql_filter('YY', year)}
-  GROUP BY 
-    trip_id, 
-    set_id,
-    FLAG_CODE, 
-    {gear_code_column}
-    YY, 
-    SP_CODE"
-      )
-
-    if (show_sql) {
-      .clean_sql(sql_query)
-    }
-
-    output_raw <-
-      sql_query |>
-      db_query(...)
-
-    if (suppressWarnings(is.null(output_raw$GEAR_CODE))) {
-      output <-
-        output_raw |>
-        dplyr::mutate(GEAR_CODE = .gear)
-    } else {
-      output <-
-        output_raw
-    }
+    glue::glue(
+      "
+    SELECT
+      flag_id AS FLAG_CODE,
+      year(s.logdate) AS YY,
+      {gear_select} AS GEAR_CODE,
+      c.sp_code AS SP_CODE,
+      SUM({catch_expr}) AS catch_mt,
+      t.log_trip_id AS trip_id,
+      s.log_set_id AS set_id,
+      latd,
+      lond
+    FROM log.trips_{suffix} t
+    INNER JOIN log.sets_{suffix} s ON s.log_trip_id = t.log_trip_id
+    INNER JOIN log.catch_{suffix} c ON c.log_set_id = s.log_set_id
+    INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
+      AND coalesce(depart_date, first_logdate) BETWEEN start_date AND calculated_end_date
+    WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
+      AND {.sql_filter('flag_id', flag)}
+      AND {.sql_filter('sp_code', species)}
+      AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
+      AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
+      AND {.sql_filter('year(s.logdate)', year)}
+    GROUP BY
+      t.log_trip_id, s.log_set_id, latd, lond,
+      flag_id, year(s.logdate), {gear_group} c.sp_code"
+    )
   }
 
-  # run for each gear that is specified and combine
-  combined_output <-
-    unique(ifelse(gear %in% names(gear_suffix), gear, "O")) |>
-    purrr::map(logbook_catch_extract) |>
-    dplyr::bind_rows() |>
-    (\(df) {
-      if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
-    })() |>
-    (\(df) {
-      if ("sp_mt" %in% names(df)) df else dplyr::mutate(df, sp_mt = NA_real_)
-    })() |>
-    dplyr::mutate(sum_catch_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
-    dplyr::select(-any_of(c("sp_kg", "sp_mt")))
+  sql_query <-
+    unique(dplyr::if_else(gear %in% names(gear_suffix), gear, "O")) |>
+    purrr::map_chr(generate_logbook_query) |>
+    stringr::str_flatten("\nUNION ALL\n")
+
+  if (show_sql) {
+    .clean_sql(sql_query)
+  }
+
+  combined_output <- db_query(sql_query, ...)
 
   nrow_removed <-
     combined_output |>
-    dplyr::filter(is.na(sum_catch_mt)) |>
+    dplyr::filter(is.na(.data$catch_mt)) |>
     nrow()
 
   if (nrow_removed > 0) {
     warning(
       glue::glue(
-        "{nrow_removed} rows removed from output due to missing catch weight values. These records may have catch reported only as numbers rather than weight."
+        "{nrow_removed} rows removed from output due to missing catch weight values. 
+        These records may have catch reported only as numbers rather than weight."
       ),
       call. = FALSE
     )
@@ -190,8 +157,9 @@ get_logbook_catch <- function(
 
   final_output <-
     combined_output |>
-    dplyr::filter(!is.na(sum_catch_mt)) |>
-    dplyr::mutate(data_source = "logbook_catch")
+    dplyr::filter(!is.na(.data$catch_mt)) |>
+    dplyr::mutate(data_source = "logbook_catch") |>
+    dplyr::rename(sum_catch_mt = .data$catch_mt) # to avoid breaking things, can change back later
 
   return(final_output)
 }

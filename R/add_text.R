@@ -10,7 +10,7 @@ add_text <- function(
   plot +
     ggplot2::geom_text(
       data = text,
-      ggplot2::aes(x = x, y = y, label = label),
+      ggplot2::aes(x = .data$x, y = .data$y, label = .data$label),
       colour = colour,
       size = size,
       inherit.aes = FALSE,

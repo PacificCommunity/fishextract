@@ -15,7 +15,7 @@ WHERE d.eez_source_no = 1
       database = "tufman2"
     ) |>
     tidyr::drop_na() |>
-    dplyr::mutate(geometry = sf::st_as_sfc(area_polygon, crs = 4326)) |>
+    dplyr::mutate(geometry = sf::st_as_sfc(.data$area_polygon, crs = 4326)) |>
     sf::st_as_sf() |>
     sf::st_shift_longitude()
 }

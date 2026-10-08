@@ -4,7 +4,11 @@
 \alias{add_assessment_region}
 \title{Add Stock assessment region boundaries to a Pacific map}
 \usage{
-add_assessment_region(plot, species = NULL, linewidth = 0.5)
+add_assessment_region(
+  plot,
+  species = c("YFT", "SKJ", "ALB", "BET"),
+  linewidth = 0.5
+)
 }
 \arguments{
 \item{plot}{A ggplot object to add region boundaries to, as built by
