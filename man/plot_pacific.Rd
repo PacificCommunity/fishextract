@@ -16,9 +16,42 @@ plot_pacific(
   eez_colour = "blue"
 )
 }
+\arguments{
+\item{xlim}{Numeric vector of length 2. Longitude limits in degrees east,
+on a 0-360 scale (e.g. 180 is the antimeridian and 200 is 160°W).
+Defaults to \code{c(100, 292)}. If \code{NULL}, the default is used.}
+
+\item{ylim}{Numeric vector of length 2. Latitude limits in degrees, with
+negative values south of the equator. Defaults to \code{c(-62, 60)}. If
+\code{NULL}, the default is used.}
+
+\item{land_fill}{Fill colour for land polygons. Defaults to
+\code{mapping_colours("land")}.}
+
+\item{land_outline}{Outline colour for land polygons. Defaults to
+\code{mapping_colours("land_outline")}.}
+
+\item{water_fill}{Background colour for the panel, representing water.
+Defaults to \code{mapping_colours("water")}.}
+
+\item{base_size}{Base font size in points, passed to
+\code{\link[ggplot2:theme_minimal]{ggplot2::theme_minimal()}}. Defaults to \code{15}.}
+
+\item{show_eez}{Logical. If \code{TRUE}, EEZ boundaries are drawn beneath the
+land layer. Defaults to \code{FALSE}.}
+
+\item{eez_flag}{Character vector of flag codes used to select which EEZs
+are drawn when \code{show_eez = TRUE}. If \code{NULL} (default), no flag filter is
+applied. Ignored when \code{show_eez = FALSE}.}
+
+\item{eez_colour}{Colour of the EEZ boundary lines. Defaults to \code{"blue"}.
+Ignored when \code{show_eez = FALSE}.}
+}
 \value{
 A \code{ggplot} object.
 }
 \description{
-Draws the world coastline using \code{ggplot2::map_data("world2")}
+Draws the world coastline using the Pacific-centred \code{"world2"} map from
+the \code{maps} package, optionally overlaid with Exclusive Economic Zone (EEZ)
+boundaries.
 }

@@ -1,3 +1,9 @@
+#' Get length-frequency data
+#'
+#' @param year,flag,gear,species filters to include (`NULL` = no filter).
+#' @param exclude_flag,exclude_gear,exclude_species filters to exclude.
+#'
+#' @return A tibble of length-frequency records.
 #' @export
 get_lengths <- function(
   year = NULL,

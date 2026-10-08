@@ -2,7 +2,7 @@
 title: "length_extract"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{length_extract}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

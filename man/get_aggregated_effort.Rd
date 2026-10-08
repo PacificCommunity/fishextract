@@ -2,17 +2,19 @@
 % Please edit documentation in R/get_aggregated_effort.R
 \name{get_aggregated_effort}
 \alias{get_aggregated_effort}
-\title{Extract aggregated catch data (either at 1x1 or 5x5 gridcell) from the BEST database}
+\title{Extract aggregated effort data (either at 1x1 or 5x5 gridcell)}
 \usage{
 get_aggregated_effort(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
-  gear = NULL,
+  gear = c("L", "S", "T", "P", "O"),
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  fine_scale = FALSE
+  broad_scale = FALSE,
+  show_sql = FALSE,
+  ...
 )
 }
 \arguments{
@@ -37,17 +39,13 @@ Defaults to \code{NULL}.}
 \item{exclude_species}{Optional character vector of species codes to
 exclude. Defaults to \code{NULL}.}
 
-\item{species}{Optional character vector of species codes to include.
-Defaults to \code{NULL} (all species).}
+\item{broad_scale}{Logical.  If \code{TRUE}, gears will return 5x5 gridcell instead of the fine scale 1x1
+degree gridcell. Note that 1x1 gridcell is only available for purse-seine.}
 
-\item{group_flags}{Logical; not currently implemented (see Note).
-Defaults to \code{FALSE}.}
+\item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
 
-\item{group_gears}{Logical; not currently implemented (see Note).
-Defaults to \code{FALSE}.}
-
-\item{group_species}{Logical; not currently implemented (see Note).
-Defaults to \code{FALSE}.}
+\item{...}{optional arguments that get passed to \code{db_query()} such as
+the database server and connection}
 }
 \value{
 A data frame with columns \code{FLAG_CODE}, \code{GEAR_CODE}, \code{SP_CODE},

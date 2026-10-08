@@ -2,7 +2,7 @@
 title: "aggregate_extract"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{aggregate_extract}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

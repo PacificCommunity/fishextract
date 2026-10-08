@@ -12,6 +12,13 @@
 #'   `"T"` (troll). Defaults to all four.
 #' @param species Optional character vector of species codes to filter by.
 #' @param year Optional numeric vector of years to filter by.
+#' @param exclude_flag Optional character vector of flag codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_species Optional character vector of species codes to exclude.
+#'   Defaults to `NULL`.
+#' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
+#' @param ... optional arguments that get passed to `db_query()` such as
+#'   the database server and connection
 #'
 #' @return A tibble with one row per flag/year/species/gear combination,
 #'   containing:
@@ -58,7 +65,8 @@ get_logbook_effort <- function(
   species = NULL,
   exclude_flag = NULL,
   exclude_species = NULL,
-  show_sql = FALSE
+  show_sql = FALSE,
+  ...
 ) {
   gear_suffix <- c(
     "P" = "pl",
@@ -67,26 +75,16 @@ get_logbook_effort <- function(
     "T" = "tr"
   )
 
-  # convert_effort_to_mt <- function(df) {
-  #   if ("sp_kg" %in% names(df)) {
-  #     df <- df %>%
-  #       dplyr::mutate(effort_mt = effort_kg / 1000, .keep = "unused")
-  #   }
-  #   df
-  # }
+  generate_logbook_effort_query <- function(.gear) {
+    suffix <- gear_suffix[[.gear]]
 
-  logbook_effort_extract <- function(.gear) {
-    effort_columns <-
-      switch(
-        .gear,
-        L = "hooks_n, hk_bt_flt_n",
-        S = "set_time, end_set_time, effort_factor"
-      )
+    # Only "other" gears (i.e, in the "_ot" tables) have the GEAR_CODE column
+    gear_select <- if (.gear == "O") "GEAR_CODE" else glue::glue("'{.gear}'")
+    gear_group <- if (.gear == "O") "GEAR_CODE," else ""
 
-    sql_query <-
-      glue::glue(
-        "
-    WITH logbook_effort_temp AS(
+    glue::glue(
+      "
+     WITH logbook_effort_temp AS(
     SELECT 
       trips.log_trip_id AS trip_id,
       sets.log_set_id AS set_id,
@@ -118,49 +116,21 @@ get_logbook_effort <- function(
       {effort_columns}, 
       trip_id, 
       set_id"
-      )
-
-    if (show_sql) {
-      .clean_sql(sql_query)
-    }
-
-    sql_query |>
-      db_query() |>
-      dplyr::mutate(GEAR_CODE = .gear) |>
-      dplyr::relocate(GEAR_CODE, .before = 1)
+    )
   }
 
-  # run for each gear that is specified and combine
-  combined_output <-
-    purrr::map(gear, logbook_effort_extract) |>
-    dplyr::bind_rows() #|>
-  # (\(df) {
-  #   if ("sp_kg" %in% names(df)) df else dplyr::mutate(df, sp_kg = NA_real_)
-  # })() |>
-  # (\(df) {
-  #   if ("sp_mt" %in% names(df)) df else dplyr::mutate(df, sp_mt = NA_real_)
-  # })() |>
-  # dplyr::mutate(sum_effort_mt = dplyr::coalesce(sp_mt, sp_kg / 1000)) |>
-  # dplyr::select(-any_of(c("sp_kg", "sp_mt")))
+  sql_query <-
+    unique(dplyr::if_else(gear %in% names(gear_suffix), gear, "O")) |>
+    purrr::map_chr(generate_logbook_effort_query) |>
+    stringr::str_flatten("\nUNION ALL\n")
 
-  # nrow_removed <-
-  #   combined_output |>
-  #   dplyr::filter(is.na(sum_catch_mt)) |>
-  #   nrow()
-
-  # if (nrow_removed > 0) {
-  #   warning(
-  #     glue::glue(
-  #       "{nrow_removed} rows removed from output due to missing catch weight values. These records may have catch reported only as numbers rather than weight."
-  #     ),
-  #     call. = FALSE
-  #   )
-  # }
+  if (show_sql) {
+    .clean_sql(sql_query)
+  }
 
   final_output <-
-    combined_output |>
-    # dplyr::filter(!is.na(sum_catch_mt)) |>
-    dplyr::mutate(data_source = "logbook_effort")
+    db_query(sql_query, ...)
+  dplyr::mutate(data_source = "logbook_effort")
 
   return(final_output)
 }

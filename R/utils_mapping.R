@@ -148,7 +148,7 @@ add_shading <- function(plot, type, fill = "red", alpha = 0.2) {
 
   shading_layer <- ggplot2::geom_polygon(
     data = coords,
-    mapping = ggplot2::aes(x = X, y = Y),
+    mapping = ggplot2::aes(x = .data$X, y = .data$Y),
     fill = fill,
     alpha = alpha,
     colour = NA,

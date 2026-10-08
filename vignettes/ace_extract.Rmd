@@ -2,7 +2,7 @@
 title: "ace_extract"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{ace_extract}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,6 +13,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+
+
 
 ```{r setup}
 library(fishextract)

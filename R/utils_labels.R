@@ -5,6 +5,7 @@
 #' (in which case callers should fall back to default labelling).
 #'
 #' @param var_name String. Column name, e.g. `"GEAR_CODE"`.
+#' @param abbreviate_flags Logical. Abbreviates the flag names (useful for plotting purposes).
 #' @return A named character vector, or `NULL`.
 #' @export
 label_lookup <- function(var_name, abbreviate_flags = FALSE) {

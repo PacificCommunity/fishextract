@@ -4,7 +4,7 @@
 \alias{plot_logbook_coverage}
 \title{Plot logbook coverage by flag and year}
 \usage{
-plot_logbook_coverage(coverage_data = NULL, ...)
+plot_logbook_coverage(coverage_data = NULL, flag_order = NULL, ...)
 }
 \arguments{
 \item{coverage_data}{A tibble as returned by \code{calculate_logbook_coverage()},
@@ -12,14 +12,14 @@ containing at least \code{FLAG_CODE}, \code{YY}, and \code{coverage} columns (an
 optionally \code{GEAR_CODE}). If \code{NULL} (the default), \code{calculate_logbook_coverage()}
 is called using \code{...}.}
 
-\item{...}{Additional arguments passed to \code{calculate_logbook_coverage()} when
-\code{coverage_data} is \code{NULL} (e.g. \code{in_wcpfc}, \code{flag}, \code{gear},
-\code{species}, \code{year}, \code{group_species}).}
-
-\item{flag_order}{Optional character vector giving the order flags
+\item{flag_order}{Optional character vector of FLAG_CODEs, giving the order flags
 should appear on the y-axis, top to bottom (as per
 \code{ggplot2::scale_y_discrete(limits = ...)}). Defaults to descending
 mean coverage across the data.}
+
+\item{...}{Additional arguments passed to \code{calculate_logbook_coverage()} when
+\code{coverage_data} is \code{NULL} (e.g. \code{in_wcpfc}, \code{flag}, \code{gear},
+\code{species}, \code{year}, \code{group_species}).}
 }
 \value{
 A \code{ggplot} object: a tile plot of year (x) by flag (y),

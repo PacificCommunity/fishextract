@@ -23,6 +23,8 @@
 #'   convention). Defaults to `c(100, 292)`.
 #' @param ylim Numeric vector of length 2 giving latitude limits. Defaults
 #'   to `c(-62, 60)`.
+#' @param lim_buffer Numeric. Buffer around the outermost data points. Defaults to `0.1`.
+#' @param water_fill Character string. Fill colour of the water.
 #' @param ... Additional arguments passed to [calculate_logbook_coverage()] when
 #'   `aggregated_data` is `NULL`.
 #'
@@ -44,7 +46,6 @@ plot_aggregated_catch <- function(
   alpha = 1,
   xlim = NULL,
   ylim = NULL,
-  latlon_offset = NULL,
   lim_buffer = 0.1,
   water_fill = "white",
   ...
@@ -65,12 +66,6 @@ plot_aggregated_catch <- function(
   x0 <- max(xlim) - 0.2 * diff(xlim)
   y0 <- min(ylim) + 0.05 * diff(ylim)
 
-  if (is.null(latlon_offset)) {
-    unique_lats <- sort(unique(aggregated_data$latd))
-    latlon_gaps <- min(unique_lats - lag(unique_lats, 1), na.rm = TRUE)
-    latlon_offset <- latlon_gaps / 2
-  }
-
   facet_by <- rlang::enquo(facet_by)
   colour_by <- rlang::enquo(colour_by)
   has_colour <- !rlang::quo_is_null(colour_by)
@@ -79,6 +74,17 @@ plot_aggregated_catch <- function(
     rlang::as_name(facet_by)
   } else {
     NULL
+  }
+
+  # this makes the pie charts center in the gridcell
+  # note that `has_colour == TRUE` means a pie-chart is being plotted
+  # note that `has_colour == FALSE` means a tile-plot is being plotted (doesn't need centering)
+  if (has_colour) {
+    unique_lats <- sort(unique(aggregated_data$latd))
+    latlon_gaps <- min(unique_lats - dplyr::lag(unique_lats, 1), na.rm = TRUE)
+    latlon_offset <- latlon_gaps / 2
+  } else {
+    latlon_offset <- 0
   }
 
   fill_values <- if (has_colour) lookup_colour(colour_var) else NULL
@@ -94,17 +100,17 @@ plot_aggregated_catch <- function(
   pie_data <-
     aggregated_data |>
     dplyr::summarise(
-      sum_catch_mt = sum(sum_catch_mt),
-      .by = dplyr::all_of(group_vars)
+      sum_catch_mt = sum(.data$sum_catch_mt),
+      .by = dplyr::all_of(.data$group_vars)
     ) |>
-    dplyr::mutate(lond_360 = lon_to_360(lond)) |>
+    dplyr::mutate(lond_360 = lon_to_360(.data$lond)) |>
     dplyr::mutate(
-      total_catch_mt = sum(sum_catch_mt),
-      r = sqrt(total_catch_mt) / 150,
-      prop = sum_catch_mt / total_catch_mt,
-      end = cumsum(prop) * 2 * pi,
-      start = dplyr::lag(end, default = 0),
-      .by = setdiff(group_vars, colour_var)
+      total_catch_mt = sum(.data$sum_catch_mt),
+      r = sqrt(.data$total_catch_mt) / 150,
+      prop = .data$sum_catch_mt / .data$total_catch_mt,
+      end = cumsum(.data$prop) * 2 * pi,
+      start = dplyr::lag(.data$end, default = 0),
+      .by = setdiff(.data$group_vars, .data$colour_var)
     )
 
   # auto calculate the pie radius if it isn't provided (is NULl)
@@ -120,12 +126,12 @@ plot_aggregated_catch <- function(
       p +
       ggforce::geom_arc_bar(
         mapping = ggplot2::aes(
-          x0 = lond_360 + latlon_offset,
-          y0 = latd + latlon_offset,
+          x0 = .data$lond_360 + latlon_offset,
+          y0 = .data$latd + latlon_offset,
           r0 = 0,
-          r = r * pie_radius,
-          start = start,
-          end = end,
+          r = .data$r * pie_radius,
+          start = .data$start,
+          end = .data$end,
           fill = !!colour_by
         ),
         data = pie_data,
@@ -150,16 +156,11 @@ plot_aggregated_catch <- function(
     rect_layer <-
       ggplot2::geom_raster(
         mapping = ggplot2::aes(
-          x = lond_360 + latlon_offset,
-          y = latd + latlon_offset,
-          # xmax = lond_360 + (latlon_offset * 2),
-          # ymax = latd + (latlon_offset * 2),
-          fill = total_catch_mt,
-          # alpha = total_catch_mt
+          x = .data$lond_360 + latlon_offset,
+          y = .data$latd + latlon_offset,
+          fill = .data$total_catch_mt
         ),
         data = pie_data,
-        # colour = "grey20",
-        # linewidth = 0.2,
         inherit.aes = FALSE
       )
 
@@ -174,13 +175,6 @@ plot_aggregated_catch <- function(
           trans = "log"
         )
       )
-    # scale_fill_gradient(
-    #     low = "white",
-    #     high = "#08306b",
-    #     name = "Total catch (mt)",
-    #     labels = scales::label_number(scale_cut = scales::cut_short_scale())
-    #   ) #+
-    # scale_alpha(range = c(0, 1), trans = "sqrt", guide = "none")
   }
 
   if (has_colour && !is.null(fill_values)) {

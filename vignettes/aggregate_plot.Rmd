@@ -2,7 +2,7 @@
 title: "aggregate_plot"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{aggregate_plot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

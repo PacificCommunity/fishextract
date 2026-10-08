@@ -9,7 +9,8 @@
 #'   mapping exists for \code{var_name} (falls back to ggplot's default).
 #' @keywords internal
 lookup_colour <- function(var_name) {
-  switch(var_name,
+  switch(
+    var_name,
     SP_CODE = species_colours(),
     GEAR_CODE = gear_colours(),
     OCEAN_CODE = ocean_colours(),
@@ -24,7 +25,7 @@ lookup_colour <- function(var_name) {
 #' Fixed colours for each species, keyed by name so mappings stay correct
 #' even when only a subset of species appears in a plot. From: Okabe-Ito pallete.
 #'
-#' @export
+#' @noRd
 species_colours <- function() {
   c(
     BET = "tomato1",
@@ -47,7 +48,7 @@ species_colours <- function() {
 #'
 #' Fixed colours for each gear type, keyed by name.
 #'
-#' @export
+#' @noRd
 gear_colours <- function() {
   c(
     "G" = "#9d2a2a",
@@ -68,28 +69,32 @@ gear_colours <- function() {
 #' Fixed colours for each ocean, keyed by name. Okabe-Ito pallete
 #'
 #' @importFrom RColorBrewer brewer.pal
-#' @export
+#' @noRd
 ocean_colours <- function() {
   oceans <- c("AO", "IO", "SP", "EP", "WP", "NP", "WCPO")
   set2_pallette <- RColorBrewer::brewer.pal(name = "Set2", n = length(oceans))
-  setNames(set2_pallette, oceans)
+  stats::setNames(set2_pallette, oceans)
 }
 
-#' colours for geographical maps
-#' @export
+#' Colours for geographical features
+#'
+#' @returns A named character vector of hex colours.
+#' @noRd
 mapping_colours <- function(type) {
-  switch(type,
+  switch(
+    type,
     "land" = "#F5EFE0",
     "water" = "#DCEBF2",
     "land_outline" = "grey40",
   )
 }
-#' @export
+
+
+#' Flag colours for plotting
+#'
+#' @returns A named character vector of hex colours.
+#' @noRd
 flag_colours <- function() {
-  flag_pal <- palette.colors(palette = "Polychrome 36")
-  c(
-    "ID" = flag_pal[1],
-    "VN" = flag_pal[3],
-    "PH" = flag_pal[6]
-  )
+  pal <- unname(grDevices::palette.colors(palette = "Polychrome 36"))
+  stats::setNames(pal[c(1, 3, 6)], c("ID", "VN", "PH"))
 }

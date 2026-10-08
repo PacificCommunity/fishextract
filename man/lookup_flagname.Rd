@@ -15,8 +15,7 @@ of \code{flag_name}, named by \code{flag_code}, rather than the full tibble.
 Defaults to \code{FALSE}.}
 
 \item{refresh}{Logical. Force a re-query of the database and refresh
-the cache, e.g. if \code{ref.countries} has been updated this session.
-Defaults to \code{FALSE}.}
+the cache. Defaults to \code{FALSE}.}
 }
 \description{
 Returns the full and abbreviated name(s) corresponding to one or

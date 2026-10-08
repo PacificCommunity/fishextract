@@ -12,7 +12,7 @@ get_n_vessels(
   group_species = FALSE,
   group_flags = FALSE,
   group_gears = FALSE,
-  include_size_classes = FALSE,
+  include_size_classes = TRUE,
   show_sql = FALSE
 )
 }
@@ -28,6 +28,16 @@ returns all gears.}
 
 \item{year}{Integer. Year to filter on. \code{NULL} (default) returns all
 years.}
+
+\item{group_species}{Logical. Groups all selected species in the outputted \code{n_vessels}.}
+
+\item{group_flags}{Logical. Groups all selected flags in the outputted \code{n_vessels}.}
+
+\item{group_gears}{Logical. Groups all selected gears in the outputted \code{n_vessels}.}
+
+\item{include_size_classes}{Logical. Include the vessel size classes. Defaults to TRUE.}
+
+\item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
 }
 \value{
 A data frame (or tibble, depending on \code{db_query()}) with one

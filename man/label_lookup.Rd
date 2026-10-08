@@ -8,6 +8,8 @@ label_lookup(var_name, abbreviate_flags = FALSE)
 }
 \arguments{
 \item{var_name}{String. Column name, e.g. \code{"GEAR_CODE"}.}
+
+\item{abbreviate_flags}{Logical. Abbreviates the flag names (useful for plotting purposes).}
 }
 \value{
 A named character vector, or \code{NULL}.

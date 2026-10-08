@@ -1,8 +1,34 @@
 #' Plot a Pacific-centred base map
 #'
-#' Draws the world coastline using `ggplot2::map_data("world2")`
+#' Draws the world coastline using the Pacific-centred `"world2"` map from
+#' the `maps` package, optionally overlaid with Exclusive Economic Zone (EEZ)
+#' boundaries.
+#'
+#' @param xlim Numeric vector of length 2. Longitude limits in degrees east,
+#'   on a 0-360 scale (e.g. 180 is the antimeridian and 200 is 160°W).
+#'   Defaults to `c(100, 292)`. If `NULL`, the default is used.
+#' @param ylim Numeric vector of length 2. Latitude limits in degrees, with
+#'   negative values south of the equator. Defaults to `c(-62, 60)`. If
+#'   `NULL`, the default is used.
+#' @param land_fill Fill colour for land polygons. Defaults to
+#'   `mapping_colours("land")`.
+#' @param land_outline Outline colour for land polygons. Defaults to
+#'   `mapping_colours("land_outline")`.
+#' @param water_fill Background colour for the panel, representing water.
+#'   Defaults to `mapping_colours("water")`.
+#' @param base_size Base font size in points, passed to
+#'   [ggplot2::theme_minimal()]. Defaults to `15`.
+#' @param show_eez Logical. If `TRUE`, EEZ boundaries are drawn beneath the
+#'   land layer. Defaults to `FALSE`.
+#' @param eez_flag Character vector of flag codes used to select which EEZs
+#'   are drawn when `show_eez = TRUE`. If `NULL` (default), no flag filter is
+#'   applied. Ignored when `show_eez = FALSE`.
+#' @param eez_colour Colour of the EEZ boundary lines. Defaults to `"blue"`.
+#'   Ignored when `show_eez = FALSE`.
 #'
 #' @return A `ggplot` object.
+#'
+#' @importFrom maps map
 #' @export
 plot_pacific <- function(
   xlim = c(100, 292),
@@ -20,10 +46,11 @@ plot_pacific <- function(
   ylim <- ylim %||% c(-62, 60)
 
   p <-
-    ggplot2::map_data("world2") |>
+    maps::map("world2", plot = FALSE, fill = TRUE) |>
+    ggplot2::fortify() |>
     ggplot2::ggplot() +
     ggplot2::geom_polygon(
-      ggplot2::aes(x = long, y = lat, group = group),
+      ggplot2::aes(x = .data$long, y = .data$lat, group = .data$group),
       fill = land_fill,
       colour = land_outline,
       linewidth = 0.2
@@ -67,7 +94,7 @@ plot_pacific <- function(
           col = eez_colour
         ) +
         ggplot2::geom_polygon(
-          ggplot2::aes(x = long, y = lat, group = group),
+          ggplot2::aes(x = .data$long, y = .data$lat, group = .data$group),
           fill = land_fill,
           colour = land_outline,
           linewidth = 0.2

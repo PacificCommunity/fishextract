@@ -9,7 +9,7 @@
 #'   containing at least `FLAG_CODE`, `YY`, and `coverage` columns (and
 #'   optionally `GEAR_CODE`). If `NULL` (the default), `calculate_logbook_coverage()`
 #'   is called using `...`.
-#' @param flag_order Optional character vector giving the order flags
+#' @param flag_order Optional character vector of FLAG_CODEs, giving the order flags
 #'   should appear on the y-axis, top to bottom (as per
 #'   `ggplot2::scale_y_discrete(limits = ...)`). Defaults to descending
 #'   mean coverage across the data.
@@ -42,6 +42,7 @@
 #' @export
 plot_logbook_coverage <- function(
   coverage_data = NULL,
+  flag_order = NULL,
   ...
 ) {
   if (is.null(coverage_data)) {
@@ -51,13 +52,24 @@ plot_logbook_coverage <- function(
   p <-
     coverage_data |>
     dplyr::summarise(
-      coverage = mean(coverage),
-      .by = c(YY, FLAG_CODE, GEAR_CODE)
+      coverage = mean(.data$coverage),
+      .by = c(.data$YY, .data$FLAG_CODE, .data$GEAR_CODE)
     ) |>
-    dplyr::mutate(coverage = tidyr::replace_na(coverage, -1)) |>
-    dplyr::arrange(desc(FLAG_CODE)) |>
-    dplyr::mutate(FLAG_CODE = forcats::fct_inorder(FLAG_CODE)) |>
-    ggplot2::ggplot(ggplot2::aes(x = YY, y = FLAG_CODE, fill = coverage)) +
+    dplyr::mutate(coverage = tidyr::replace_na(.data$coverage, -1)) |>
+    dplyr::arrange(dplyr::desc(.data$FLAG_CODE)) |>
+    dplyr::mutate(
+      FLAG_CODE = if (is.null(flag_order)) {
+        .data$FLAG_CODE
+      } else {
+        factor(.data$FLAG_CODE, levels = flag_order)
+      }
+    ) |>
+    dplyr::mutate(FLAG_CODE = forcats::fct_inorder(.data$FLAG_CODE)) |>
+    ggplot2::ggplot(ggplot2::aes(
+      x = .data$YY,
+      y = .data$FLAG_CODE,
+      fill = .data$coverage
+    )) +
     ggplot2::geom_tile(color = "black") +
     ggplot2::scale_fill_gradientn(
       colors = grDevices::hcl.colors(20, "RdYlBu"),
@@ -67,11 +79,11 @@ plot_logbook_coverage <- function(
     ggplot2::geom_text(
       ggplot2::aes(
         label = dplyr::if_else(
-          coverage == -1,
+          .data$coverage == -1,
           "X",
-          paste0(as.character(round(coverage * 100)), "%")
+          paste0(as.character(round(.data$coverage * 100)), "%")
         ),
-        color = dplyr::if_else(abs(coverage - 0.50) < 0.36, FALSE, TRUE)
+        color = dplyr::if_else(abs(.data$coverage - 0.50) < 0.36, FALSE, TRUE)
       ),
       size = 3
     ) +

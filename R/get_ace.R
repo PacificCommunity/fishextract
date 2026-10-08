@@ -8,13 +8,30 @@
 #'   `"WX"`), or `NULL` (default) to include all oceans.
 #' @param flag A character vector of flag codes to filter on (e.g.
 #'   `c("ID", "VN")`), or `NULL` (default) to include all flags.
+#' @param fleet A character vector of fleet codes to filter by.
+#' @param eez A character vector of country codes to filter the EEZ(s) where the fishing has occured.
+#' @param in_archipelagic Logical. If `TRUE` filter for archipelagic waters only.
 #' @param gear A character vector of gear codes to filter on (e.g. `"L"`
 #'   for longline), or `NULL` (default) to include all gears.
 #' @param species A character vector of species codes to filter on (e.g.
 #'   `c("YFT", "SKJ")`), or `NULL` (default) to include all species.
 #' @param year A numeric or character vector of years to filter on (e.g.
 #'   `2024:2025`), or `NULL` (default) to include all years.
-#' @param group_species Boolean. If TRUE, return combined catch across all species specified
+#' @param exclude_flag Optional character vector of flag codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_fleet Optional character vector of fleet codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_gear Optional character vector of gear codes to exclude.
+#'   Defaults to `NULL`.
+#' @param exclude_species Optional character vector of species codes to
+#'   exclude. Defaults to `NULL`.
+#' @param exclude_eez Optional character vector of EEZ codes to exclude. Defaults to `NULL`.
+#' @param group_flags Logical. If `TRUE`, return combined catch across all flags specified. Default = `FALSE`.
+#' @param group_fleets Logical. If `TRUE`, return combined catch across all fleets specified. Default = `TRUE`.
+#' @param group_gears Logical. If `TRUE`, return combined catch across all gears specified. Default = `FALSE`.
+#' @param group_species Logical. If `TRUE`, return combined catch across all species specified. Default = `FALSE`.
+#' @param ungroup_eez Logical. If `TRUE`, ACE will be ungrouped into the EEZs where the catch occured. Default = `FALSE`.
+#' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
 #'
 #' @return A [tibble::tibble()] with columns `OCEAN_CODE`, `FLAG_CODE`,
 #'   `GEAR_CODE`, `SP_CODE`, `YY` and `sum_catch_mt`, one row per unique
@@ -175,7 +192,7 @@ get_ace <- function(
 
   ace_extract |>
     dplyr::summarise(
-      sum_catch_mt = sum(sum_catch_mt),
+      sum_catch_mt = sum(.data$sum_catch_mt),
       .by = -dplyr::all_of(c(drop_cols, "sum_catch_mt"))
     )
 }

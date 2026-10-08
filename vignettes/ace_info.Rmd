@@ -1,19 +1,10 @@
 ---
-title: "ace_info"
+title: "Annual Catch Estimates"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ace}
+  %\VignetteIndexEntry{ace_info}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup}
-library(fishextract)
-```
+The Annual Catch Estimates (ACE) are provided by each member country, for each species by gear combination. 

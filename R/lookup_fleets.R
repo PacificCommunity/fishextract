@@ -1,3 +1,13 @@
+#' Look up all the fleets for a given country or gear
+#'
+#'
+#' @param gear Optional character vector of gear codes to filter by.
+#'   If `NULL`, all gears are returned.
+#' @param flag Optional character vector of flag codes to filter by.
+#'   If `NULL`, all flags are returned.
+#' @param refresh Logical. Force a re-query of the database and refresh
+#'   the cache. Defaults to `FALSE`.
+#'
 #' @export
 lookup_fleets <- function(gear = NULL, flag = NULL, refresh = FALSE) {
   fleets <- pkg_cached(
@@ -21,13 +31,13 @@ lookup_fleets <- function(gear = NULL, flag = NULL, refresh = FALSE) {
   out <- if (is.null(gear)) {
     fleets
   } else {
-    fleets |> dplyr::filter(GEAR_CODE %in% gear)
+    fleets |> dplyr::filter(.data$GEAR_CODE %in% gear)
   }
 
   out <- if (is.null(flag)) {
     fleets
   } else {
-    fleets |> dplyr::filter(FLAG_CODE %in% flag)
+    fleets |> dplyr::filter(.data$FLAG_CODE %in% flag)
   }
 
   return(out)
