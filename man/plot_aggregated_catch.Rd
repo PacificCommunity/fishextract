@@ -5,7 +5,7 @@
 \title{Plot aggregated catch as scatterpies on a Pacific basemap}
 \usage{
 plot_aggregated_catch(
-  aggregated_data = NULL,
+  aggregated_data,
   colour_by = NULL,
   facet_by = NULL,
   pie_radius = NULL,
@@ -13,8 +13,7 @@ plot_aggregated_catch(
   xlim = NULL,
   ylim = NULL,
   lim_buffer = 0.1,
-  water_fill = "white",
-  ...
+  water_fill = "white"
 )
 }
 \arguments{
@@ -60,10 +59,10 @@ proportional breakdown of \code{colour_by}. A size legend is added
 automatically, and the plot can optionally be faceted.
 }
 \examples{
-\dontrun{
-plot_aggregated_catch(catch_data, colour_by = SP_CODE)
-plot_aggregated_catch(catch_data, colour_by = SP_CODE, facet_by = yy)
-plot_aggregated_catch(colour_by = SP_CODE, year = 2020:2023)
-}
+
+agg_catch <- get_aggregated_catch(year = 2020:2023, species = c("YFT", "SKJ"))
+plot_aggregated_catch(agg_catch)
+plot_aggregated_catch(agg_catch, colour_by = SP_CODE, facet_by = year)
+
 
 }
