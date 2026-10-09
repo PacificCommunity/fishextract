@@ -51,4 +51,5 @@ get_md2_shp <- function(
     ) |>
     sf::st_as_sf(wkt = "geometry", crs = crs) |>
     sf::st_shift_longitude()
+  return(assessment_region)
 }

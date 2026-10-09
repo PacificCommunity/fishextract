@@ -3,6 +3,7 @@
 export(abbreviate_flagname)
 export(as_region)
 export(calculate_logbook_coverage)
+export(catcheffort_byregion)
 export(db_connection)
 export(db_query)
 export(db_summary)
