@@ -83,6 +83,7 @@ get_aggregated_catcheffort <- function(
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('GEAR_CODE', gear)}
+    AND {.sql_filter('SP_CODE', species)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}

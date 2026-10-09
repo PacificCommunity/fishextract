@@ -23,7 +23,7 @@ library(fishextract)
 By default, the ` get_logbook_catch()` function returns the catch at the fishing set-level. 
 
 ```{r}
-get_logbook_catch(flag = "PG", year = 2020:2021, species = list_species("tunas")) |> 
-  head(6)
+#| eval: false
+get_logbook_catch(flag = "PG", year = 2020:2021, species = list_species("tunas")) 
 ```
 
