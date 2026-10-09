@@ -3,13 +3,14 @@
 #' @param bounding_box sf object either outputted from `get_md2_shp` or
 #' @param linewidth Boundary line width. Defaults to `0.5`.
 #' @param plot Optional ggplot object for the assessment regions to be plotted over
+#' @param buffer Optional numeric. Buffer around outside of plotting area.
 #' @param ... optional arguments to be passed to the `plot_pacific` function
 #'
 #' @return A ggplot object with region boundary polygons added.
 #'
 #' @examples
 #'
-#' plot_assessment_region(bounding_box = get_md2_shp("YFT"))
+#' plot_assessment_region(bounding_box = get_md2_shp(species ="YFT"))
 #'
 #' # custom region
 #' areas <- tibble::tribble(

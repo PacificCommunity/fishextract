@@ -7,8 +7,7 @@
 #' automatically, and the plot can optionally be faceted.
 #'
 #' @param aggregated_data A data frame of catch data with, at minimum,
-#'   `latd`, `lond` and `sum_catch_mt` columns. If `NULL` (the default),
-#'   data are pulled via [calculate_logbook_coverage()], with `...` passed through.
+#'   `latd`, `lond` and `sum_catch_mt` columns.
 #' @param colour_by <[`data-masked`][rlang::args_data_masking]> Column used
 #'   to fill and split each pie into wedges (e.g. species code). Set to
 #'   `NULL` to omit colour splitting and plot single-colour pies.
@@ -25,8 +24,6 @@
 #'   to `c(-62, 60)`.
 #' @param lim_buffer Numeric. Buffer around the outermost data points. Defaults to `0.1`.
 #' @param water_fill Character string. Fill colour of the water.
-#' @param ... Additional arguments passed to [calculate_logbook_coverage()] when
-#'   `aggregated_data` is `NULL`.
 #'
 #' @return A `ggplot` object.
 #'

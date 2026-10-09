@@ -17,6 +17,8 @@ plot_assessment_region(
 
 \item{linewidth}{Boundary line width. Defaults to \code{0.5}.}
 
+\item{buffer}{Optional numeric. Buffer around outside of plotting area.}
+
 \item{plot}{Optional ggplot object for the assessment regions to be plotted over}
 
 \item{...}{optional arguments to be passed to the \code{plot_pacific} function}
@@ -29,7 +31,7 @@ Add Stock assessment region boundaries to a Pacific map
 }
 \examples{
 
-plot_assessment_region(bounding_box = get_md2_shp("YFT"))
+plot_assessment_region(bounding_box = get_md2_shp(species ="YFT"))
 
 # custom region
 areas <- tibble::tribble(

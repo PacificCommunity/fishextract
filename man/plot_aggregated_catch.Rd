@@ -18,8 +18,7 @@ plot_aggregated_catch(
 }
 \arguments{
 \item{aggregated_data}{A data frame of catch data with, at minimum,
-\code{latd}, \code{lond} and \code{sum_catch_mt} columns. If \code{NULL} (the default),
-data are pulled via \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}}, with \code{...} passed through.}
+\code{latd}, \code{lond} and \code{sum_catch_mt} columns.}
 
 \item{colour_by}{<\code{\link[rlang:args_data_masking]{data-masked}}> Column used
 to fill and split each pie into wedges (e.g. species code). Set to
@@ -44,9 +43,6 @@ to \code{c(-62, 60)}.}
 \item{lim_buffer}{Numeric. Buffer around the outermost data points. Defaults to \code{0.1}.}
 
 \item{water_fill}{Character string. Fill colour of the water.}
-
-\item{...}{Additional arguments passed to \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}} when
-\code{aggregated_data} is \code{NULL}.}
 }
 \value{
 A \code{ggplot} object.

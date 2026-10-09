@@ -10,6 +10,10 @@ get_md2_shp(model_id = NULL, species = NULL, crs = 4326)
 \item{model_id}{Optional (unless \code{species} not specified). MD2 \code{model_id} number}
 
 \item{species}{Optional (unless \code{model_id} not specified). Species used to identify \code{model_id}.}
+
+\item{crs}{Coordinate reference system of the \code{lon}/\code{lat} values, passed to
+\code{\link[sf:st_sfc]{sf::st_sfc()}}. Defaults to \code{4326} (WGS84). Ignored when \code{points} is an
+\code{sf}, \code{sfc} or \code{bbox} object, which carry their own CRS.}
 }
 \value{
 A ggplot object with region boundary polygons added.

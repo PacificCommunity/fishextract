@@ -17,14 +17,18 @@ catcheffort_byregion <- function(
     sf::st_join(assessment_region, join = sf::st_within, left = FALSE) |>
     sf::st_drop_geometry() |>
     dplyr::summarise(
-      sum_catch_mt = sum(sum_catch_mt, na.rm = TRUE),
-      .by = c(region_id, SP_CODE, GEAR_CODE)
+      sum_catch_mt = sum(.data$sum_catch_mt, na.rm = TRUE),
+      hhooks = sum(.data$hhooks, na.rm = TRUE),
+      VESS_N = sum(.data$VESS_N, na.rm = TRUE),
+      days = sum(.data$days, na.rm = TRUE),
+      sets = sum(.data$sets, na.rm = TRUE),
+      .by = c(.data$region_id, .data$SP_CODE, .data$GEAR_CODE)
     ) |>
     tidyr::complete(
       region_id = assessment_region$region_id,
-      SP_CODE,
-      GEAR_CODE,
-      fill = list(sum_catch_mt = 0)
+      .data$SP_CODE,
+      .data$GEAR_CODE,
+      fill = list(sum_catch_mt = 0, hhooks = 0, VESS_N = 0, days = 0, sets = 0)
     )
 }
 
@@ -32,7 +36,9 @@ catcheffort_byregion <- function(
 #   flag = "FJ",
 #   year = 2020:2025,
 #   species = "YFT",
-#   gear = "L"
+#   gear = c("L", "H")
 # )
 # y <- get_md2_shp(species = "YFT")
 # catcheffort_byregion(x, y)
+
+# # x |> dplyr::filter(!is.na(sets))

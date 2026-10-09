@@ -23,8 +23,6 @@
 #'   Defaults to `NULL`.
 #' @param exclude_species Optional character vector of species codes to
 #'   exclude. Defaults to `NULL`.
-#' @param broad_scale Logical.  If `TRUE`, gears will return 5x5 gridcell instead of the fine scale 1x1
-#'   degree gridcell. Note that 1x1 gridcell is only available for purse-seine.
 #' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
 #' @param ... optional arguments that get passed to `db_query()` such as
 #'   the database server and connection
@@ -50,23 +48,23 @@ get_aggregated_catch <- function(
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  broad_scale = FALSE,
+  # broad_scale = FALSE,
   show_sql = FALSE,
   ...
 ) {
-  gear <- match.arg(gear, lookup_gears()$GEAR_CODE, several.ok = TRUE)
+  # verify the inputted gear list
+  if (!is.null(gear)) {
+    gear <- match.arg(gear, lookup_gears()$GEAR_CODE, several.ok = TRUE)
+  }
 
-  generate_agg_catch_query <- function(.gear) {
-    # only purse-seine has 1x1 resolution
-    if (broad_scale & .gear == "S") {
-      gear_table <- "A"
-    } else {
-      gear_table <- .gear
-    }
+  # fix at the 'A_BEST' table for now (all gears, low res for S)
+  # can modify function later to extract the higher resoulation for S gear (if required)
+  gear_table <- "A"
 
-    sp_grouping <- dplyr::if_else(group_species, "", "SP_CODE,")
-    numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
+  numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
+  sp_grouping <- dplyr::if_else(group_species, "", "SP_CODE,")
 
+  sql_query <-
     glue::glue(
       "
   SELECT 
@@ -79,11 +77,12 @@ get_aggregated_catch <- function(
     SUM(SP_MT) AS sum_catch_mt, 
     CAST(latd AS DECIMAL) AS latd, 
 CAST(lond AS DECIMAL) AS lond
-  FROM best.{.gear}_BEST_AGG_CATCH c
-	  FULL JOIN best.{.gear}_BEST_AGG a ON a.{.gear}_BEST_ID = c.{.gear}_BEST_ID
+  FROM best.{gear_table}_BEST_AGG_CATCH c
+	  FULL JOIN best.{gear_table}_BEST_AGG a ON a.{gear_table}_BEST_ID = c.{gear_table}_BEST_ID
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area',  numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
+    AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('SP_CODE', species)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
@@ -100,19 +99,12 @@ CAST(lond AS DECIMAL) AS lond
     CAST(lond AS DECIMAL)
   "
     )
-  }
-
-  sql_query <-
-    unique(gear) |>
-    purrr::map_chr(generate_agg_catch_query) |>
-    stringr::str_flatten("\nUNION ALL\n")
 
   if (show_sql) {
     .clean_sql(sql_query)
   }
 
-  out <-
-    db_query(sql_query, ...)
+  out <- db_query(sql_query, ...)
 
   return(out)
 }

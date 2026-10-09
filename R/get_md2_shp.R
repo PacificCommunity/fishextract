@@ -6,6 +6,9 @@
 #'
 #' @param model_id Optional (unless `species` not specified). MD2 `model_id` number
 #' @param species Optional (unless `model_id` not specified). Species used to identify `model_id`.
+#' @param crs Coordinate reference system of the `lon`/`lat` values, passed to
+#'   [sf::st_sfc()]. Defaults to `4326` (WGS84). Ignored when `points` is an
+#'   `sf`, `sfc` or `bbox` object, which carry their own CRS.
 #'
 #' @return A ggplot object with region boundary polygons added.
 #'
@@ -20,15 +23,17 @@ get_md2_shp <- function(
       "Specify exactly one of {.arg model_id} or {.arg species}."
     )
   }
+  if (!is.null(species)) {
+    verified_species <- rlang::arg_match(species, c("YFT", "BET", "ALB", "SKJ"))
+    model_id <- switch(
+      verified_species,
+      YFT = 130,
+      BET = 129,
+      SKJ = 108,
+      ALB = 103
+    )
+  }
 
-  verified_species <- rlang::arg_match(species, c("YFT", "BET", "ALB", "SKJ"))
-  model_id <- switch(
-    verified_species,
-    YFT = 130,
-    BET = 129,
-    SKJ = 108,
-    ALB = 103
-  )
   assessment_region <-
     db_query(
       server = "noufamesql01",
