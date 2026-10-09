@@ -5,7 +5,7 @@
 \title{Plot aggregated catch as scatterpies on a Pacific basemap}
 \usage{
 plot_aggregated_catch(
-  aggregated_data = NULL,
+  aggregated_data,
   colour_by = NULL,
   facet_by = NULL,
   pie_radius = NULL,
@@ -13,14 +13,12 @@ plot_aggregated_catch(
   xlim = NULL,
   ylim = NULL,
   lim_buffer = 0.1,
-  water_fill = "white",
-  ...
+  water_fill = "white"
 )
 }
 \arguments{
 \item{aggregated_data}{A data frame of catch data with, at minimum,
-\code{latd}, \code{lond} and \code{sum_catch_mt} columns. If \code{NULL} (the default),
-data are pulled via \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}}, with \code{...} passed through.}
+\code{latd}, \code{lond} and \code{sum_catch_mt} columns.}
 
 \item{colour_by}{<\code{\link[rlang:args_data_masking]{data-masked}}> Column used
 to fill and split each pie into wedges (e.g. species code). Set to
@@ -45,9 +43,6 @@ to \code{c(-62, 60)}.}
 \item{lim_buffer}{Numeric. Buffer around the outermost data points. Defaults to \code{0.1}.}
 
 \item{water_fill}{Character string. Fill colour of the water.}
-
-\item{...}{Additional arguments passed to \code{\link[=calculate_logbook_coverage]{calculate_logbook_coverage()}} when
-\code{aggregated_data} is \code{NULL}.}
 }
 \value{
 A \code{ggplot} object.
@@ -60,10 +55,10 @@ proportional breakdown of \code{colour_by}. A size legend is added
 automatically, and the plot can optionally be faceted.
 }
 \examples{
-\dontrun{
-plot_aggregated_catch(catch_data, colour_by = SP_CODE)
-plot_aggregated_catch(catch_data, colour_by = SP_CODE, facet_by = yy)
-plot_aggregated_catch(colour_by = SP_CODE, year = 2020:2023)
-}
+
+agg_catch <- get_aggregated_catch(year = 2020:2023, species = c("YFT", "SKJ"))
+plot_aggregated_catch(agg_catch)
+plot_aggregated_catch(agg_catch, colour_by = SP_CODE, facet_by = year)
+
 
 }

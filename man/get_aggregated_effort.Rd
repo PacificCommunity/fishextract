@@ -12,7 +12,6 @@ get_aggregated_effort(
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  broad_scale = FALSE,
   show_sql = FALSE,
   ...
 )
@@ -38,9 +37,6 @@ Defaults to \code{NULL}.}
 
 \item{exclude_species}{Optional character vector of species codes to
 exclude. Defaults to \code{NULL}.}
-
-\item{broad_scale}{Logical.  If \code{TRUE}, gears will return 5x5 gridcell instead of the fine scale 1x1
-degree gridcell. Note that 1x1 gridcell is only available for purse-seine.}
 
 \item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
 

@@ -7,8 +7,7 @@
 #' automatically, and the plot can optionally be faceted.
 #'
 #' @param aggregated_data A data frame of catch data with, at minimum,
-#'   `latd`, `lond` and `sum_catch_mt` columns. If `NULL` (the default),
-#'   data are pulled via [calculate_logbook_coverage()], with `...` passed through.
+#'   `latd`, `lond` and `sum_catch_mt` columns.
 #' @param colour_by <[`data-masked`][rlang::args_data_masking]> Column used
 #'   to fill and split each pie into wedges (e.g. species code). Set to
 #'   `NULL` to omit colour splitting and plot single-colour pies.
@@ -25,21 +24,19 @@
 #'   to `c(-62, 60)`.
 #' @param lim_buffer Numeric. Buffer around the outermost data points. Defaults to `0.1`.
 #' @param water_fill Character string. Fill colour of the water.
-#' @param ... Additional arguments passed to [calculate_logbook_coverage()] when
-#'   `aggregated_data` is `NULL`.
 #'
 #' @return A `ggplot` object.
 #'
 #' @examples
-#' \dontrun{
-#' plot_aggregated_catch(catch_data, colour_by = SP_CODE)
-#' plot_aggregated_catch(catch_data, colour_by = SP_CODE, facet_by = yy)
-#' plot_aggregated_catch(colour_by = SP_CODE, year = 2020:2023)
-#' }
+#'
+#' agg_catch <- get_aggregated_catch(year = 2020:2023, species = c("YFT", "SKJ"))
+#' plot_aggregated_catch(agg_catch)
+#' plot_aggregated_catch(agg_catch, colour_by = SP_CODE, facet_by = year)
+#'
 #'
 #' @export
 plot_aggregated_catch <- function(
-  aggregated_data = NULL,
+  aggregated_data,
   colour_by = NULL,
   facet_by = NULL,
   pie_radius = NULL,
@@ -47,13 +44,8 @@ plot_aggregated_catch <- function(
   xlim = NULL,
   ylim = NULL,
   lim_buffer = 0.1,
-  water_fill = "white",
-  ...
+  water_fill = "white"
 ) {
-  if (is.null(aggregated_data)) {
-    aggregated_data <- calculate_logbook_coverage(...)
-  }
-
   if (is.null(xlim) || is.null(ylim)) {
     lond_360_range <- range(lon_to_360(aggregated_data$lond), na.rm = TRUE)
     latd_range <- range(aggregated_data$latd, na.rm = TRUE)
@@ -76,16 +68,10 @@ plot_aggregated_catch <- function(
     NULL
   }
 
-  # this makes the pie charts center in the gridcell
-  # note that `has_colour == TRUE` means a pie-chart is being plotted
-  # note that `has_colour == FALSE` means a tile-plot is being plotted (doesn't need centering)
-  if (has_colour) {
-    unique_lats <- sort(unique(aggregated_data$latd))
-    latlon_gaps <- min(unique_lats - dplyr::lag(unique_lats, 1), na.rm = TRUE)
-    latlon_offset <- latlon_gaps / 2
-  } else {
-    latlon_offset <- 0
-  }
+  # calculate the lat-offset
+  unique_lats <- sort(unique(aggregated_data$latd))
+  latlon_gaps <- min(unique_lats - dplyr::lag(unique_lats, 1), na.rm = TRUE)
+  latlon_offset <- latlon_gaps / 2
 
   fill_values <- if (has_colour) lookup_colour(colour_var) else NULL
   fill_labels <- if (has_colour) label_lookup(colour_var) else NULL
@@ -101,7 +87,7 @@ plot_aggregated_catch <- function(
     aggregated_data |>
     dplyr::summarise(
       sum_catch_mt = sum(.data$sum_catch_mt),
-      .by = dplyr::all_of(.data$group_vars)
+      .by = dplyr::all_of(group_vars)
     ) |>
     dplyr::mutate(lond_360 = lon_to_360(.data$lond)) |>
     dplyr::mutate(
@@ -110,7 +96,7 @@ plot_aggregated_catch <- function(
       prop = .data$sum_catch_mt / .data$total_catch_mt,
       end = cumsum(.data$prop) * 2 * pi,
       start = dplyr::lag(.data$end, default = 0),
-      .by = setdiff(.data$group_vars, .data$colour_var)
+      .by = setdiff(group_vars, colour_var)
     )
 
   # auto calculate the pie radius if it isn't provided (is NULl)

@@ -46,8 +46,7 @@ plot_pacific <- function(
   ylim <- ylim %||% c(-62, 60)
 
   p <-
-    maps::map("world2", plot = FALSE, fill = TRUE) |>
-    ggplot2::fortify() |>
+    ggplot2::map_data("world2") |>
     ggplot2::ggplot() +
     ggplot2::geom_polygon(
       ggplot2::aes(x = .data$long, y = .data$lat, group = .data$group),

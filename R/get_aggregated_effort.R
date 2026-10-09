@@ -19,8 +19,7 @@
 #'   Defaults to `NULL`.
 #' @param exclude_species Optional character vector of species codes to
 #'   exclude. Defaults to `NULL`.
-#' @param broad_scale Logical.  If `TRUE`, gears will return 5x5 gridcell instead of the fine scale 1x1
-#'   degree gridcell. Note that 1x1 gridcell is only available for purse-seine.
+
 #' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
 #' @param ... optional arguments that get passed to `db_query()` such as
 #'   the database server and connection
@@ -44,39 +43,21 @@ get_aggregated_effort <- function(
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  broad_scale = FALSE,
+  # broad_scale = FALSE,
   show_sql = FALSE,
   ...
 ) {
+  # verify the inputted gear list
   gear <- match.arg(gear, lookup_gears()$GEAR_CODE, several.ok = TRUE)
 
-  generate_agg_effort_query <- function(.gear) {
-    effort_columns <-
-      switch(
-        .gear,
-        L = "hhooks, VESS_N, NULL AS days, NULL AS sets",
-        S = "days, NULL AS hhooks, NULL AS VESS_N, NULL AS sets",
-        T = "days, NULL AS VESS_N, NULL AS sets, NULL AS hhooks",
-        P = "days, NULL AS VESS_N, NULL AS sets, NULL AS hhooks",
-        O = "VESS_N, days, sets, hhooks",
-        A = "VESS_N, days, sets, hhooks"
-      )
+  # fix at the all table for now
+  # can modify function later to extract the higher resoulation for S gear (if required)
+  gear_table <- "A"
+  effort_columns_grouping <- "VESS_N, days, sets, hhooks"
 
-    effort_columns_grouping <-
-      effort_columns |>
-      stringr::str_split_1(",\\s*") |>
-      stringr::str_subset("NULL", negate = TRUE) |>
-      stringr::str_flatten(", ")
+  numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
 
-    # only purse-seine has 1x1 resolution
-    if (broad_scale & .gear == "S") {
-      gear_table <- "A"
-    } else {
-      gear_table <- .gear
-    }
-
-    numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
-
+  sql_query <-
     glue::glue(
       "
   SELECT 
@@ -93,7 +74,7 @@ get_aggregated_effort <- function(
     AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
-    AND {.sql_filter('GEAR_CODE', .gear)}
+    AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
@@ -108,12 +89,6 @@ get_aggregated_effort <- function(
     {effort_columns_grouping} 
   "
     )
-  }
-
-  sql_query <-
-    unique(gear) |>
-    purrr::map_chr(generate_agg_effort_query) |>
-    stringr::str_flatten("\nUNION ALL\n")
 
   if (show_sql) {
     .clean_sql(sql_query)
