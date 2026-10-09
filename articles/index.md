@@ -3,7 +3,8 @@
 ### All vignettes
 
 - [ace_extract](https://pacificcommunity.github.io/fishextract/articles/ace_extract.md):
-- [ace_info](https://pacificcommunity.github.io/fishextract/articles/ace_info.md):
+- [Annual Catch
+  Estimates](https://pacificcommunity.github.io/fishextract/articles/ace_info.md):
 - [ace_plot](https://pacificcommunity.github.io/fishextract/articles/ace_plot.md):
 - [aggregate_extract](https://pacificcommunity.github.io/fishextract/articles/aggregate_extract.md):
 - [aggregate_info](https://pacificcommunity.github.io/fishextract/articles/aggregate_info.md):

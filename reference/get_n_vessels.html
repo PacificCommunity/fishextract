@@ -79,7 +79,7 @@ ocean, flag state, gear type, and/or year. Filters are built via
 <span>  group_species <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  group_flags <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  group_gears <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  include_size_classes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  include_size_classes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_sql <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -106,6 +106,26 @@ returns all gears.</p></dd>
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
 <dd><p>Integer. Year to filter on. <code>NULL</code> (default) returns all
 years.</p></dd>
+
+
+<dt id="arg-group-species">group_species<a class="anchor" aria-label="anchor" href="#arg-group-species"></a></dt>
+<dd><p>Logical. Groups all selected species in the outputted <code>n_vessels</code>.</p></dd>
+
+
+<dt id="arg-group-flags">group_flags<a class="anchor" aria-label="anchor" href="#arg-group-flags"></a></dt>
+<dd><p>Logical. Groups all selected flags in the outputted <code>n_vessels</code>.</p></dd>
+
+
+<dt id="arg-group-gears">group_gears<a class="anchor" aria-label="anchor" href="#arg-group-gears"></a></dt>
+<dd><p>Logical. Groups all selected gears in the outputted <code>n_vessels</code>.</p></dd>
+
+
+<dt id="arg-include-size-classes">include_size_classes<a class="anchor" aria-label="anchor" href="#arg-include-size-classes"></a></dt>
+<dd><p>Logical. Include the vessel size classes. Defaults to TRUE.</p></dd>
+
+
+<dt id="arg-show-sql">show_sql<a class="anchor" aria-label="anchor" href="#arg-show-sql"></a></dt>
+<dd><p>Logical.  If <code>TRUE</code>, prints the SQL code used to extract the data.</p></dd>
 
 </dl></div>
     <div class="section level2">

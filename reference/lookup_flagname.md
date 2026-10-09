@@ -27,8 +27,8 @@ lookup_flagname(flag = NULL, simplify = FALSE, refresh = FALSE)
 
 - refresh:
 
-  Logical. Force a re-query of the database and refresh the cache, e.g.
-  if `ref.countries` has been updated this session. Defaults to `FALSE`.
+  Logical. Force a re-query of the database and refresh the cache.
+  Defaults to `FALSE`.
 
 ## Details
 

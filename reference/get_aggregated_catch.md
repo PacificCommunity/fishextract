@@ -1,4 +1,4 @@
-# Pull 5x5 aggregated catch data from the BEST database
+# Pull 5x5 aggregated catch data
 
 Queries `best.A_BEST_AGG_CATCH` (joined to `best.A_BEST_AGG`) for catch
 summed by flag, gear, species, year and location, with optional filters
@@ -14,10 +14,12 @@ get_aggregated_catch(
   flag = NULL,
   gear = NULL,
   species = NULL,
+  group_species = FALSE,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  fine_scale = FALSE
+  show_sql = FALSE,
+  ...
 )
 ```
 
@@ -48,6 +50,11 @@ get_aggregated_catch(
   Optional character vector of species codes to include. Defaults to
   `NULL` (all species).
 
+- group_species:
+
+  Logical. Groups all seleceted species into a single catch value.
+  Defaults to `FALSE`.
+
 - exclude_flag:
 
   Optional character vector of flag codes to exclude. Defaults to
@@ -63,17 +70,15 @@ get_aggregated_catch(
   Optional character vector of species codes to exclude. Defaults to
   `NULL`.
 
-- group_flags:
+- show_sql:
 
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+  Logical. If `TRUE`, prints the SQL code used to extract the data.
 
-- group_gears:
+- ...:
 
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
-
-- group_species:
-
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+  optional arguments that get passed to
+  [`db_query()`](https://pacificcommunity.github.io/fishextract/reference/db_query.md)
+  such as the database server and connection
 
 ## Value
 

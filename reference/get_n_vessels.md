@@ -16,7 +16,7 @@ get_n_vessels(
   group_species = FALSE,
   group_flags = FALSE,
   group_gears = FALSE,
-  include_size_classes = FALSE,
+  include_size_classes = TRUE,
   show_sql = FALSE
 )
 ```
@@ -39,6 +39,26 @@ get_n_vessels(
 - year:
 
   Integer. Year to filter on. `NULL` (default) returns all years.
+
+- group_species:
+
+  Logical. Groups all selected species in the outputted `n_vessels`.
+
+- group_flags:
+
+  Logical. Groups all selected flags in the outputted `n_vessels`.
+
+- group_gears:
+
+  Logical. Groups all selected gears in the outputted `n_vessels`.
+
+- include_size_classes:
+
+  Logical. Include the vessel size classes. Defaults to TRUE.
+
+- show_sql:
+
+  Logical. If `TRUE`, prints the SQL code used to extract the data.
 
 ## Value
 

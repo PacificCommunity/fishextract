@@ -16,6 +16,10 @@ label_lookup(var_name, abbreviate_flags = FALSE)
 
   String. Column name, e.g. `"GEAR_CODE"`.
 
+- abbreviate_flags:
+
+  Logical. Abbreviates the flag names (useful for plotting purposes).
+
 ## Value
 
 A named character vector, or `NULL`.

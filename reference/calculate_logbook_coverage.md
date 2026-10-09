@@ -46,11 +46,32 @@ calculate_logbook_coverage(
 
   Optional character vector of species codes to filter by.
 
+- exclude_flag:
+
+  Optional character vector of flag codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_gear:
+
+  Optional character vector of gear codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_species:
+
+  Optional character vector of species codes to exclude. Defaults to
+  `NULL`.
+
 - group_species:
 
   Logical. If `TRUE`, catch is summed across all species within each
   remaining grouping (i.e. `SP_CODE` is dropped before summarising).
   Defaults to `FALSE`.
+
+- ...:
+
+  optional arguments that get passed to
+  [`db_query()`](https://pacificcommunity.github.io/fishextract/reference/db_query.md)
+  such as the database server and connection
 
 ## Value
 

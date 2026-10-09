@@ -9,7 +9,7 @@ one gear is present in the data.
 ## Usage
 
 ``` r
-plot_logbook_coverage(coverage_data = NULL, ...)
+plot_logbook_coverage(coverage_data = NULL, flag_order = NULL, ...)
 ```
 
 ## Arguments
@@ -23,19 +23,19 @@ plot_logbook_coverage(coverage_data = NULL, ...)
   [`calculate_logbook_coverage()`](https://pacificcommunity.github.io/fishextract/reference/calculate_logbook_coverage.md)
   is called using `...`.
 
+- flag_order:
+
+  Optional character vector of FLAG_CODEs, giving the order flags should
+  appear on the y-axis, top to bottom (as per
+  `ggplot2::scale_y_discrete(limits = ...)`). Defaults to descending
+  mean coverage across the data.
+
 - ...:
 
   Additional arguments passed to
   [`calculate_logbook_coverage()`](https://pacificcommunity.github.io/fishextract/reference/calculate_logbook_coverage.md)
   when `coverage_data` is `NULL` (e.g. `in_wcpfc`, `flag`, `gear`,
   `species`, `year`, `group_species`).
-
-- flag_order:
-
-  Optional character vector giving the order flags should appear on the
-  y-axis, top to bottom (as per
-  `ggplot2::scale_y_discrete(limits = ...)`). Defaults to descending
-  mean coverage across the data.
 
 ## Value
 

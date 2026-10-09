@@ -1,4 +1,4 @@
-# Extract aggregated catch data (either at 1x1 or 5x5 gridcell) from the BEST database
+# Extract aggregated effort data (either at 1x1 or 5x5 gridcell)
 
 Queries `best.A_BEST_AGG` for effort (effort type determined by the
 selected gear) summed by flag, gear, species, year and location, with
@@ -12,11 +12,12 @@ get_aggregated_effort(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
-  gear = NULL,
+  gear = c("L", "S", "T", "P", "O"),
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
-  fine_scale = FALSE
+  show_sql = FALSE,
+  ...
 )
 ```
 
@@ -57,22 +58,15 @@ get_aggregated_effort(
   Optional character vector of species codes to exclude. Defaults to
   `NULL`.
 
-- species:
+- show_sql:
 
-  Optional character vector of species codes to include. Defaults to
-  `NULL` (all species).
+  Logical. If `TRUE`, prints the SQL code used to extract the data.
 
-- group_flags:
+- ...:
 
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
-
-- group_gears:
-
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
-
-- group_species:
-
-  Logical; not currently implemented (see Note). Defaults to `FALSE`.
+  optional arguments that get passed to
+  [`db_query()`](https://pacificcommunity.github.io/fishextract/reference/db_query.md)
+  such as the database server and connection
 
 ## Value
 

@@ -110,6 +110,10 @@ summed by ocean, flag, gear, species and year. Any filter left as <code>NULL</co
 <code>c("ID", "VN")</code>), or <code>NULL</code> (default) to include all flags.</p></dd>
 
 
+<dt id="arg-fleet">fleet<a class="anchor" aria-label="anchor" href="#arg-fleet"></a></dt>
+<dd><p>A character vector of fleet codes to filter by.</p></dd>
+
+
 <dt id="arg-gear">gear<a class="anchor" aria-label="anchor" href="#arg-gear"></a></dt>
 <dd><p>A character vector of gear codes to filter on (e.g. <code>"L"</code>
 for longline), or <code>NULL</code> (default) to include all gears.</p></dd>
@@ -120,8 +124,60 @@ for longline), or <code>NULL</code> (default) to include all gears.</p></dd>
 <code>c("YFT", "SKJ")</code>), or <code>NULL</code> (default) to include all species.</p></dd>
 
 
+<dt id="arg-eez">eez<a class="anchor" aria-label="anchor" href="#arg-eez"></a></dt>
+<dd><p>A character vector of country codes to filter the EEZ(s) where the fishing has occured.</p></dd>
+
+
+<dt id="arg-in-archipelagic">in_archipelagic<a class="anchor" aria-label="anchor" href="#arg-in-archipelagic"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> filter for archipelagic waters only.</p></dd>
+
+
+<dt id="arg-exclude-flag">exclude_flag<a class="anchor" aria-label="anchor" href="#arg-exclude-flag"></a></dt>
+<dd><p>Optional character vector of flag codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-fleet">exclude_fleet<a class="anchor" aria-label="anchor" href="#arg-exclude-fleet"></a></dt>
+<dd><p>Optional character vector of fleet codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-gear">exclude_gear<a class="anchor" aria-label="anchor" href="#arg-exclude-gear"></a></dt>
+<dd><p>Optional character vector of gear codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-species">exclude_species<a class="anchor" aria-label="anchor" href="#arg-exclude-species"></a></dt>
+<dd><p>Optional character vector of species codes to
+exclude. Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-eez">exclude_eez<a class="anchor" aria-label="anchor" href="#arg-exclude-eez"></a></dt>
+<dd><p>Optional character vector of EEZ codes to exclude. Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-group-flags">group_flags<a class="anchor" aria-label="anchor" href="#arg-group-flags"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, return combined catch across all flags specified. Default = <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-group-fleets">group_fleets<a class="anchor" aria-label="anchor" href="#arg-group-fleets"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, return combined catch across all fleets specified. Default = <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-group-gears">group_gears<a class="anchor" aria-label="anchor" href="#arg-group-gears"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, return combined catch across all gears specified. Default = <code>FALSE</code>.</p></dd>
+
+
 <dt id="arg-group-species">group_species<a class="anchor" aria-label="anchor" href="#arg-group-species"></a></dt>
-<dd><p>Boolean. If TRUE, return combined catch across all species specified</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, return combined catch across all species specified. Default = <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-ungroup-eez">ungroup_eez<a class="anchor" aria-label="anchor" href="#arg-ungroup-eez"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, ACE will be ungrouped into the EEZs where the catch occured. Default = <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-show-sql">show_sql<a class="anchor" aria-label="anchor" href="#arg-show-sql"></a></dt>
+<dd><p>Logical.  If <code>TRUE</code>, prints the SQL code used to extract the data.</p></dd>
 
 </dl></div>
     <div class="section level2">

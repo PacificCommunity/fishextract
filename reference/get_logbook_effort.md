@@ -15,7 +15,8 @@ get_logbook_effort(
   species = NULL,
   exclude_flag = NULL,
   exclude_species = NULL,
-  show_sql = FALSE
+  show_sql = FALSE,
+  ...
 )
 ```
 
@@ -43,6 +44,26 @@ get_logbook_effort(
 - species:
 
   Optional character vector of species codes to filter by.
+
+- exclude_flag:
+
+  Optional character vector of flag codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_species:
+
+  Optional character vector of species codes to exclude. Defaults to
+  `NULL`.
+
+- show_sql:
+
+  Logical. If `TRUE`, prints the SQL code used to extract the data.
+
+- ...:
+
+  optional arguments that get passed to
+  [`db_query()`](https://pacificcommunity.github.io/fishextract/reference/db_query.md)
+  such as the database server and connection
 
 ## Value
 

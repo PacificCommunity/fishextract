@@ -112,10 +112,30 @@ as its WCPFC-area filter; if <code>NULL</code>, no ocean filter is applied.</p><
 <dd><p>Optional character vector of species codes to filter by.</p></dd>
 
 
+<dt id="arg-exclude-flag">exclude_flag<a class="anchor" aria-label="anchor" href="#arg-exclude-flag"></a></dt>
+<dd><p>Optional character vector of flag codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-gear">exclude_gear<a class="anchor" aria-label="anchor" href="#arg-exclude-gear"></a></dt>
+<dd><p>Optional character vector of gear codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-exclude-species">exclude_species<a class="anchor" aria-label="anchor" href="#arg-exclude-species"></a></dt>
+<dd><p>Optional character vector of species codes to exclude.
+Defaults to <code>NULL</code>.</p></dd>
+
+
 <dt id="arg-group-species">group_species<a class="anchor" aria-label="anchor" href="#arg-group-species"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, catch is summed across all
 species within each remaining grouping (i.e. <code>SP_CODE</code> is dropped
 before summarising). Defaults to <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>optional arguments that get passed to <code><a href="db_query.html">db_query()</a></code> such as
+the database server and connection</p></dd>
 
 </dl></div>
     <div class="section level2">

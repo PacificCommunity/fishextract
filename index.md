@@ -23,10 +23,10 @@ library(fishextract)
 | [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md) | extracts operational **catch** data |
 | [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md) | extracts number of vessels by flag and gear |
 | [`get_aggregated_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_aggregated_catch.md) | extracts aggregated **catch** data |
-| `plot_timeseries()` | standardised plotting funciton to be used in conjunction with [`get_ace()`](https://pacificcommunity.github.io/fishextract/reference/get_ace.md), [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md) or [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md) |
+| [`plot_timeseries()`](https://pacificcommunity.github.io/fishextract/reference/plot_timeseries.md) | standardised plotting funciton to be used in conjunction with [`get_ace()`](https://pacificcommunity.github.io/fishextract/reference/get_ace.md), [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md) or [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md) |
 | [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) | plot plain pacific map |
-| [`add_statistical_region()`](https://pacificcommunity.github.io/fishextract/reference/add_statistical_region.md) | graphic layer to add to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing statisitical regions (e.g., WCPFC) |
-| [`add_assessment_region()`](https://pacificcommunity.github.io/fishextract/reference/add_assessment_region.md) | graphic layer to add to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing the stock assessment regions |
+| `add_statistical_region()` | graphic layer to add to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing statisitical regions (e.g., WCPFC) |
+| `add_assessment_region()` | graphic layer to add to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing the stock assessment regions |
 
 ## Example usage
 

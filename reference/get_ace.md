@@ -47,6 +47,10 @@ get_ace(
   A character vector of flag codes to filter on (e.g. `c("ID", "VN")`),
   or `NULL` (default) to include all flags.
 
+- fleet:
+
+  A character vector of fleet codes to filter by.
+
 - gear:
 
   A character vector of gear codes to filter on (e.g. `"L"` for
@@ -57,9 +61,67 @@ get_ace(
   A character vector of species codes to filter on (e.g.
   `c("YFT", "SKJ")`), or `NULL` (default) to include all species.
 
+- eez:
+
+  A character vector of country codes to filter the EEZ(s) where the
+  fishing has occured.
+
+- in_archipelagic:
+
+  Logical. If `TRUE` filter for archipelagic waters only.
+
+- exclude_flag:
+
+  Optional character vector of flag codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_fleet:
+
+  Optional character vector of fleet codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_gear:
+
+  Optional character vector of gear codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_species:
+
+  Optional character vector of species codes to exclude. Defaults to
+  `NULL`.
+
+- exclude_eez:
+
+  Optional character vector of EEZ codes to exclude. Defaults to `NULL`.
+
+- group_flags:
+
+  Logical. If `TRUE`, return combined catch across all flags specified.
+  Default = `FALSE`.
+
+- group_fleets:
+
+  Logical. If `TRUE`, return combined catch across all fleets specified.
+  Default = `TRUE`.
+
+- group_gears:
+
+  Logical. If `TRUE`, return combined catch across all gears specified.
+  Default = `FALSE`.
+
 - group_species:
 
-  Boolean. If TRUE, return combined catch across all species specified
+  Logical. If `TRUE`, return combined catch across all species
+  specified. Default = `FALSE`.
+
+- ungroup_eez:
+
+  Logical. If `TRUE`, ACE will be ungrouped into the EEZs where the
+  catch occured. Default = `FALSE`.
+
+- show_sql:
+
+  Logical. If `TRUE`, prints the SQL code used to extract the data.
 
 ## Value
 
