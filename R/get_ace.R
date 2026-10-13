@@ -134,7 +134,7 @@ get_ace <- function(
   SELECT 
     {ocean_column}
     FLAG_CODE, 
-    FLEET_CODE,
+    NULLIF(FLEET_CODE, '') AS FLEET_CODE,
     {eez_column}
     {arch_column}
     GEAR_CODE, 
@@ -161,7 +161,7 @@ get_ace <- function(
   GROUP BY 
     {ocean_column}
     FLAG_CODE, 
-    FLEET_CODE,
+    NULLIF(FLEET_CODE, ''),
     {eez_column}
     {arch_column}
     GEAR_CODE, 

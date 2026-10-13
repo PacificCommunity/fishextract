@@ -105,9 +105,13 @@ get_logbook_catch <- function(
     fleet_col <- if (.gear == "O") {
       "NULL AS FLEET_CODE"
     } else {
-      "FLEET_CODE"
+      "NULLIF(FLEET_CODE, '') AS FLEET_CODE"
     }
-    fleet_grouping <- dplyr::if_else(.gear == "O", "", "FLEET_CODE,")
+    fleet_grouping <- dplyr::if_else(
+      .gear == "O",
+      "",
+      "NULLIF(FLEET_CODE, ''),"
+    )
 
     glue::glue(
       "
