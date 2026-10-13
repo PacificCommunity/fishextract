@@ -11,6 +11,7 @@ get_logbook_catch(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
@@ -34,6 +35,10 @@ get_logbook_catch(
 - flag:
 
   Optional character vector of flag codes to filter by.
+
+- fleet:
+
+  Optional character vector of fleet codes to filter by.
 
 - gear:
 
