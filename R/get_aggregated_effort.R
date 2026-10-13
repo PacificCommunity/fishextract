@@ -62,7 +62,7 @@ get_aggregated_effort <- function(
       "
   SELECT 
     FLAG_CODE, 
-    FLEET_CODE, 
+    NULLIF(FLEET_CODE, '') AS FLEET_CODE, 
     GEAR_CODE, 
     YY AS year,
     MM AS month, 
@@ -80,7 +80,7 @@ get_aggregated_effort <- function(
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
   GROUP BY 
     FLAG_CODE, 
-    FLEET_CODE, 
+    NULLIF(FLEET_CODE, ''), 
     GEAR_CODE,
     YY,
     MM, 
