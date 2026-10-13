@@ -45,6 +45,7 @@ get_aggregated_catch <- function(
   gear = NULL,
   species = NULL,
   group_species = FALSE,
+  group_fleets = TRUE,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
@@ -64,12 +65,19 @@ get_aggregated_catch <- function(
   numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
   sp_grouping <- dplyr::if_else(group_species, "", "SP_CODE,")
 
+  fleet_grouping <- dplyr::if_else(group_fleets, "", "NULLIF(FLEET_CODE, ''),")
+  fleet_grouping_col <- dplyr::if_else(
+    group_fleets,
+    "",
+    "NULLIF(FLEET_CODE, '') AS FLEET_CODE,"
+  )
+
   sql_query <-
     glue::glue(
       "
   SELECT 
     FLAG_CODE, 
-    NULLIF(FLEET_CODE, '') AS FLEET_CODE, 
+    {fleet_grouping_col}
     GEAR_CODE, 
     {sp_grouping}
     YY AS year, 
@@ -90,7 +98,7 @@ CAST(lond AS DECIMAL) AS lond
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
   GROUP BY 
     FLAG_CODE, 
-    NULLIF(FLEET_CODE, ''), 
+    {fleet_grouping} 
     GEAR_CODE,
     {sp_grouping}
     YY, 
@@ -105,6 +113,5 @@ CAST(lond AS DECIMAL) AS lond
   }
 
   out <- db_query(sql_query, ...)
-
   return(out)
 }
