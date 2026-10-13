@@ -7,6 +7,7 @@
 #' @param in_wcpfc Optional filter passed to `.sql_filter()` restricting
 #'   records to those inside (or outside) the WCPFC Convention Area.
 #' @param flag Optional character vector of flag codes to filter by.
+#' @param fleet Optional character vector of fleet codes to filter by.
 #' @param gear Character vector of gear codes to query. One or more of
 #'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
 #'   `"T"` (troll). Defaults to all four.
@@ -61,6 +62,7 @@ get_logbook_effort <- function(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = c("P", "S", "L", "T"),
   species = NULL,
   exclude_flag = NULL,
@@ -80,42 +82,84 @@ get_logbook_effort <- function(
 
     # Only "other" gears (i.e, in the "_ot" tables) have the GEAR_CODE column
     gear_select <- if (.gear == "O") "GEAR_CODE" else glue::glue("'{.gear}'")
-    gear_group <- if (.gear == "O") "GEAR_CODE," else ""
+    gear_grouping <- if (.gear == "O") "GEAR_CODE," else ""
+
+    fleet_col <- if (.gear == "O") {
+      "NULL AS FLEET_CODE"
+    } else {
+      "FLEET_CODE"
+    }
+    fleet_grouping <- dplyr::if_else(.gear == "O", "", "FLEET_CODE,")
+
+    gear_effort_cols <- list(
+      L = c("hooks_n", "hk_bt_flt_n"),
+      S = c("school_id", "set_time", "end_set_time", "effort_factor"),
+      P = "bait",
+      T = character(),
+      O = c("set_time", "school_id", "hooks_n", "hk_bt_flt_n")
+    )
+    all_effort_cols <- unique(unlist(gear_effort_cols))
+
+    effort_columns <-
+      dplyr::if_else(
+        all_effort_cols %in% gear_effort_cols[[.gear]],
+        all_effort_cols,
+        paste("NULL AS", all_effort_cols)
+      ) |>
+      stringr::str_flatten(", ")
+
+    effort_names <- stringr::str_flatten(all_effort_cols, ", ")
+
+    activity_id_col <- stringr::str_glue(
+      "{tolower(ifelse(.gear=='O', 'L', .gear))}_activity_id"
+    )
+    switch(
+      .gear,
+      L = "l_activity_id AS act_id, hooks_n, hk_bt_flt_n",
+      S = "s_activity_id AS act_id, school_id,  set_time, end_set_time, effort_factor",
+      P = "p_activity_id AS act_id, bait",
+      T = "t_atvitity_id AS act_id",
+      O = "l_activity_id AS act_id, set_time, school_id, hooks_n, hk_bt_flt_n"
+    )
 
     glue::glue(
       "
-     WITH logbook_effort_temp AS(
+     SELECT 
+      FLAG_CODE,
+      YY,
+      {gear_select} AS GEAR_CODE,
+      {effort_names}
+      trip_id, 
+      set_id,
+      activity_desc,
+      latd,
+      lond
+      FROM (
     SELECT 
-      trips.log_trip_id AS trip_id,
-      sets.log_set_id AS set_id,
+      t.log_trip_id AS trip_id,
+      s.log_set_id AS set_id,
       flag_id AS FLAG_CODE, 
-      year(sets.logdate) AS YY,
-      {effort_columns}
-    FROM log.trips_{gear_suffix[[.gear]]} trips 
-    INNER JOIN log.sets_{gear_suffix[[.gear]]} sets ON sets.log_trip_id = trips.log_trip_id
-    INNER JOIN ref.vessel_instances vesssels ON vesssels.vessel_id = trips.vessel_id
+      {fleet_col},
+      year(s.logdate) AS YY, 
+      {gear_grouping} 
+      {effort_columns},
+       r.CODE_DESC AS activity_desc,
+      latd,
+      lond
+    FROM log.trips_{gear_suffix[[.gear]]} t 
+    INNER JOIN log.sets_{gear_suffix[[.gear]]} s ON s.log_trip_id = t.log_trip_id
+    INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
+      AND r.FIELD_ID = '{ifelse(.gear=='O', 'L', .gear)}_ACT_ID'
+    INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
       AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
+      AND {.sql_filter('FLEET_CODE', fleet)}
       AND {.sql_filter('sp_code', species)}
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
       AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
-    )
-
-    SELECT 
-      FLAG_CODE,
-      YY,
-      {effort_columns}, 
-      trip_id, 
-      set_id
-    FROM logbook_effort_temp
-    WHERE {.sql_filter('YY', year)}
-    GROUP BY 
-      FLAG_CODE, 
-      YY, 
-      {effort_columns}, 
-      trip_id, 
-      set_id"
+    ) logbook_effort_temp
+    WHERE {.sql_filter('YY', year)}"
     )
   }
 
@@ -129,8 +173,8 @@ get_logbook_effort <- function(
   }
 
   final_output <-
-    db_query(sql_query, ...)
-  dplyr::mutate(data_source = "logbook_effort")
+    db_query(sql_query, ...) |>
+    dplyr::mutate(data_source = "logbook_effort")
 
   return(final_output)
 }
