@@ -7,6 +7,7 @@
 #' @param in_wcpfc Optional filter passed to `.sql_filter()` restricting
 #'   records to those inside (or outside) the WCPFC Convention Area.
 #' @param flag Optional character vector of flag codes to filter by.
+#' @param fleet Optional character vector of fleet codes to filter by.
 #' @param gear Character vector of gear codes to query. One or more of
 #'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
 #'   `"T"` (troll). Defaults to all four.
@@ -61,6 +62,7 @@ get_logbook_catch <- function(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
@@ -98,12 +100,20 @@ get_logbook_catch <- function(
 
     # Only "other" gears (i.e, in the "_ot" tables) have the GEAR_CODE column
     gear_select <- if (.gear == "O") "GEAR_CODE" else glue::glue("'{.gear}'")
-    gear_group <- if (.gear == "O") "GEAR_CODE," else ""
+    gear_grouping <- if (.gear == "O") "GEAR_CODE," else ""
+
+    fleet_col <- if (.gear == "O") {
+      "NULL AS FLEET_CODE"
+    } else {
+      "FLEET_CODE"
+    }
+    fleet_grouping <- dplyr::if_else(.gear == "O", "", "FLEET_CODE,")
 
     glue::glue(
       "
     SELECT
       flag_id AS FLAG_CODE,
+      {fleet_col},
       year(s.logdate) AS YY,
       {gear_select} AS GEAR_CODE,
       c.sp_code AS SP_CODE,
@@ -119,13 +129,21 @@ get_logbook_catch <- function(
       AND coalesce(depart_date, first_logdate) BETWEEN start_date AND calculated_end_date
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
+      AND {.sql_filter('FLEET_CODE', fleet)}
       AND {.sql_filter('sp_code', species)}
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
       AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
       AND {.sql_filter('year(s.logdate)', year)}
     GROUP BY
-      t.log_trip_id, s.log_set_id, latd, lond,
-      flag_id, year(s.logdate), {gear_group} c.sp_code"
+      t.log_trip_id, 
+      s.log_set_id, 
+      latd, 
+      lond,
+      flag_id, 
+      {fleet_grouping}
+      year(s.logdate), 
+      {gear_grouping} 
+      c.sp_code"
     )
   }
 

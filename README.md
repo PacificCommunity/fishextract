@@ -26,8 +26,8 @@ library(fishextract)
 | `get_aggregated_catch()` | extracts aggregated **catch** data |
 | `plot_timeseries()` | standardised plotting funciton to be used in conjunction with `get_ace()`,  `get_logbook_catch()` or `get_n_vessels()` |
 | `plot_pacific()` | plot plain pacific map |
-| `add_statistical_region()` | graphic layer to add to `plot_pacific()` showing statisitical regions (e.g., WCPFC) |
-| `add_assessment_region()` | graphic layer to add to `plot_pacific()` showing the stock assessment regions |
+| `plot_statistical_region()` | graphic layer added to `plot_pacific()` showing statisitical regions (e.g., WCPFC) |
+| `plot_assessment_region()` | graphic layer added to `plot_pacific()` showing the stock assessment regions |
 
 ## Example usage
 
@@ -47,10 +47,12 @@ get_ace(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L",
 
 ``` r
 ace <- 
-get_ace(species = c("YFT", "SKJ", "BET", "ALB"), 
-year = 2004:2025, 
-gear = c("L", "S"), 
-flag = c("ID", "VN"))
+  get_ace(
+    species = c("YFT", "SKJ", "BET", "ALB"), 
+    year = 2004:2025, 
+    gear = c("L", "S"), 
+    flag = c("ID", "VN")
+  )
 
 ace |> plot_timeseries()
 ace |> plot_timeseries(colour_by = SP_CODE)
@@ -61,20 +63,28 @@ ace |> plot_timeseries(colour_by = GEAR_CODE, facet_by = FLAG_CODE)
 
 ### Get logbook data
 
+Good to add filters here rather than running `get_logbook_catch()`, since the output could be quite large and take some time to run. 
+
 ``` r
-get_logbook_catch() 
-get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"))
-get_logbook_catch(species = list_species("tunas")) # same as above
-get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
-get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
-get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
-get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"), in_wcpfc = FALSE)
+get_logbook_catch(flag = "KI") 
+get_logbook_catch(flag = "FJ", species = c("YFT", "SKJ", "BET", "ALB"))
+get_logbook_catch(flag = "FJ", species = list_species("tunas")) # same as above
+get_logbook_catch(flag = "FJ", species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025)
+get_logbook_catch(flag = "FJ", species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
+get_logbook_catch(flag = c("ID", "VN"), species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"))
+get_logbook_catch(flag = c("ID", "VN"),  species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), in_wcpfc = FALSE)
 ```
 
 ### Plot logbook data (timeseries)
 
 ``` r
-logbook <- get_logbook_catch(species = c("YFT", "SKJ", "BET", "ALB"), year = 2004:2025, gear = c("L", "S"), flag = c("ID", "VN"))
+logbook <- 
+  get_logbook_catch(
+    species = c("YFT", "SKJ", "BET", "ALB"), 
+    year = 2004:2025, 
+    gear = c("L", "S"), 
+    flag = c("ID", "VN")
+    )
 
 logbook |> plot_timeseries()
 logbook |> plot_timeseries(colour_by = SP_CODE)
@@ -98,9 +108,10 @@ get_n_vessels(year = 2000:2025, flag = list_flags("WPEA")) |> plot_timeseries(co
 ``` r
 get_aggregated_catch(in_wcpfc = TRUE, flag = "ID", year = 2020:2025, gear = "S") |>
   plot_aggregated_catch(
-    pie_radius = 1,
+    pie_radius = 3,
     alpha = 0.7,
-    facet_by = YY,
+    colour_by = SP_CODE,
+    facet_by = year,
     xlim = c(100, 160),
     ylim = c(-20, 25)
   )
@@ -113,8 +124,9 @@ get_aggregated_catch(
   gear = c("H", "K")
 ) |>
   plot_aggregated_catch(
-    pie_radius = 1,
+    pie_radius = 2,
     alpha = 0.7,
+    colour_by = SP_CODE,
     facet_by = GEAR_CODE,
     xlim = c(100, 160),
     ylim = c(-20, 25)
@@ -125,13 +137,13 @@ get_aggregated_catch(
 
 
 ``` r
-plot_pacific(show_eez = TRUE, xlim = c(95, 150), ylim = c(-15, 25), eez_countries = c("Indonesia", "Vietnam", "Philippines"))
+plot_pacific(show_eez = TRUE, xlim = c(95, 150), ylim = c(-15, 25), eez_flag = c("ID", "VN", "PH"))
 ```
 
 ``` r
-plot_pacific() |> add_statistical_region("wcpfc_epo")
-plot_pacific() |> add_statistical_region("wcpfc")
-plot_pacific() |> add_statistical_region("npo_spo")
+plot_statistical_region("wcpfc_epo")
+plot_statistical_region("wcpfc")
+plot_statistical_region("npo_spo")
 ```
 
 # Other functions

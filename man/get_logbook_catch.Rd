@@ -8,6 +8,7 @@ get_logbook_catch(
   in_wcpfc = TRUE,
   year = NULL,
   flag = NULL,
+  fleet = NULL,
   gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
@@ -23,6 +24,8 @@ records to those inside (or outside) the WCPFC Convention Area.}
 \item{year}{Optional numeric vector of years to filter by.}
 
 \item{flag}{Optional character vector of flag codes to filter by.}
+
+\item{fleet}{Optional character vector of fleet codes to filter by.}
 
 \item{gear}{Character vector of gear codes to query. One or more of
 \code{"P"} (purse seine), \code{"S"} (pole-and-line), \code{"L"} (longline), or
