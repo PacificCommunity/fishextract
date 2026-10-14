@@ -13,9 +13,7 @@ get_logbook_effort(
   flag = NULL,
   fleet = NULL,
   gear = c("P", "S", "L", "T"),
-  species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL,
   show_sql = FALSE,
   ...
 )
@@ -46,18 +44,9 @@ get_logbook_effort(
   seine), `"S"` (pole-and-line), `"L"` (longline), or `"T"` (troll).
   Defaults to all four.
 
-- species:
-
-  Optional character vector of species codes to filter by.
-
 - exclude_flag:
 
   Optional character vector of flag codes to exclude. Defaults to
-  `NULL`.
-
-- exclude_species:
-
-  Optional character vector of species codes to exclude. Defaults to
   `NULL`.
 
 - show_sql:
