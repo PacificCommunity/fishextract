@@ -11,11 +11,8 @@
 #' @param gear Character vector of gear codes to query. One or more of
 #'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
 #'   `"T"` (troll). Defaults to all four.
-#' @param species Optional character vector of species codes to filter by.
 #' @param year Optional numeric vector of years to filter by.
 #' @param exclude_flag Optional character vector of flag codes to exclude.
-#'   Defaults to `NULL`.
-#' @param exclude_species Optional character vector of species codes to exclude.
 #'   Defaults to `NULL`.
 #' @param show_sql Logical.  If `TRUE`, prints the SQL code used to extract the data.
 #' @param ... optional arguments that get passed to `db_query()` such as
@@ -64,9 +61,7 @@ get_logbook_effort <- function(
   flag = NULL,
   fleet = NULL,
   gear = c("P", "S", "L", "T"),
-  species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL,
   show_sql = FALSE,
   ...
 ) {
@@ -106,9 +101,9 @@ get_logbook_effort <- function(
         all_effort_cols,
         paste("NULL AS", all_effort_cols)
       ) |>
-      stringr::str_flatten(", ")
+      stringr::str_flatten(", \n  ")
 
-    effort_names <- stringr::str_flatten(all_effort_cols, ", ")
+    effort_names <- stringr::str_flatten(all_effort_cols, ", \n  ")
 
     activity_id_col <- stringr::str_glue(
       "{tolower(ifelse(.gear=='O', 'L', .gear))}_activity_id"
@@ -127,8 +122,9 @@ get_logbook_effort <- function(
      SELECT 
       FLAG_CODE,
       YY,
+      logdate, 
       {gear_select} AS GEAR_CODE,
-      {effort_names}
+      {effort_names},
       trip_id, 
       set_id,
       activity_desc,
@@ -141,6 +137,7 @@ get_logbook_effort <- function(
       flag_id AS FLAG_CODE, 
       {fleet_col},
       year(s.logdate) AS YY, 
+      s.logdate AS logdate, 
       {gear_grouping} 
       {effort_columns},
        r.CODE_DESC AS activity_desc,
@@ -155,9 +152,7 @@ get_logbook_effort <- function(
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
       AND {.sql_filter('FLEET_CODE', fleet)}
-      AND {.sql_filter('sp_code', species)}
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
-      AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
     ) logbook_effort_temp
     WHERE {.sql_filter('YY', year)}"
     )

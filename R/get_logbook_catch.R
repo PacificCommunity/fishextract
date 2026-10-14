@@ -119,6 +119,7 @@ get_logbook_catch <- function(
       flag_id AS FLAG_CODE,
       {fleet_col},
       year(s.logdate) AS YY,
+      s.logdate AS logdate, 
       {gear_select} AS GEAR_CODE,
       c.sp_code AS SP_CODE,
       SUM({catch_expr}) AS catch_mt,
@@ -146,6 +147,7 @@ get_logbook_catch <- function(
       flag_id, 
       {fleet_grouping}
       year(s.logdate), 
+      s.logdate, 
       {gear_grouping} 
       c.sp_code"
     )
