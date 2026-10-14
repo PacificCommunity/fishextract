@@ -11,6 +11,7 @@ get_aggregated_catch(
   gear = NULL,
   species = NULL,
   group_species = FALSE,
+  group_fleets = TRUE,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,

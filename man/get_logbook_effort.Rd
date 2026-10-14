@@ -10,9 +10,7 @@ get_logbook_effort(
   flag = NULL,
   fleet = NULL,
   gear = c("P", "S", "L", "T"),
-  species = NULL,
   exclude_flag = NULL,
-  exclude_species = NULL,
   show_sql = FALSE,
   ...
 )
@@ -31,12 +29,7 @@ records to those inside (or outside) the WCPFC Convention Area.}
 \code{"P"} (purse seine), \code{"S"} (pole-and-line), \code{"L"} (longline), or
 \code{"T"} (troll). Defaults to all four.}
 
-\item{species}{Optional character vector of species codes to filter by.}
-
 \item{exclude_flag}{Optional character vector of flag codes to exclude.
-Defaults to \code{NULL}.}
-
-\item{exclude_species}{Optional character vector of species codes to exclude.
 Defaults to \code{NULL}.}
 
 \item{show_sql}{Logical.  If \code{TRUE}, prints the SQL code used to extract the data.}
