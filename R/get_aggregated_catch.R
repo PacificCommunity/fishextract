@@ -84,7 +84,7 @@ get_aggregated_catch <- function(
     MM AS month, 
     SUM(SP_MT) AS sum_catch_mt, 
     CAST(latd AS DECIMAL) AS latd, 
-CAST(lond AS DECIMAL) AS lond
+    CAST(lond AS DECIMAL) AS lond
   FROM best.{gear_table}_BEST_AGG_CATCH c
 	  FULL JOIN best.{gear_table}_BEST_AGG a ON a.{gear_table}_BEST_ID = c.{gear_table}_BEST_ID
   WHERE 1 = 1

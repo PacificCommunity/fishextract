@@ -112,6 +112,9 @@ get_logbook_catch <- function(
       "",
       "NULLIF(FLEET_CODE, ''),"
     )
+    activity_id_col <- stringr::str_glue(
+      "{tolower(ifelse(.gear=='O', 'L', .gear))}_activity_id"
+    )
 
     glue::glue(
       "
@@ -127,10 +130,13 @@ get_logbook_catch <- function(
       SUM({catch_expr}) AS catch_mt,
       t.log_trip_id AS trip_id,
       s.log_set_id AS set_id,
+      activity_desc,
       latd,
       lond
-    FROM log.trips_{suffix} t
+    FROM log.vw_trips_{suffix} t
     INNER JOIN log.sets_{suffix} s ON s.log_trip_id = t.log_trip_id
+        INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
+      AND r.FIELD_ID = '{ifelse(.gear=='O', 'L', .gear)}_ACT_ID'
     INNER JOIN log.catch_{suffix} c ON c.log_set_id = s.log_set_id
     INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
       AND coalesce(depart_date, first_logdate) BETWEEN start_date AND calculated_end_date
@@ -144,7 +150,8 @@ get_logbook_catch <- function(
     GROUP BY
       t.log_trip_id, 
       s.log_set_id, 
-       vi.vessel_id, 
+      activity_desc,
+      vi.vessel_id, 
       vi.vesselname,
       latd, 
       lond,
@@ -152,7 +159,7 @@ get_logbook_catch <- function(
       {fleet_grouping}
       year(s.logdate), 
       s.logdate, 
-      {gear_grouping} 
+      {gear_grouping}
       c.sp_code"
     )
   }
