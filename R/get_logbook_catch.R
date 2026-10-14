@@ -120,6 +120,8 @@ get_logbook_catch <- function(
       {fleet_col},
       year(s.logdate) AS YY,
       s.logdate AS logdate, 
+      vi.vessel_id, 
+      vi.vesselname AS vessel_name, 
       {gear_select} AS GEAR_CODE,
       c.sp_code AS SP_CODE,
       SUM({catch_expr}) AS catch_mt,
@@ -142,6 +144,8 @@ get_logbook_catch <- function(
     GROUP BY
       t.log_trip_id, 
       s.log_set_id, 
+       vi.vessel_id, 
+      vi.vesselname,
       latd, 
       lond,
       flag_id, 

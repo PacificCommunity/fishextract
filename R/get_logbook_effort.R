@@ -123,6 +123,8 @@ get_logbook_effort <- function(
       FLAG_CODE,
       YY,
       logdate, 
+      vessel_id, 
+      vessel_name, 
       {gear_select} AS GEAR_CODE,
       {effort_names},
       trip_id, 
@@ -134,6 +136,8 @@ get_logbook_effort <- function(
     SELECT 
       t.log_trip_id AS trip_id,
       s.log_set_id AS set_id,
+            vi.vessel_id, 
+      vi.vesselname AS vessel_name, 
       flag_id AS FLAG_CODE, 
       {fleet_col},
       year(s.logdate) AS YY, 
