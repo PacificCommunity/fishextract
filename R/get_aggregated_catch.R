@@ -17,6 +17,8 @@
 #'   Defaults to `NULL` (all species).
 #' @param group_species Logical. Groups all seleceted species into a single catch value.
 #'   Defaults to `FALSE`.
+#' @param group_fleets Logical. Groups all seleceted fleets into a single catch value.
+#'   Defaults to `TRUE`.
 #' @param exclude_flag Optional character vector of flag codes to exclude.
 #'   Defaults to `NULL`.
 #' @param exclude_gear Optional character vector of gear codes to exclude.

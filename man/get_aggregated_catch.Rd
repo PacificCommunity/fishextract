@@ -38,6 +38,9 @@ Defaults to \code{NULL} (all species).}
 \item{group_species}{Logical. Groups all seleceted species into a single catch value.
 Defaults to \code{FALSE}.}
 
+\item{group_fleets}{Logical. Groups all seleceted fleets into a single catch value.
+Defaults to \code{TRUE}.}
+
 \item{exclude_flag}{Optional character vector of flag codes to exclude.
 Defaults to \code{NULL}.}
 
