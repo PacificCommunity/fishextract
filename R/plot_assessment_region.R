@@ -42,13 +42,14 @@ plot_assessment_region <- function(
   region_bbox <- sf::st_bbox(assessment_region)
   coord <- plot$coordinates
 
-  widen <- function(current, new) {
+  widen <- function(current, new, buffer = 0.05, always = FALSE) {
+    new <- range(new)
     if (is.null(current)) {
-      return(NULL)
+      return(new + c(-1, 1) * buffer * diff(new))
     }
     original <- range(current)
-    widened <- range(current, new)
-    widened + c(-1, 1) * buffer * diff(widened) * (widened != original)
+    widened <- range(original, new)
+    widened + c(-1, 1) * buffer * diff(widened) * (always | widened != original)
   }
 
   suppressMessages(
@@ -61,8 +62,16 @@ plot_assessment_region <- function(
         inherit.aes = FALSE
       ) +
       ggplot2::coord_sf(
-        xlim = widen(coord$limits$x, region_bbox[c("xmin", "xmax")]),
-        ylim = widen(coord$limits$y, region_bbox[c("ymin", "ymax")]),
+        xlim = widen(
+          coord$limits$x,
+          region_bbox[c("xmin", "xmax")],
+          always = TRUE
+        ),
+        ylim = widen(
+          coord$limits$y,
+          region_bbox[c("ymin", "ymax")],
+          always = TRUE
+        ),
         expand = FALSE,
         crs = coord$crs,
         default_crs = coord$default_crs

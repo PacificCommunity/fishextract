@@ -1,6 +1,5 @@
 
-# fishextract - under active development - expect issues!
-
+# fishextract <img src="man/figures/fishextract-logo.png" align="right" height="150" />
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -137,6 +136,54 @@ get_aggregated_catch(
   )
 ```
 
+
+
+### Extracting CPUE by region
+
+You can extract an existing assessment region from MD2, and get the CPUE metrics for a each of the regions. Note that model 130 is the YFT. 
+
+``` r
+agg_cpue <- get_aggregated_catcheffort(
+   flag = "KI",
+   year = 2020:2025,
+   species = "YFT",
+   gear = c("L", "S")
+ )
+md2_region <- get_md2_shp(model_id = 130)
+catcheffort_byregion(agg_cpue, md2_region, show_plot = TRUE, facet_by = GEAR_CODE)
+```
+... or you can define your own cusom regions. 
+
+``` r
+custom_latlons <- 
+  tibble::tribble(
+   ~region_id , ~lon , ~lat ,
+   "1"        ,  110 ,   -0 ,
+   "1"        ,  110 ,   20 ,
+   "1"        ,  150 ,   20 ,
+   "1"        ,  150 ,    0 ,
+   "2"        ,  160 ,   -0 ,
+   "2"        ,  160 ,   -5 ,
+   "2"        ,  190 ,   -5 ,
+   "2"        ,  190 ,  -10 ,
+   "2"        ,  200 ,  -10 ,
+   "2"        ,  200 ,    0
+ )
+
+custom_regions <- as_region(custom_latlons)
+catcheffort_byregion(agg_cpue, custom_regions, show_plot = TRUE, facet_by = GEAR_CODE)
+```
+
+
+## Get length and weight frequencies
+
+``` r
+get_lengths(year = 2025, flag = "KI")
+get_weights(year = 2020:2025, flag = "AU")
+```
+
+
+
 ### Useful maps
 
 
@@ -152,15 +199,32 @@ plot_statistical_region("npo_spo")
 
 # Other functions
 
-
+The `list_*` functions can be useful in automated processes. 
 
 ``` r
-# list_species function to be finished***
 list_species("tunas")
 list_species("purse_seine")
 list_species("scidata")
+list_species("scidata_group1") # scidata standard section 1 bullet point 1
+list_species("scidata_group2")
 
 list_flags("WPEA")
+list_flags("PNA")
+```
+
+
+The `lookup_*` functions can be useful to automate the processes of labelling. Note these functions are automatically applied in the `fishextract::plot_*` functions in the legends and facet labels. 
+
+``` r
+
+lookup_flagname(c("ID", "VN", "PH"))
+lookup_species(c("YFT", "BET"))
+lookup_gears(c("L", "S", "P"))
+lookup_fleets(flag = "AU")
+lookup_fleets(gear = "P")
+lookup_fleets(gear = "P", flag = "ID")
+lookup_length_codes()
+lookup_weight_codes()
 ```
 
 
