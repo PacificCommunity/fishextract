@@ -130,10 +130,10 @@ get_logbook_catch <- function(
       SUM({catch_expr}) AS catch_mt,
       t.log_trip_id AS trip_id,
       s.log_set_id AS set_id,
-      activity_desc,
+      r.CODE_DESC AS activity_desc,
       latd,
       lond
-    FROM log.vw_trips_{suffix} t
+    FROM log.trips_{suffix} t
     INNER JOIN log.sets_{suffix} s ON s.log_trip_id = t.log_trip_id
         INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
       AND r.FIELD_ID = '{ifelse(.gear=='O', 'L', .gear)}_ACT_ID'
@@ -150,7 +150,7 @@ get_logbook_catch <- function(
     GROUP BY
       t.log_trip_id, 
       s.log_set_id, 
-      activity_desc,
+      r.CODE_DESC,
       vi.vessel_id, 
       vi.vesselname,
       latd, 
