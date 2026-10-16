@@ -75,7 +75,7 @@ get_aggregated_catcheffort <- function(
     CAST(a.latd AS DECIMAL) AS latd, 
     CAST(a.lond AS DECIMAL) AS lond,
      SUM(SP_MT) AS sum_catch_mt, 
-    {effort_columns} 
+    {effort_columns_grouping} 
   FROM best.{gear_table}_BEST_AGG_CATCH c
 	  FULL JOIN best.{gear_table}_BEST_AGG a ON a.{gear_table}_BEST_ID = c.{gear_table}_BEST_ID
   WHERE 1 = 1
