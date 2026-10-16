@@ -22,10 +22,14 @@ library(fishextract)
 | --- | --- |
 | `get_ace()` | extracts annual catch estimates data |
 | `get_logbook_catch()` | extracts operational **catch** data |
+| `get_logbook_effort()` | extracts operational **effort** data |
 | `get_n_vessels()` | extracts number of vessels by flag and gear |
 | `get_aggregated_catch()` | extracts aggregated **catch** data |
+| `get_aggregated_effort()` | extracts aggregated **catch** data |
+| `get_aggregated_catcheffort()` | extracts aggregated **catch** and **effort** data |
+| `catcheffort_by_region()` | extracts aggregated **catch** and **effort** data for a given bounding_box which could either be extracted from md2 using `get_md2_shp()` or custom defined regions using the `as_region()` function|
 | `plot_timeseries()` | standardised plotting funciton to be used in conjunction with `get_ace()`,  `get_logbook_catch()` or `get_n_vessels()` |
-| `plot_pacific()` | plot plain pacific map |
+| `plot_pacific()` | plot plain pacific map as a ggplot layer |
 | `plot_statistical_region()` | graphic layer added to `plot_pacific()` showing statisitical regions (e.g., WCPFC) |
 | `plot_assessment_region()` | graphic layer added to `plot_pacific()` showing the stock assessment regions |
 
