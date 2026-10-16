@@ -14,12 +14,18 @@ label_lookup <- function(var_name, abbreviate_flags = FALSE) {
     GEAR_CODE = pkg_gears_lookup(),
     SP_CODE = pkg_species_lookup(),
     OCEAN_CODE = pkg_ocean_lookup(),
-    FLAG_CODE = {
-      flag_names <- lookup_flagname()
-      if (abbreviate_flags) abbreviate_flagname(flag_names) else flag_names
-    },
+    FLAG_CODE = pkg_flag_lookup(abbreviate_flags),
     NULL
   )
+}
+
+pkg_flag_lookup <- function(abbreviate_flags = FALSE) {
+  lookup_flagname() |>
+    dplyr::select(
+      flag_code,
+      dplyr::all_of(if (abbreviate_flags) "flag_name_abbr" else "flag_name")
+    ) |>
+    tibble::deframe()
 }
 
 pkg_gears_lookup <- function() {
