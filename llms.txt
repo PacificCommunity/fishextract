@@ -21,10 +21,14 @@ library(fishextract)
 |----|----|
 | [`get_ace()`](https://pacificcommunity.github.io/fishextract/reference/get_ace.md) | extracts annual catch estimates data |
 | [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md) | extracts operational **catch** data |
+| [`get_logbook_effort()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_effort.md) | extracts operational **effort** data |
 | [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md) | extracts number of vessels by flag and gear |
 | [`get_aggregated_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_aggregated_catch.md) | extracts aggregated **catch** data |
+| [`get_aggregated_effort()`](https://pacificcommunity.github.io/fishextract/reference/get_aggregated_effort.md) | extracts aggregated **catch** data |
+| [`get_aggregated_catcheffort()`](https://pacificcommunity.github.io/fishextract/reference/get_aggregated_catcheffort.md) | extracts aggregated **catch** and **effort** data |
+| `catcheffort_by_region()` | extracts aggregated **catch** and **effort** data for a given bounding_box which could either be extracted from md2 using [`get_md2_shp()`](https://pacificcommunity.github.io/fishextract/reference/get_md2_shp.md) or custom defined regions using the [`as_region()`](https://pacificcommunity.github.io/fishextract/reference/as_region.md) function |
 | [`plot_timeseries()`](https://pacificcommunity.github.io/fishextract/reference/plot_timeseries.md) | standardised plotting funciton to be used in conjunction with [`get_ace()`](https://pacificcommunity.github.io/fishextract/reference/get_ace.md), [`get_logbook_catch()`](https://pacificcommunity.github.io/fishextract/reference/get_logbook_catch.md) or [`get_n_vessels()`](https://pacificcommunity.github.io/fishextract/reference/get_n_vessels.md) |
-| [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) | plot plain pacific map |
+| [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) | plot plain pacific map as a ggplot layer |
 | [`plot_statistical_region()`](https://pacificcommunity.github.io/fishextract/reference/plot_statistical_region.md) | graphic layer added to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing statisitical regions (e.g., WCPFC) |
 | [`plot_assessment_region()`](https://pacificcommunity.github.io/fishextract/reference/plot_assessment_region.md) | graphic layer added to [`plot_pacific()`](https://pacificcommunity.github.io/fishextract/reference/plot_pacific.md) showing the stock assessment regions |
 
