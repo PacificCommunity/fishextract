@@ -78,7 +78,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="fishextract---under-active-development---expect-issues">fishextract - under active development - expect issues!<a class="anchor" aria-label="anchor" href="#fishextract---under-active-development---expect-issues"></a>
+<div class="page-header"><h1 id="fishextract-">fishextract <img src="reference/figures/fishextract-logo.png" align="right" height="150"><a class="anchor" aria-label="anchor" href="#fishextract-"></a>
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
@@ -260,11 +260,51 @@
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
+<h3 id="extracting-cpue-by-region">Extracting CPUE by region<a class="anchor" aria-label="anchor" href="#extracting-cpue-by-region"></a>
+</h3>
+<p>You can extract an existing assessment region from MD2, and get the CPUE metrics for a each of the regions. Note that model 130 is the YFT.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">agg_cpue</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_aggregated_catcheffort.html">get_aggregated_catcheffort</a></span><span class="op">(</span></span>
+<span>   flag <span class="op">=</span> <span class="st">"KI"</span>,</span>
+<span>   year <span class="op">=</span> <span class="fl">2020</span><span class="op">:</span><span class="fl">2025</span>,</span>
+<span>   species <span class="op">=</span> <span class="st">"YFT"</span>,</span>
+<span>   gear <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="st">"S"</span><span class="op">)</span></span>
+<span> <span class="op">)</span></span>
+<span><span class="va">md2_region</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_md2_shp.html">get_md2_shp</a></span><span class="op">(</span>model_id <span class="op">=</span> <span class="fl">130</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/catcheffort_byregion.html">catcheffort_byregion</a></span><span class="op">(</span><span class="va">agg_cpue</span>, <span class="va">md2_region</span>, show_plot <span class="op">=</span> <span class="cn">TRUE</span>, facet_by <span class="op">=</span> <span class="va">GEAR_CODE</span><span class="op">)</span></span></code></pre></div>
+<p>… or you can define your own cusom regions.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">custom_latlons</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>   <span class="op">~</span><span class="va">region_id</span> , <span class="op">~</span><span class="va">lon</span> , <span class="op">~</span><span class="va">lat</span> ,</span>
+<span>   <span class="st">"1"</span>        ,  <span class="fl">110</span> ,   <span class="op">-</span><span class="fl">0</span> ,</span>
+<span>   <span class="st">"1"</span>        ,  <span class="fl">110</span> ,   <span class="fl">20</span> ,</span>
+<span>   <span class="st">"1"</span>        ,  <span class="fl">150</span> ,   <span class="fl">20</span> ,</span>
+<span>   <span class="st">"1"</span>        ,  <span class="fl">150</span> ,    <span class="fl">0</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">160</span> ,   <span class="op">-</span><span class="fl">0</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">160</span> ,   <span class="op">-</span><span class="fl">5</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">190</span> ,   <span class="op">-</span><span class="fl">5</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">190</span> ,  <span class="op">-</span><span class="fl">10</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">200</span> ,  <span class="op">-</span><span class="fl">10</span> ,</span>
+<span>   <span class="st">"2"</span>        ,  <span class="fl">200</span> ,    <span class="fl">0</span></span>
+<span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">custom_regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_region.html">as_region</a></span><span class="op">(</span><span class="va">custom_latlons</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/catcheffort_byregion.html">catcheffort_byregion</a></span><span class="op">(</span><span class="va">agg_cpue</span>, <span class="va">custom_regions</span>, show_plot <span class="op">=</span> <span class="cn">TRUE</span>, facet_by <span class="op">=</span> <span class="va">GEAR_CODE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="get-length-and-weight-frequencies">Get length and weight frequencies<a class="anchor" aria-label="anchor" href="#get-length-and-weight-frequencies"></a>
+</h2>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_lengths.html">get_lengths</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2025</span>, flag <span class="op">=</span> <span class="st">"KI"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/get_weights.html">get_weights</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2020</span><span class="op">:</span><span class="fl">2025</span>, flag <span class="op">=</span> <span class="st">"AU"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
 <h3 id="useful-maps">Useful maps<a class="anchor" aria-label="anchor" href="#useful-maps"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plot_pacific.html">plot_pacific</a></span><span class="op">(</span>show_eez <span class="op">=</span> <span class="cn">TRUE</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">95</span>, <span class="fl">150</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">25</span><span class="op">)</span>, eez_flag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"VN"</span>, <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wcpfc_epo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wcpfc"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"npo_spo"</span><span class="op">)</span></span></code></pre></div>
@@ -274,17 +314,31 @@
 <div class="section level1">
 <h1 id="other-functions">Other functions<a class="anchor" aria-label="anchor" href="#other-functions"></a>
 </h1>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># list_species function to be finished***</span></span>
-<span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"tunas"</span><span class="op">)</span></span>
+<p>The <code>list_*</code> functions can be useful in automated processes.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"tunas"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"purse_seine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"scidata"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"scidata_group1"</span><span class="op">)</span> <span class="co"># scidata standard section 1 bullet point 1</span></span>
+<span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"scidata_group2"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/list_flags.html">list_flags</a></span><span class="op">(</span><span class="st">"WPEA"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/list_flags.html">list_flags</a></span><span class="op">(</span><span class="st">"WPEA"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/list_flags.html">list_flags</a></span><span class="op">(</span><span class="st">"PNA"</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>lookup_*</code> functions can be useful to automate the processes of labelling. Note these functions are automatically applied in the <code>fishextract::plot_*</code> functions in the legends and facet labels.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="reference/lookup_flagname.html">lookup_flagname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"VN"</span>, <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_species.html">lookup_species</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"YFT"</span>, <span class="st">"BET"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_gears.html">lookup_gears</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L"</span>, <span class="st">"S"</span>, <span class="st">"P"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_fleets.html">lookup_fleets</a></span><span class="op">(</span>flag <span class="op">=</span> <span class="st">"AU"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_fleets.html">lookup_fleets</a></span><span class="op">(</span>gear <span class="op">=</span> <span class="st">"P"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_fleets.html">lookup_fleets</a></span><span class="op">(</span>gear <span class="op">=</span> <span class="st">"P"</span>, flag <span class="op">=</span> <span class="st">"ID"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_length_codes.html">lookup_length_codes</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/lookup_weight_codes.html">lookup_weight_codes</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="comparing-logbook-data-and-ace-data">Comparing logbook data and ACE data<a class="anchor" aria-label="anchor" href="#comparing-logbook-data-and-ace-data"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">catch_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="reference/get_ace.html">get_ace</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2000</span><span class="op">:</span><span class="fl">2025</span>, gear <span class="op">=</span> <span class="st">"S"</span><span class="op">)</span>,</span>
