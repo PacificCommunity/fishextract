@@ -1,6 +1,5 @@
 
-# fishextract - under active development - expect issues!
-
+# fishextract <img src="man/figures/fishextract-logo.png" align="right" height="150" />
 <!-- badges: start -->
 <!-- badges: end -->
 
