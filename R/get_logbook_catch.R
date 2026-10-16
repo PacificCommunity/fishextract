@@ -127,7 +127,7 @@ get_logbook_catch <- function(
       vi.vesselname AS vessel_name, 
       {gear_select} AS GEAR_CODE,
       c.sp_code AS SP_CODE,
-      SUM({catch_expr}) AS catch_mt,
+      SUM({catch_expr}) AS sum_catch_mt,
       t.log_trip_id AS trip_id,
       s.log_set_id AS set_id,
       r.CODE_DESC AS activity_desc,
@@ -177,7 +177,7 @@ get_logbook_catch <- function(
 
   nrow_removed <-
     combined_output |>
-    dplyr::filter(is.na(.data$catch_mt)) |>
+    dplyr::filter(is.na(.data$sum_catch_mt)) |>
     nrow()
 
   if (nrow_removed > 0) {
@@ -192,9 +192,8 @@ get_logbook_catch <- function(
 
   final_output <-
     combined_output |>
-    dplyr::filter(!is.na(.data$catch_mt)) |>
-    dplyr::mutate(data_source = "logbook_catch") |>
-    dplyr::rename(sum_catch_mt = .data$catch_mt) # to avoid breaking things, can change back later
+    dplyr::filter(!is.na(.data$sum_catch_mt)) |>
+    dplyr::mutate(data_source = "logbook_catch")
 
   return(final_output)
 }

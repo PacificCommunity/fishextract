@@ -89,7 +89,7 @@ calculate_logbook_coverage <-
 
     joined_catch <-
       ace_catch |>
-      dplyr::select(-.data$data_source) |>
+      dplyr::select(-dplyr::all_of("data_source")) |>
       dplyr::full_join(logbook_catch) |>
       dplyr::mutate(
         ace_catch = tidyr::replace_na(ace_catch, 0),
