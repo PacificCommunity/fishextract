@@ -53,6 +53,19 @@ get_aggregated_effort <- function(
   # fix at the all table for now
   # can modify function later to extract the higher resoulation for S gear (if required)
   gear_table <- "A"
+
+  # the below code chunk was used when we went switching up between gears
+  # effort_columns <-
+  #   switch(
+  #     .gear,
+  #     L = "hhooks, VESS_N, NULL AS days, NULL AS sets",
+  #     S = "days, NULL AS hhooks, NULL AS VESS_N, NULL AS sets",
+  #     T = "days, NULL AS VESS_N, NULL AS sets, NULL AS hhooks",
+  #     P = "days, NULL AS VESS_N, NULL AS sets, NULL AS hhooks",
+  #     O = "VESS_N, days, sets, hhooks",
+  #     A = "VESS_N, days, sets, hhooks"
+  #   )
+
   effort_columns_grouping <- "VESS_N, days, sets, hhooks"
 
   numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
@@ -68,7 +81,7 @@ get_aggregated_effort <- function(
     MM AS month, 
     latd, 
     lond,
-    {effort_columns} 
+    {effort_columns_grouping} 
   FROM best.{gear_table}_BEST_AGG 
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
