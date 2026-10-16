@@ -56,6 +56,11 @@ get_aggregated_catch(
   Logical. Groups all seleceted species into a single catch value.
   Defaults to `FALSE`.
 
+- group_fleets:
+
+  Logical. Groups all seleceted fleets into a single catch value.
+  Defaults to `TRUE`.
+
 - exclude_flag:
 
   Optional character vector of flag codes to exclude. Defaults to
