@@ -5,7 +5,7 @@ Look up all the fleets for a given country or gear
 ## Usage
 
 ``` r
-lookup_fleets(gear = NULL, flag = NULL, refresh = FALSE)
+lookup_fleets(gear = NULL, flag = NULL, fleet = NULL, refresh = FALSE)
 ```
 
 ## Arguments
@@ -19,6 +19,11 @@ lookup_fleets(gear = NULL, flag = NULL, refresh = FALSE)
 
   Optional character vector of flag codes to filter by. If `NULL`, all
   flags are returned.
+
+- fleet:
+
+  Optional character vector of fleet codes to filter by. If `NULL`, all
+  fleets are returned.
 
 - refresh:
 
