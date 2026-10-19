@@ -4,7 +4,7 @@
 \alias{lookup_fleets}
 \title{Look up all the fleets for a given country or gear}
 \usage{
-lookup_fleets(gear = NULL, flag = NULL, refresh = FALSE)
+lookup_fleets(gear = NULL, flag = NULL, fleet = NULL, refresh = FALSE)
 }
 \arguments{
 \item{gear}{Optional character vector of gear codes to filter by.
@@ -12,6 +12,9 @@ If \code{NULL}, all gears are returned.}
 
 \item{flag}{Optional character vector of flag codes to filter by.
 If \code{NULL}, all flags are returned.}
+
+\item{fleet}{Optional character vector of fleet codes to filter by.
+If \code{NULL}, all fleets are returned.}
 
 \item{refresh}{Logical. Force a re-query of the database and refresh
 the cache. Defaults to \code{FALSE}.}

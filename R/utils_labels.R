@@ -22,7 +22,7 @@ label_lookup <- function(var_name, abbreviate_flags = FALSE) {
 pkg_flag_lookup <- function(abbreviate_flags = FALSE) {
   lookup_flagname() |>
     dplyr::select(
-      flag_code,
+      .data$flag_code,
       dplyr::all_of(if (abbreviate_flags) "flag_name_abbr" else "flag_name")
     ) |>
     tibble::deframe()

@@ -121,6 +121,7 @@ get_logbook_effort <- function(
       "
      SELECT 
       FLAG_CODE,
+      {fleet_col},
       YY,
       logdate, 
       vessel_id, 
