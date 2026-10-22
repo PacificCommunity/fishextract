@@ -82,13 +82,14 @@ plot_aggregated_catch <- function(
     if (has_colour) colour_var,
     if (!is.null(facet_var)) facet_var
   )
-
+  pie_vars <- setdiff(group_vars, colour_var)
   pie_data <-
     aggregated_data |>
     dplyr::summarise(
       sum_catch_mt = sum(.data$sum_catch_mt),
       .by = dplyr::all_of(group_vars)
     ) |>
+    dplyr::filter(.data$sum_catch_mt > 0) |>
     dplyr::mutate(lond_360 = lon_to_360(.data$lond)) |>
     dplyr::mutate(
       total_catch_mt = sum(.data$sum_catch_mt),
@@ -97,7 +98,12 @@ plot_aggregated_catch <- function(
       end = cumsum(.data$prop) * 2 * pi,
       start = dplyr::lag(.data$end, default = 0),
       .by = setdiff(group_vars, colour_var)
-    )
+    ) |>
+    dplyr::arrange(
+      dplyr::desc(.data$r),
+      dplyr::pick(dplyr::all_of(pie_vars))
+    ) |>
+    dplyr::mutate(draw_id = dplyr::row_number())
 
   # auto calculate the pie radius if it isn't provided (is NULl)
   if (is.null(pie_radius)) {
@@ -118,7 +124,8 @@ plot_aggregated_catch <- function(
           r = .data$r * pie_radius,
           start = .data$start,
           end = .data$end,
-          fill = !!colour_by
+          fill = !!colour_by,
+          group = .data$draw_id
         ),
         data = pie_data,
         colour = "black",
