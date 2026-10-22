@@ -1,9 +1,9 @@
-#' List the FLAG_CODE values for a given group
-#'
-#' @param group (e.g. `WPEA`)
-#'
-#' @return A character vector of FLAG_CODEs
-#' @export
+#" List the FLAG_CODE values for a given group
+#"
+#" @param group (e.g. `WPEA`)
+#"
+#" @return A character vector of FLAG_CODEs
+#" @export
 list_flags <- function(
   group = c("WCPFC", "PNA", "WPEA", "DWFN")
 ) {
@@ -26,6 +26,28 @@ list_flags <- function(
     # WCPFC = c("ID", "VN", "PH"),
     WPEA = c("ID", "VN", "PH"),
     PNA = c("FM", "KI", "MH", "NR", "PG", "PW", "SB", "TV"),
-    DWFN = c("JP", "US", "CA", "KR", "TW")
+    DWFN = c("JP", "US", "CA", "KR", "TW"),
+    FFA = c(
+      "AU",
+      "CK",
+      "FM",
+      "FJ",
+      "KI",
+      "GL",
+      "LN",
+      "PX",
+      "MH",
+      "NR",
+      "NZ",
+      "NU",
+      "PW",
+      "PG",
+      "WS",
+      "SB",
+      "TK",
+      "TO",
+      "TV",
+      "VU"
+    )
   )
 }

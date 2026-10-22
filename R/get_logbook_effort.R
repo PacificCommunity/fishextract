@@ -8,6 +8,7 @@
 #'   records to those inside (or outside) the WCPFC Convention Area.
 #' @param flag Optional character vector of flag codes to filter by.
 #' @param fleet Optional character vector of fleet codes to filter by.
+#' @param eez Optional character vector of eez codes to filter by.
 #' @param gear Character vector of gear codes to query. One or more of
 #'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
 #'   `"T"` (troll). Defaults to all four.
@@ -60,6 +61,7 @@ get_logbook_effort <- function(
   year = NULL,
   flag = NULL,
   fleet = NULL,
+  eez = NULL,
   gear = c("P", "S", "L", "T"),
   exclude_flag = NULL,
   show_sql = FALSE,
@@ -132,7 +134,8 @@ get_logbook_effort <- function(
       set_id,
       activity_desc,
       latd,
-      lond
+      lond,
+      eez_code
       FROM (
     SELECT 
       t.log_trip_id AS trip_id,
@@ -147,7 +150,8 @@ get_logbook_effort <- function(
       {effort_columns},
        r.CODE_DESC AS activity_desc,
       latd,
-      lond
+      lond, 
+      s.eez_code
     FROM log.trips_{gear_suffix[[.gear]]} t 
     INNER JOIN log.sets_{gear_suffix[[.gear]]} s ON s.log_trip_id = t.log_trip_id
     INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
@@ -156,6 +160,7 @@ get_logbook_effort <- function(
       AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
+      AND {.sql_filter('eez_code', eez)}
       AND {.sql_filter('FLEET_CODE', fleet)}
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
     ) logbook_effort_temp

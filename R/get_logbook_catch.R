@@ -8,6 +8,7 @@
 #'   records to those inside (or outside) the WCPFC Convention Area.
 #' @param flag Optional character vector of flag codes to filter by.
 #' @param fleet Optional character vector of fleet codes to filter by.
+#' @param eez Optional character vector of eez codes to filter by.
 #' @param gear Character vector of gear codes to query. One or more of
 #'   `"P"` (purse seine), `"S"` (pole-and-line), `"L"` (longline), or
 #'   `"T"` (troll). Defaults to all four.
@@ -63,6 +64,7 @@ get_logbook_catch <- function(
   year = NULL,
   flag = NULL,
   fleet = NULL,
+  eez = NULL,
   gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
@@ -132,7 +134,8 @@ get_logbook_catch <- function(
       s.log_set_id AS set_id,
       r.CODE_DESC AS activity_desc,
       latd,
-      lond
+      lond, 
+      s.eez_code
     FROM log.trips_{suffix} t
     INNER JOIN log.sets_{suffix} s ON s.log_trip_id = t.log_trip_id
         INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
@@ -144,6 +147,7 @@ get_logbook_catch <- function(
       AND {.sql_filter('flag_id', flag)}
       AND {.sql_filter('FLEET_CODE', fleet)}
       AND {.sql_filter('sp_code', species)}
+      AND {.sql_filter('eez_code', eez)}
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
       AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
       AND {.sql_filter('year(s.logdate)', year)}
@@ -154,7 +158,8 @@ get_logbook_catch <- function(
       vi.vessel_id, 
       vi.vesselname,
       latd, 
-      lond,
+      lond, 
+      s.eez_code,
       flag_id, 
       {fleet_grouping}
       year(s.logdate), 
