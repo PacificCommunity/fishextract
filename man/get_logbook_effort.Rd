@@ -9,6 +9,7 @@ get_logbook_effort(
   year = NULL,
   flag = NULL,
   fleet = NULL,
+  eez = NULL,
   gear = c("P", "S", "L", "T"),
   exclude_flag = NULL,
   show_sql = FALSE,
@@ -24,6 +25,8 @@ records to those inside (or outside) the WCPFC Convention Area.}
 \item{flag}{Optional character vector of flag codes to filter by.}
 
 \item{fleet}{Optional character vector of fleet codes to filter by.}
+
+\item{eez}{Optional character vector of eez codes to filter by.}
 
 \item{gear}{Character vector of gear codes to query. One or more of
 \code{"P"} (purse seine), \code{"S"} (pole-and-line), \code{"L"} (longline), or
