@@ -12,6 +12,7 @@ get_logbook_catch(
   year = NULL,
   flag = NULL,
   fleet = NULL,
+  eez = NULL,
   gear = c("P", "S", "L", "T", "O"),
   species = NULL,
   exclude_flag = NULL,
@@ -39,6 +40,10 @@ get_logbook_catch(
 - fleet:
 
   Optional character vector of fleet codes to filter by.
+
+- eez:
+
+  Optional character vector of eez codes to filter by.
 
 - gear:
 

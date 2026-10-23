@@ -12,6 +12,7 @@ get_logbook_effort(
   year = NULL,
   flag = NULL,
   fleet = NULL,
+  eez = NULL,
   gear = c("P", "S", "L", "T"),
   exclude_flag = NULL,
   show_sql = FALSE,
@@ -37,6 +38,10 @@ get_logbook_effort(
 - fleet:
 
   Optional character vector of fleet codes to filter by.
+
+- eez:
+
+  Optional character vector of eez codes to filter by.
 
 - gear:
 
