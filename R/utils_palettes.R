@@ -98,3 +98,20 @@ flag_colours <- function() {
   pal <- unname(grDevices::palette.colors(palette = "Polychrome 36"))
   stats::setNames(pal[c(1, 3, 6)], c("ID", "VN", "PH"))
 }
+
+add_default_colours <- function(
+  colours,
+  levels,
+  fallback = grDevices::palette.colors(palette = "Polychrome 36")
+) {
+  missing_levels <- setdiff(levels, names(colours))
+  if (length(missing_levels) == 0) {
+    return(colours)
+  }
+
+  spare <- setdiff(unname(fallback), colours)
+  c(
+    colours,
+    stats::setNames(rep_len(spare, length(missing_levels)), missing_levels)
+  )
+}
