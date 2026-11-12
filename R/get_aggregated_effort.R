@@ -51,7 +51,7 @@ get_aggregated_effort <- function(
 ) {
   # verify the inputted gear list
   gear <- match.arg(gear, lookup_gears()$GEAR_CODE, several.ok = TRUE)
-
+  gear_minus_ps <- setdiff(gear, "S")
   # fix at the all table for now
   # can modify function later to extract the higher resoulation for S gear (if required)
   gear_table <- "A"
@@ -79,7 +79,7 @@ get_aggregated_effort <- function(
     "Schass_code AS SCH_CODE,"
   )
 
-  sql_query <-
+  ps_query <-
     glue::glue(
       "
   SELECT 
@@ -100,7 +100,7 @@ get_aggregated_effort <- function(
     AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
-    AND {.sql_filter('GEAR_CODE', gear)}
+    AND {.sql_filter('GEAR_CODE', 'S')}
     AND {.sql_filter('Schass_code', school)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
@@ -118,11 +118,50 @@ get_aggregated_effort <- function(
   "
     )
 
+  sql_query <-
+    glue::glue(
+      "
+  SELECT 
+    FLAG_CODE, 
+    NULLIF(FLEET_CODE, '') AS FLEET_CODE, 
+    GEAR_CODE, 
+    YY AS year,
+    MM AS month, 
+    latd, 
+    lond,
+    {school_grouping_col}
+    {effort_columns_grouping}, 
+    COALESCE(days, 0) AS days, 
+    COALESCE(sets, 0) AS sets 
+  FROM best.{gear_table}_BEST_AGG a
+    LEFT JOIN best.{gear_table}_BEST_AGG_SCHEFF s ON a.{gear_table}_BEST_ID = s.{gear_table}_BEST_ID
+  WHERE 1 = 1
+    AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
+    AND {.sql_filter('YY', year)}
+    AND {.sql_filter('FLAG_CODE', flag)}
+    AND {.sql_filter('GEAR_CODE', gear_minus_ps)}
+    AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
+    AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
+    AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
+  "
+    )
+
+  sql_list <-
+    if ("S" %in% gear) {
+      list(ps_query, sql_query)
+    } else {
+      list(sql_query)
+    }
+
+  sql_query_bind <-
+    sql_list |>
+    stringr::str_flatten("\nUNION ALL\n")
+
   if (show_sql) {
-    .clean_sql(sql_query)
+    .clean_sql(sql_query_bind)
   }
 
-  out <- db_query(sql_query, ...)
+  out <- db_query(sql_query_bind, ...)
 
   return(out)
 }
