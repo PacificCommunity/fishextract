@@ -46,8 +46,10 @@ get_aggregated_catch <- function(
   flag = NULL,
   gear = NULL,
   species = NULL,
+  school = NULL,
   group_species = FALSE,
   group_fleets = TRUE,
+  group_schools = TRUE,
   exclude_flag = NULL,
   exclude_gear = NULL,
   exclude_species = NULL,
@@ -66,7 +68,12 @@ get_aggregated_catch <- function(
 
   numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
   sp_grouping <- dplyr::if_else(group_species, "", "SP_CODE,")
-
+  school_grouping <- dplyr::if_else(group_schools, "", "Schass_code,")
+  school_grouping_col <- dplyr::if_else(
+    group_schools,
+    "",
+    "Schass_code AS SCH_CODE,"
+  )
   fleet_grouping <- dplyr::if_else(group_fleets, "", "NULLIF(FLEET_CODE, ''),")
   fleet_grouping_col <- dplyr::if_else(
     group_fleets,
@@ -82,6 +89,7 @@ get_aggregated_catch <- function(
     {fleet_grouping_col}
     GEAR_CODE, 
     {sp_grouping}
+    {school_grouping_col}
     YY AS year, 
     MM AS month, 
     SUM(SP_MT) AS sum_catch_mt, 
@@ -89,12 +97,14 @@ get_aggregated_catch <- function(
     CAST(lond AS DECIMAL) AS lond
   FROM best.{gear_table}_BEST_AGG_CATCH c
 	  FULL JOIN best.{gear_table}_BEST_AGG a ON a.{gear_table}_BEST_ID = c.{gear_table}_BEST_ID
+	  LEFT JOIN best.{gear_table}_BEST_AGG_SCHEFF s ON s.{gear_table}_SET_ID = c.{gear_table}_SET_ID
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area',  numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('SP_CODE', species)}
+    AND {.sql_filter('Schass_code', school)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
@@ -103,6 +113,7 @@ get_aggregated_catch <- function(
     {fleet_grouping} 
     GEAR_CODE,
     {sp_grouping}
+    {school_grouping}
     YY, 
     MM, 
     CAST(latd AS DECIMAL), 

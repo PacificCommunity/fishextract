@@ -44,9 +44,10 @@ get_aggregated_catcheffort <- function(
   flag = NULL,
   gear = c("L", "S", "T", "P", "O"),
   species = NULL,
-  group_species = FALSE,
+  school = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
+  group_schools = TRUE,
   exclude_species = NULL,
   # broad_scale = FALSE,
   show_sql = FALSE,
@@ -58,7 +59,14 @@ get_aggregated_catcheffort <- function(
   # fix at the all table for now
   # can modify function later to extract the higher resoulation for S gear (if required)
   gear_table <- "A"
-  effort_columns_grouping <- "VESS_N, days, sets, hhooks"
+  effort_columns_grouping <- "VESS_N, hhooks"
+
+  school_grouping <- dplyr::if_else(group_schools, "", "Schass_code,")
+  school_grouping_col <- dplyr::if_else(
+    group_schools,
+    "",
+    "Schass_code AS SCH_CODE,"
+  )
 
   numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
 
@@ -74,16 +82,20 @@ get_aggregated_catcheffort <- function(
     MM AS month, 
     CAST(a.latd AS DECIMAL) AS latd, 
     CAST(a.lond AS DECIMAL) AS lond,
-     SUM(SP_MT) AS sum_catch_mt, 
-    {effort_columns_grouping} 
+    SUM(SP_MT) AS sum_catch_mt, 
+    {effort_columns_grouping}, 
+    SUM(days_sch) AS days, 
+    SUM(sets_sch) AS sets 
   FROM best.{gear_table}_BEST_AGG_CATCH c
 	  FULL JOIN best.{gear_table}_BEST_AGG a ON a.{gear_table}_BEST_ID = c.{gear_table}_BEST_ID
+    LEFT JOIN best.{gear_table}_BEST_AGG_SCHEFF s ON a.{gear_table}_BEST_ID = s.{gear_table}_BEST_ID
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('GEAR_CODE', gear)}
     AND {.sql_filter('SP_CODE', species)}
+    AND {.sql_filter('Schass_code', school)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
@@ -96,6 +108,7 @@ get_aggregated_catcheffort <- function(
     MM,
     CAST(latd AS DECIMAL), 
     CAST(lond AS DECIMAL),
+    {school_grouping}
     {effort_columns_grouping} 
   "
     )

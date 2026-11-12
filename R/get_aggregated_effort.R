@@ -40,8 +40,10 @@ get_aggregated_effort <- function(
   year = NULL,
   flag = NULL,
   gear = c("L", "S", "T", "P", "O"),
+  school = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
+  group_schools = TRUE,
   exclude_species = NULL,
   # broad_scale = FALSE,
   show_sql = FALSE,
@@ -66,9 +68,16 @@ get_aggregated_effort <- function(
   #     A = "VESS_N, days, sets, hhooks"
   #   )
 
-  effort_columns_grouping <- "VESS_N, days, sets, hhooks"
+  effort_columns_grouping <- "VESS_N, hhooks"
 
   numeric_if_notnull <- function(x) if (is.null(x)) NULL else as.numeric(x)
+
+  school_grouping <- dplyr::if_else(group_schools, "", "Schass_code,")
+  school_grouping_col <- dplyr::if_else(
+    group_schools,
+    "",
+    "Schass_code AS SCH_CODE,"
+  )
 
   sql_query <-
     glue::glue(
@@ -81,13 +90,18 @@ get_aggregated_effort <- function(
     MM AS month, 
     latd, 
     lond,
-    {effort_columns_grouping} 
-  FROM best.{gear_table}_BEST_AGG 
+    {school_grouping_col}
+    {effort_columns_grouping}, 
+    SUM(days_sch) AS days, 
+    SUM(sets_sch) AS sets 
+  FROM best.{gear_table}_BEST_AGG a
+    LEFT JOIN best.{gear_table}_BEST_AGG_SCHEFF s ON a.{gear_table}_BEST_ID = s.{gear_table}_BEST_ID
   WHERE 1 = 1
     AND {.sql_filter('in_wcpfc_area', numeric_if_notnull(in_wcpfc))}
     AND {.sql_filter('YY', year)}
     AND {.sql_filter('FLAG_CODE', flag)}
     AND {.sql_filter('GEAR_CODE', gear)}
+    AND {.sql_filter('Schass_code', school)}
     AND {.sql_filter('FLAG_CODE', exclude_flag, exclude = TRUE)}
     AND {.sql_filter('GEAR_CODE', exclude_gear, exclude = TRUE)}
     AND {.sql_filter('SP_CODE', exclude_species, exclude = TRUE)}
@@ -99,7 +113,8 @@ get_aggregated_effort <- function(
     MM, 
     latd, 
     lond,
-    {effort_columns_grouping} 
+    {school_grouping}
+    {effort_columns_grouping}
   "
     )
 

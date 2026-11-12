@@ -9,8 +9,10 @@ get_aggregated_effort(
   year = NULL,
   flag = NULL,
   gear = c("L", "S", "T", "P", "O"),
+  school = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
+  group_schools = TRUE,
   exclude_species = NULL,
   show_sql = FALSE,
   ...
