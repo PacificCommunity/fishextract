@@ -33,6 +33,8 @@
 #' @param show_plot Logical. If `TRUE`, prints a map of the aggregated catch
 #'   overlaid with the assessment regions before aggregating. Defaults to
 #'   `FALSE`.
+#' @param group_year Logical. Output summed by year or not. Note this also applies
+#'   to the outputted plot. Default = FALSE.
 #' @param ... Additional arguments passed to [plot_aggregated_catch()] when
 #'   `show_plot = TRUE`, for example `facet_by = GEAR_CODE`. Ignored otherwise.
 #'
@@ -79,19 +81,29 @@ catcheffort_byregion <- function(
   assessment_region,
   crs = 4326,
   show_plot = FALSE,
+  group_year = FALSE,
   ...
 ) {
   if (show_plot) {
-    print(plot_assessment_region(
-      assessment_region,
-      plot = plot_aggregated_catch(catcheffort, ...)
-    ))
+    if (group_year) {
+      print(plot_assessment_region(
+        assessment_region,
+        plot = plot_aggregated_catch(catcheffort, ...)
+      ))
+    } else {
+      print(plot_assessment_region(
+        assessment_region,
+        plot = plot_aggregated_catch(catcheffort, facet_by = year, ...)
+      ))
+    }
   }
 
   unique_lats <- sort(unique(catcheffort$latd))
   latlon_gaps <- min(unique_lats - dplyr::lag(unique_lats, 1), na.rm = TRUE)
   latlon_offset <- latlon_gaps / 2
 
+  year_grouping <- switch(group_year + 1, "year", NULL) # ugly but it works
+  complete_cols <- rlang::syms(c("SP_CODE", "GEAR_CODE", year_grouping))
   catcheffort |>
     dplyr::mutate(
       lond_offset = .data$lond + latlon_offset,
@@ -106,12 +118,11 @@ catcheffort_byregion <- function(
       VESS_N = sum(.data$VESS_N, na.rm = TRUE),
       days = sum(.data$days, na.rm = TRUE),
       sets = sum(.data$sets, na.rm = TRUE),
-      .by = c(.data$region_id, .data$SP_CODE, .data$GEAR_CODE)
+      .by = c("region_id", "SP_CODE", "GEAR_CODE", year_grouping)
     ) |>
     tidyr::complete(
       region_id = assessment_region$region_id,
-      .data$SP_CODE,
-      .data$GEAR_CODE,
+      !!!complete_cols,
       fill = list(sum_catch_mt = 0, hhooks = 0, VESS_N = 0, days = 0, sets = 0)
     )
 }

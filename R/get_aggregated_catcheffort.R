@@ -55,6 +55,7 @@ get_aggregated_catcheffort <- function(
 ) {
   # verify the inputted gear list
   gear <- match.arg(gear, lookup_gears()$GEAR_CODE, several.ok = TRUE)
+  gear_minus_ps <- setdiff(gear, "S")
 
   # fix at the all table for now
   # can modify function later to extract the higher resoulation for S gear (if required)
