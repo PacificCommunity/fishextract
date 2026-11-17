@@ -38,7 +38,7 @@ get_vms <- function(
   FROM vms.vms_trips v
   INNER JOIN vms.vms_trip_efforts e ON e.vms_trip_id = v.vms_trip_id
   WHERE 1 = 1
-    --AND {.sql_filter('YR', year)}
+    AND {.sql_filter('year', year)}
    -- AND {.sql_filter('FLAG_ID', flag)}
    -- AND {.sql_filter('GR', gear)}
   --  AND {.sql_filter('SP_ID', species)}
