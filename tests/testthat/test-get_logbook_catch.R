@@ -98,7 +98,7 @@ test_that("longline sums kg (incl. discards) to tonnes; others use sp_mt", {
   longline <- run_catch(gear = "L")$sql
   expect_match(longline, "c.sp_kg", fixed = TRUE)
   expect_match(longline, "c.spdiscard_kg", fixed = TRUE)
-  expect_match(longline, "/ 1000", fixed = TRUE)
+  expect_match(longline, "/ 1000.0", fixed = TRUE)
 
   purrr::walk(c("P", "S", "T", "O"), \(g) {
     sql <- run_catch(gear = g)$sql

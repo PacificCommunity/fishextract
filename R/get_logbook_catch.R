@@ -95,7 +95,7 @@ get_logbook_catch <- function(
     # gears report catch directly in tonnes.
     catch_expr <-
       if (.gear == "L") {
-        "(coalesce(c.sp_kg, 0) + coalesce(c.spdiscard_kg, 0)) / 1000"
+        "(coalesce(c.sp_kg, 0.0) + coalesce(c.spdiscard_kg, 0.0)) / 1000.0"
       } else {
         "c.sp_mt"
       }
