@@ -1,3 +1,4 @@
+#' @export
 get_vms <- function(
   year = NULL,
   flag = NULL,
