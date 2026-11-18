@@ -3,11 +3,14 @@ get_vms <- function(
   year = NULL,
   flag = NULL,
   # gear = NULL,
-  exclude_flag = NULL #,
-  # exclude_gear = NULL
+  exclude_flag = NULL,
+  # exclude_gear = NULL,
+  show_sql = FALSE,
+  ...
 ) {
-  glue::glue(
-    "
+  sql_query <-
+    glue::glue(
+      "
   SELECT 
   t.vms_trip_id,
   t.vessel_id,
@@ -32,7 +35,16 @@ get_vms <- function(
     AND {.sql_filter('FLAG_ID', flag)}
     AND {.sql_filter('FLAG_ID', exclude_flag, exclude = TRUE)}
   "
-  ) |>
+    )
+
+  if (show_sql) {
+    .clean_sql(sql_query)
+  }
+
+  out <-
+    sql_query |>
     db_query(database = "tufman2") |>
     dplyr::mutate(data_source = "vms")
+
+  return(out)
 }
