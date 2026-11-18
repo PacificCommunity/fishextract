@@ -10,19 +10,20 @@ get_vms <- function(
   glue::glue(
     "
   SELECT 
-  v.vms_trip_id,
-  v.vessel_id,
-  v.departure_date,
-  v.return_date,
-   v.departure_port_id,
-   v.return_port_id,
+  t.vms_trip_id,
+  t.vessel_id,
+  t.departure_date,
+  t.return_date,
+   t.departure_port_id,
+   t.return_port_id,
    e.eez_code, 
    e.year,
    e.day_at_sea,
    e.day_fishing,
    e.month, 
    e.rfmo, 
-   e.non_fishing_period_applied
+   e.non_fishing_period_applied,
+   vi.flag_id
     --FLAG_ID AS FLAG_CODE, 
 --    FLEET_ID AS FLEET_CODE,
   --  LAT_SHORT,
@@ -35,11 +36,13 @@ get_vms <- function(
     --LEN AS length_bin,
     --FREQ AS n,
     --ORIGIN_ID AS data_origin 
-  FROM vms.vms_trips v
-  INNER JOIN vms.vms_trip_efforts e ON e.vms_trip_id = v.vms_trip_id
+  FROM vms.vms_trips t
+  INNER JOIN vms.vms_trip_efforts e ON e.vms_trip_id = t.vms_trip_id
+  INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
+      AND t.departure_date BETWEEN vi.start_date AND vi.calculated_end_date
   WHERE 1 = 1
     AND {.sql_filter('year', year)}
-   -- AND {.sql_filter('FLAG_ID', flag)}
+   AND {.sql_filter('FLAG_ID', flag)}
    -- AND {.sql_filter('GR', gear)}
   --  AND {.sql_filter('SP_ID', species)}
   --  AND {.sql_filter('FLAG_ID', exclude_flag, exclude = TRUE)}
