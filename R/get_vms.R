@@ -1,11 +1,9 @@
 get_vms <- function(
   year = NULL,
   flag = NULL,
-  gear = NULL,
-  species = NULL,
-  exclude_flag = NULL,
-  exclude_gear = NULL,
-  exclude_species = NULL
+  # gear = NULL,
+  exclude_flag = NULL #,
+  # exclude_gear = NULL
 ) {
   glue::glue(
     "
@@ -44,10 +42,8 @@ get_vms <- function(
     AND {.sql_filter('year', year)}
    AND {.sql_filter('FLAG_ID', flag)}
    -- AND {.sql_filter('GR', gear)}
-  --  AND {.sql_filter('SP_ID', species)}
-  --  AND {.sql_filter('FLAG_ID', exclude_flag, exclude = TRUE)}
+  AND {.sql_filter('FLAG_ID', exclude_flag, exclude = TRUE)}
   --  AND {.sql_filter('GR', exclude_gear, exclude = TRUE)}
-   -- AND {.sql_filter('SP_ID', exclude_species, exclude = TRUE)}
   "
   ) |>
     db_query(database = "tufman2") |>
