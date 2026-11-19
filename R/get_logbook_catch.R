@@ -129,7 +129,8 @@ get_logbook_catch <- function(
       vi.vesselname AS vessel_name, 
       {gear_select} AS GEAR_CODE,
       c.sp_code AS SP_CODE,
-      SUM({catch_expr}) AS sum_catch_mt,
+      {catch_expr} AS sum_catch_mt,
+      c.sp_n AS catch_n,
       t.log_trip_id AS trip_id,
       s.log_set_id AS set_id,
       r.CODE_DESC AS activity_desc,
@@ -151,21 +152,7 @@ get_logbook_catch <- function(
       AND {.sql_filter('flag_id', exclude_flag, exclude = TRUE)}
       AND {.sql_filter('sp_code', exclude_species, exclude = TRUE)}
       AND {.sql_filter('year(s.logdate)', year)}
-    GROUP BY
-      t.log_trip_id, 
-      s.log_set_id, 
-      r.CODE_DESC,
-      vi.vessel_id, 
-      vi.vesselname,
-      latd, 
-      lond, 
-      s.eez_code,
-      flag_id, 
-      {fleet_grouping}
-      year(s.logdate), 
-      s.logdate, 
-      {gear_grouping}
-      c.sp_code"
+    "
     )
   }
 
@@ -178,27 +165,9 @@ get_logbook_catch <- function(
     .clean_sql(sql_query)
   }
 
-  combined_output <- db_query(sql_query, ...)
-
-  nrow_removed <-
-    combined_output |>
-    dplyr::filter(is.na(.data$sum_catch_mt)) |>
-    nrow()
-
-  if (nrow_removed > 0) {
-    warning(
-      glue::glue(
-        "{nrow_removed} rows removed from output due to missing catch weight values. 
-        These records may have catch reported only as numbers rather than weight."
-      ),
-      call. = FALSE
-    )
-  }
-
-  final_output <-
-    combined_output |>
-    dplyr::filter(!is.na(.data$sum_catch_mt)) |>
+  combined_output <-
+    db_query(sql_query, ...) |>
     dplyr::mutate(data_source = "logbook_catch")
 
-  return(final_output)
+  return(combined_output)
 }
