@@ -39,3 +39,25 @@
 .Rstr_to_SQLstring <- function(x) {
   paste0("('", paste(x, collapse = "', '"), "')")
 }
+
+
+# clean up sql queries to be printed to the screen
+#' @noRd
+.clean_sql <- function(query) {
+  cleaned <- query |>
+    stringr::str_replace_all(c(
+      "(?m)^[ \\t]+|[ \\t]+$" = "", # trim indentation and trailing spaces per line
+      "(?m)^AND 1 = 1$" = "", # drop placeholder filter lines
+      "\\n{2,}" = "\n" # collapse blank lines
+    )) |>
+    stringr::str_trim()
+
+  cat(
+    "\n------- START OF STRING -------\n",
+    cleaned,
+    "\n------- END OF STRING -------\n",
+    sep = ""
+  )
+
+  invisible(cleaned)
+}
