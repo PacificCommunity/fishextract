@@ -142,7 +142,7 @@ get_logbook_catch <- function(
       AND r.FIELD_ID = '{ifelse(.gear=='O', 'L', .gear)}_ACT_ID'
     INNER JOIN log.catch_{suffix} c ON c.log_set_id = s.log_set_id
     INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
-      AND coalesce(depart_date, first_logdate) BETWEEN start_date AND calculated_end_date
+      AND coalesce(first_logdate, depart_date) BETWEEN start_date AND calculated_end_date
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
       AND {.sql_filter('FLEET_CODE', fleet)}

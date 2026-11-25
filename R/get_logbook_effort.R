@@ -157,7 +157,7 @@ get_logbook_effort <- function(
     INNER JOIN ref.sch_act_codes r ON r.CODE_ID = s.{activity_id_col} 
       AND r.FIELD_ID = '{ifelse(.gear=='O', 'L', .gear)}_ACT_ID'
     INNER JOIN ref.vessel_instances vi ON vi.vessel_id = t.vessel_id
-      AND coalesce(depart_date, first_logdate) between start_date AND calculated_end_date
+      AND coalesce(first_logdate, depart_date) between start_date AND calculated_end_date
     WHERE {.sql_filter('in_wcpfc_area', in_wcpfc)}
       AND {.sql_filter('flag_id', flag)}
       AND {.sql_filter('eez_code', eez)}
