@@ -3,6 +3,27 @@
     x = c(124, 130, 130, 141, 141, 150, 150, 230, 230, 210, 210),
     y = c(-10, -10, -30, -30, -55, -55, -60, -60, -4, -4, 60)
   ),
+  nx = data.frame(
+    x = c(210, 210, 100),
+    y = c(60, 0, 0)
+  ),
+  sx = data.frame(
+    x = c(124, 130, 130, 141, 141, 150, 150, 230, 230, 210, 210, 100),
+    y = c(-10, -10, -30, -30, -55, -55, -60, -60, -4, -4, 0, 0)
+  ),
+  wp = data.frame(
+    x = c(124, 130, 130, 141, 141, 150, 150, 210, 210),
+    y = c(-10, -10, -30, -30, -55, -55, -60, -60, 60)
+  ),
+  ep = data.frame(
+    x = c(300, 210, 210),
+    y = c(-60, -60, 60)
+  ),
+  ov = data.frame(
+    x = c(210, 230, 230, 210, 210),
+    y = c(-4, -4, -60, -60, -4)
+  ),
+
   equator = data.frame(
     x = c(100, 292),
     y = c(0, 0)
@@ -182,6 +203,34 @@ add_shading <- function(plot, type, fill = "red", alpha = 0.2) {
     plot |>
       add_line("wcpfc", colour = colour1) |>
       add_text("wcpfc", colour = colour1)
+  },
+
+  sx = function(plot, colour1 = "red", ...) {
+    plot |>
+      add_line("wcpfc", colour = "black", linetype = 2) |>
+      add_line("sx", colour = colour1)
+  },
+
+  nx = function(plot, colour1 = "red", ...) {
+    plot |>
+      add_line("wcpfc", colour = "black", linetype = 2) |>
+      add_line("nx", colour = colour1)
+  },
+
+  wp = function(plot, colour1 = "red", ...) {
+    plot |>
+      add_line("wcpfc", colour = "black", linetype = 2) |>
+      add_line("wp", colour = colour1)
+  },
+  ep = function(plot, colour1 = "red", ...) {
+    plot |>
+      add_line("wcpfc", colour = "black", linetype = 2) |>
+      add_line("ep", colour = colour1)
+  },
+  ov = function(plot, colour1 = "red", ...) {
+    plot |>
+      add_line("wcpfc", colour = "black", linetype = 2) |>
+      add_line("ov", colour = colour1)
   },
 
   wcpo_epo = function(plot, colour1 = "red", ...) {
