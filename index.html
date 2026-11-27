@@ -307,6 +307,17 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wcpfc_epo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wcpfc"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"npo_spo"</span><span class="op">)</span></span></code></pre></div>
+<p>View all ocean codes together:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"patchwork"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wx"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"nx"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"sx"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"wp"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"np"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"sp"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="reference/plot_statistical_region.html">plot_statistical_region</a></span><span class="op">(</span><span class="st">"ov"</span>, shading <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -314,7 +325,7 @@
 <h1 id="other-functions">Other functions<a class="anchor" aria-label="anchor" href="#other-functions"></a>
 </h1>
 <p>The <code>list_*</code> functions can be useful in automated processes.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"tunas"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"purse_seine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/list_species.html">list_species</a></span><span class="op">(</span><span class="st">"scidata"</span><span class="op">)</span></span>
@@ -324,7 +335,7 @@
 <span><span class="fu"><a href="reference/list_flags.html">list_flags</a></span><span class="op">(</span><span class="st">"WPEA"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/list_flags.html">list_flags</a></span><span class="op">(</span><span class="st">"PNA"</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>lookup_*</code> functions can be useful to automate the processes of labelling. Note these functions are automatically applied in the <code>fishextract::plot_*</code> functions in the legends and facet labels.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/lookup_flagname.html">lookup_flagname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"VN"</span>, <span class="st">"PH"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/lookup_species.html">lookup_species</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"YFT"</span>, <span class="st">"BET"</span><span class="op">)</span><span class="op">)</span></span>
@@ -337,7 +348,7 @@
 <div class="section level3">
 <h3 id="comparing-logbook-data-and-ace-data">Comparing logbook data and ACE data<a class="anchor" aria-label="anchor" href="#comparing-logbook-data-and-ace-data"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">catch_data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="reference/get_ace.html">get_ace</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2000</span><span class="op">:</span><span class="fl">2025</span>, gear <span class="op">=</span> <span class="st">"S"</span><span class="op">)</span>,</span>

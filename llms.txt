@@ -207,6 +207,21 @@ plot_statistical_region("wcpfc")
 plot_statistical_region("npo_spo")
 ```
 
+View all ocean codes together:
+
+``` r
+
+install.packages("patchwork")
+library(patchwork)
+plot_statistical_region("wx", shading = TRUE) +
+plot_statistical_region("nx", shading = TRUE) +
+plot_statistical_region("sx", shading = TRUE) +
+plot_statistical_region("wp", shading = TRUE) +
+plot_statistical_region("np", shading = TRUE) +
+plot_statistical_region("sp", shading = TRUE) +
+plot_statistical_region("ov", shading = TRUE)
+```
+
 # Other functions
 
 The `list_*` functions can be useful in automated processes.
