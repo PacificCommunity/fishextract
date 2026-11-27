@@ -9,6 +9,7 @@ catcheffort_byregion(
   assessment_region,
   crs = 4326,
   show_plot = FALSE,
+  group_year = FALSE,
   ...
 )
 }
@@ -28,6 +29,9 @@ to \code{\link[sf:st_as_sf]{sf::st_as_sf()}}. Defaults to \code{4326} (WGS 84).}
 \item{show_plot}{Logical. If \code{TRUE}, prints a map of the aggregated catch
 overlaid with the assessment regions before aggregating. Defaults to
 \code{FALSE}.}
+
+\item{group_year}{Logical. Output summed by year or not. Note this also applies
+to the outputted plot. Default = FALSE.}
 
 \item{...}{Additional arguments passed to \code{\link[=plot_aggregated_catch]{plot_aggregated_catch()}} when
 \code{show_plot = TRUE}, for example \code{facet_by = GEAR_CODE}. Ignored otherwise.}

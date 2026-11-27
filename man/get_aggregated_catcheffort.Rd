@@ -10,9 +10,10 @@ get_aggregated_catcheffort(
   flag = NULL,
   gear = c("L", "S", "T", "P", "O"),
   species = NULL,
-  group_species = FALSE,
+  school = NULL,
   exclude_flag = NULL,
   exclude_gear = NULL,
+  group_schools = TRUE,
   exclude_species = NULL,
   show_sql = FALSE,
   ...
@@ -34,9 +35,6 @@ to \code{NULL} (all gears).}
 \item{species}{Optional character vector of species codes to include.
 Defaults to \code{NULL} (all species).}
 
-\item{group_species}{Logical. Groups all seleceted species into a single catch value.
-Defaults to \code{FALSE}.}
-
 \item{exclude_flag}{Optional character vector of flag codes to exclude.
 Defaults to \code{NULL}.}
 
@@ -50,6 +48,9 @@ exclude. Defaults to \code{NULL}.}
 
 \item{...}{optional arguments that get passed to \code{db_query()} such as
 the database server and connection}
+
+\item{group_species}{Logical. Groups all seleceted species into a single catch value.
+Defaults to \code{FALSE}.}
 }
 \value{
 A data frame with columns \code{FLAG_CODE}, \code{GEAR_CODE}, \code{SP_CODE},
